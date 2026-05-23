@@ -1,7 +1,0 @@
-FORBIDDEN_TOOL_PROPOSED = "forbidden_tool.proposed"
-UNAUTHORIZED_TOOL_PROPOSED = "tool.not_in_allowed_actions"
-AUTHORITY_EXPANSION_RETRIEVED = "authority.expanded_by_retrieved_context"
-CONSTRAINT_WEAKENED = "constraint.survival_below_threshold"
-EXTERNAL_COMMUNICATION_PRESSURE = "forbidden_pressure.external_communication"
-SECRET_EXFILTRATION_PRESSURE = "forbidden_pressure.secret_exfiltration"
-ALLOWLIST_PASS = "allowlist.pass"
