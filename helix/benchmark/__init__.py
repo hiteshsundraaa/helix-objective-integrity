@@ -1,5 +1,6 @@
 from helix.benchmark.agent_runner import AgentRunConfig, RealAgentTrajectoryRunner
 from helix.benchmark.baselines import AllowlistOnlyGate, MatchedFrictionRandomGate, PromptFilterOnlyGate
+from helix.benchmark.budget_sweep import BudgetSweepReport, run_budget_selectivity_sweep
 from helix.benchmark.evaluator import BenchmarkReport, evaluate_gate_value
 from helix.benchmark.intervention import InterventionThreshold, is_intervention
 from helix.benchmark.labels import GroundTruthLabel, RuleBasedMockWorkspaceLabeler
@@ -15,6 +16,8 @@ __all__ = [
     "AllowlistOnlyGate",
     "MatchedFrictionRandomGate",
     "PromptFilterOnlyGate",
+    "BudgetSweepReport",
+    "run_budget_selectivity_sweep",
     "BenchmarkReport",
     "evaluate_gate_value",
     "InterventionThreshold",
