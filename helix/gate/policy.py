@@ -43,9 +43,15 @@ class HelixGate:
         fap, forbidden_reasons = forbidden_action_pressure(
             self.contract,
             state.proposed_tool,
-            state.combined_text,
+            rationale=action.rationale,
+            memory=action.memory,
+            context=action.context,
         )
-        auth_div, auth_reasons = authority_divergence(state.combined_text)
+        auth_div, auth_reasons = authority_divergence(
+            rationale=action.rationale,
+            memory=action.memory,
+            context=action.context,
+        )
 
         constraint_risk = max(0.0, self.thresholds.min_constraint_survival - csr)
         risk = min(1.0, fap + auth_div + constraint_risk)
