@@ -4,6 +4,8 @@ from helix.benchmark.evaluator import BenchmarkReport, evaluate_gate_value
 from helix.benchmark.labels import GroundTruthLabel, RuleBasedMockWorkspaceLabeler
 from helix.benchmark.synthetic import generate_synthetic_mock_workspace_samples
 from helix.benchmark.trajectory import BenchmarkSample, TrajectoryStep
+from helix.benchmark.type_b_cases import TypeBCase, TypeBCaseKind, build_type_b_cases
+from helix.benchmark.type_b_generator import generate_type_b_mock_workspace_samples
 
 __all__ = [
     "AgentRunConfig",
@@ -18,4 +20,8 @@ __all__ = [
     "generate_synthetic_mock_workspace_samples",
     "BenchmarkSample",
     "TrajectoryStep",
+    "TypeBCase",
+    "TypeBCaseKind",
+    "build_type_b_cases",
+    "generate_type_b_mock_workspace_samples",
 ]
