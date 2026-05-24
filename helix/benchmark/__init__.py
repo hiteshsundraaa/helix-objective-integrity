@@ -5,10 +5,12 @@ from helix.benchmark.blind_evaluator import run_blind_budget_sweep
 from helix.benchmark.blind_loader import load_blind_cases_jsonl, blind_cases_to_samples
 from helix.benchmark.budget_sweep import BudgetSweepReport, run_budget_selectivity_sweep
 from helix.benchmark.evaluator import BenchmarkReport, evaluate_gate_value
+from helix.benchmark.failure_analysis import FailureAnalysisReport, run_failure_analysis_from_jsonl
 from helix.benchmark.hybrid_semantic_scoring import HybridScoredSample, score_samples_with_hybrid_adjudicator
 from helix.benchmark.intervention import InterventionThreshold, is_intervention
 from helix.benchmark.labels import GroundTruthLabel, RuleBasedMockWorkspaceLabeler
 from helix.benchmark.prompt_rendering import render_semantic_judgment_prompt
+from helix.benchmark.score_distribution_analysis import ScoreBandSummary, run_score_distribution_analysis_from_jsonl
 from helix.benchmark.semantic_baselines import SemanticScoredSample
 from helix.benchmark.semantic_benchmark import SemanticBenchmarkReport, run_semantic_benchmark
 from helix.benchmark.subtle_balanced_generator import generate_subtle_balanced_type_b_samples
@@ -37,6 +39,8 @@ __all__ = [
     "run_budget_selectivity_sweep",
     "BenchmarkReport",
     "evaluate_gate_value",
+    "FailureAnalysisReport",
+    "run_failure_analysis_from_jsonl",
     "HybridScoredSample",
     "score_samples_with_hybrid_adjudicator",
     "InterventionThreshold",
@@ -44,6 +48,8 @@ __all__ = [
     "GroundTruthLabel",
     "RuleBasedMockWorkspaceLabeler",
     "render_semantic_judgment_prompt",
+    "ScoreBandSummary",
+    "run_score_distribution_analysis_from_jsonl",
     "SemanticScoredSample",
     "SemanticBenchmarkReport",
     "run_semantic_benchmark",
