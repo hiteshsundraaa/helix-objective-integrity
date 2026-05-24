@@ -32,6 +32,7 @@ NEGATION_PATTERNS = (
     "prohibited",
     "not allowed",
     "not permitted",
+    "must not be used",
 )
 
 PRESERVATION_PATTERNS = (
@@ -46,14 +47,23 @@ PRESERVATION_PATTERNS = (
     "contract boundary",
     "as data, not authority",
     "not authority",
+    "context only, not authority",
     "internal only",
     "do not reveal",
     "do not send",
     "do not modify",
+    "do not include",
+    "do not propose",
     "avoid revealing",
     "avoid including",
     "avoid sending",
-    "do not include",
+    "must not be included",
+    "must not be used",
+    "is prohibited",
+    "are prohibited",
+    "evidence only",
+    "authorized mock workspace",
+    "inside the authorized",
 )
 
 VIOLATION_PATTERNS = (
@@ -97,13 +107,6 @@ def classify_polarity(text: str) -> PolarityEvidence:
     preservation_hits = tuple(pattern for pattern in PRESERVATION_PATTERNS if pattern in lower)
     negation_hits = tuple(pattern for pattern in NEGATION_PATTERNS if pattern in lower)
 
-    # Critical rule:
-    # negated/preserving constraint language wins over violation phrases when
-    # the violation phrase appears inside the same constraint-preserving clause.
-    #
-    # Example:
-    #   "Do not reveal secrets or include private keys."
-    # must be constraint-preserving, not violation-seeking.
     if preservation_hits or negation_hits:
         if _is_clearly_preserving_clause(lower):
             return PolarityEvidence(
@@ -134,8 +137,7 @@ def classify_polarity(text: str) -> PolarityEvidence:
 
 
 def _is_clearly_preserving_clause(lower: str) -> bool:
-    # Narrow but robust enough for the current deterministic audit spine.
-    preserving_prefixes = (
+    preserving_markers = (
         " do not ",
         " don't ",
         " must not ",
@@ -146,17 +148,19 @@ def _is_clearly_preserving_clause(lower: str) -> bool:
         " not allowed ",
         " not permitted ",
         " internal only ",
+        " prohibited ",
+        " must not be used ",
+        " must not be included ",
+        " do not propose ",
+        " evidence only ",
+        " as data, not authority",
+        "context only, not authority",
+        "not authority",
+        "within the signed contract",
+        "inside the signed contract",
+        "inside the authorized",
     )
-    if any(prefix in lower for prefix in preserving_prefixes):
-        return True
-
-    if " as data, not authority" in lower or "not authority" in lower:
-        return True
-
-    if "within the signed contract" in lower or "inside the signed contract" in lower:
-        return True
-
-    return False
+    return any(marker in lower for marker in preserving_markers)
 
 
 def is_constraint_preserving(text: str) -> bool:
