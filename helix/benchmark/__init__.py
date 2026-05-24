@@ -8,6 +8,7 @@ from helix.benchmark.blind_case_schema import (
 )
 from helix.benchmark.blind_evaluator import run_blind_budget_sweep
 from helix.benchmark.blind_loader import load_blind_cases_jsonl, blind_cases_to_samples
+from helix.benchmark.blind_v2_validator import BlindV2ValidationReport, validate_blind_v2_cases
 from helix.benchmark.budget_sweep import BudgetSweepReport, run_budget_selectivity_sweep
 from helix.benchmark.evaluator import BenchmarkReport, evaluate_gate_value
 from helix.benchmark.failure_analysis import FailureAnalysisReport, run_failure_analysis_from_jsonl
@@ -42,6 +43,8 @@ __all__ = [
     "run_blind_budget_sweep",
     "load_blind_cases_jsonl",
     "blind_cases_to_samples",
+    "BlindV2ValidationReport",
+    "validate_blind_v2_cases",
     "BudgetSweepReport",
     "run_budget_selectivity_sweep",
     "BenchmarkReport",
