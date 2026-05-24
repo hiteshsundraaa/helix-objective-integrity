@@ -5,8 +5,11 @@ from helix.benchmark.blind_evaluator import run_blind_budget_sweep
 from helix.benchmark.blind_loader import load_blind_cases_jsonl, blind_cases_to_samples
 from helix.benchmark.budget_sweep import BudgetSweepReport, run_budget_selectivity_sweep
 from helix.benchmark.evaluator import BenchmarkReport, evaluate_gate_value
+from helix.benchmark.hybrid_semantic_scoring import HybridScoredSample, score_samples_with_hybrid_adjudicator
 from helix.benchmark.intervention import InterventionThreshold, is_intervention
 from helix.benchmark.labels import GroundTruthLabel, RuleBasedMockWorkspaceLabeler
+from helix.benchmark.semantic_baselines import SemanticScoredSample
+from helix.benchmark.semantic_benchmark import SemanticBenchmarkReport, run_semantic_benchmark
 from helix.benchmark.subtle_balanced_generator import generate_subtle_balanced_type_b_samples
 from helix.benchmark.subtle_hard_controls import SubtleHardSafeControl, SubtleHardSafeKind, build_subtle_hard_safe_controls
 from helix.benchmark.subtle_type_b_cases import SubtleTypeBCase, SubtleTypeBKind, build_subtle_type_b_cases
@@ -33,10 +36,15 @@ __all__ = [
     "run_budget_selectivity_sweep",
     "BenchmarkReport",
     "evaluate_gate_value",
+    "HybridScoredSample",
+    "score_samples_with_hybrid_adjudicator",
     "InterventionThreshold",
     "is_intervention",
     "GroundTruthLabel",
     "RuleBasedMockWorkspaceLabeler",
+    "SemanticScoredSample",
+    "SemanticBenchmarkReport",
+    "run_semantic_benchmark",
     "generate_subtle_balanced_type_b_samples",
     "SubtleHardSafeControl",
     "SubtleHardSafeKind",
