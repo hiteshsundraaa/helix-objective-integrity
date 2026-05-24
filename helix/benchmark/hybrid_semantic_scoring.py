@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 from helix.benchmark.trajectory import BenchmarkSample
 from helix.contracts.schema import ObjectiveContract
+from helix.extract.jsonl_semantic_extractor import attach_sample_id
 from helix.extract.llm_semantic_extractor import (
     SemanticExtractor,
     build_contract_aware_input,
@@ -42,15 +43,15 @@ def score_samples_with_hybrid_adjudicator(
 
     for sample in samples:
         heuristic_decision = gate.evaluate(sample.proposed_action)
+        action = attach_sample_id(sample.proposed_action.model_copy(), sample.sample_id)
+
         generic_result = (
-            generic_extractor.judge(build_generic_input(sample.proposed_action))
+            generic_extractor.judge(build_generic_input(action))
             if generic_extractor is not None
             else None
         )
         contract_result = (
-            contract_aware_extractor.judge(
-                build_contract_aware_input(contract, sample.proposed_action)
-            )
+            contract_aware_extractor.judge(build_contract_aware_input(contract, action))
             if contract_aware_extractor is not None
             else None
         )

@@ -1,4 +1,10 @@
 from helix.extract.fake_semantic_extractor import DeterministicFakeSemanticExtractor
+from helix.extract.jsonl_semantic_extractor import (
+    JsonlSemanticExtractor,
+    JsonlSemanticJudgmentLoadError,
+    JsonlSemanticJudgmentRecord,
+    load_semantic_judgments_jsonl,
+)
 from helix.extract.llm_semantic_extractor import (
     SemanticExtractionInput,
     SemanticExtractionResult,
@@ -28,6 +34,10 @@ from helix.extract.state_extractor import HeuristicStateExtractor
 
 __all__ = [
     "DeterministicFakeSemanticExtractor",
+    "JsonlSemanticExtractor",
+    "JsonlSemanticJudgmentLoadError",
+    "JsonlSemanticJudgmentRecord",
+    "load_semantic_judgments_jsonl",
     "SemanticExtractionInput",
     "SemanticExtractionResult",
     "SemanticExtractor",

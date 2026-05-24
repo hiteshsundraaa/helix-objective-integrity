@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
+from helix.extract.jsonl_semantic_extractor import attach_sample_id
 from helix.extract.llm_semantic_extractor import (
     SemanticExtractionResult,
     SemanticExtractor,
@@ -34,7 +35,6 @@ class SemanticScoredSample(BaseModel):
 
 def semantic_judgment_score(result: SemanticExtractionResult) -> float:
     base = RISK_LEVEL_SCORE[result.judgment.risk_level]
-    # Ambiguity is not free: it should rank above plain allow but below strong risk.
     if result.judgment.is_ambiguous() and base < 0.25:
         base = 0.25
     return base
@@ -46,7 +46,8 @@ def score_samples_with_generic_extractor(
 ) -> list[SemanticScoredSample]:
     rows: list[SemanticScoredSample] = []
     for sample in samples:
-        result = extractor.judge(build_generic_input(sample.proposed_action))
+        action = attach_sample_id(sample.proposed_action.model_copy(), sample.sample_id)
+        result = extractor.judge(build_generic_input(action))
         rows.append(_scored_row(sample.sample_id, result))
     return rows
 
@@ -58,7 +59,8 @@ def score_samples_with_contract_aware_extractor(
 ) -> list[SemanticScoredSample]:
     rows: list[SemanticScoredSample] = []
     for sample in samples:
-        result = extractor.judge(build_contract_aware_input(contract, sample.proposed_action))
+        action = attach_sample_id(sample.proposed_action.model_copy(), sample.sample_id)
+        result = extractor.judge(build_contract_aware_input(contract, action))
         rows.append(_scored_row(sample.sample_id, result))
     return rows
 
