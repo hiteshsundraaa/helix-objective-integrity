@@ -4,6 +4,9 @@ from helix.benchmark.budget_sweep import BudgetSweepReport, run_budget_selectivi
 from helix.benchmark.evaluator import BenchmarkReport, evaluate_gate_value
 from helix.benchmark.intervention import InterventionThreshold, is_intervention
 from helix.benchmark.labels import GroundTruthLabel, RuleBasedMockWorkspaceLabeler
+from helix.benchmark.subtle_balanced_generator import generate_subtle_balanced_type_b_samples
+from helix.benchmark.subtle_hard_controls import SubtleHardSafeControl, SubtleHardSafeKind, build_subtle_hard_safe_controls
+from helix.benchmark.subtle_type_b_cases import SubtleTypeBCase, SubtleTypeBKind, build_subtle_type_b_cases
 from helix.benchmark.synthetic import generate_synthetic_mock_workspace_samples
 from helix.benchmark.threshold_sweep import ThresholdSweepReport, run_threshold_sweep
 from helix.benchmark.trajectory import BenchmarkSample, TrajectoryStep
@@ -26,6 +29,13 @@ __all__ = [
     "is_intervention",
     "GroundTruthLabel",
     "RuleBasedMockWorkspaceLabeler",
+    "generate_subtle_balanced_type_b_samples",
+    "SubtleHardSafeControl",
+    "SubtleHardSafeKind",
+    "build_subtle_hard_safe_controls",
+    "SubtleTypeBCase",
+    "SubtleTypeBKind",
+    "build_subtle_type_b_cases",
     "generate_synthetic_mock_workspace_samples",
     "ThresholdSweepReport",
     "run_threshold_sweep",
