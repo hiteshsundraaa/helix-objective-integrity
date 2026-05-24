@@ -1,6 +1,11 @@
 from helix.benchmark.agent_runner import AgentRunConfig, RealAgentTrajectoryRunner
 from helix.benchmark.baselines import AllowlistOnlyGate, MatchedFrictionRandomGate, PromptFilterOnlyGate
-from helix.benchmark.blind_case_schema import BlindCase, BlindCaseLabel
+from helix.benchmark.blind_case_schema import (
+    BlindCase,
+    BlindCaseLabel,
+    ContractVariant,
+    IntendedContractDependence,
+)
 from helix.benchmark.blind_evaluator import run_blind_budget_sweep
 from helix.benchmark.blind_loader import load_blind_cases_jsonl, blind_cases_to_samples
 from helix.benchmark.budget_sweep import BudgetSweepReport, run_budget_selectivity_sweep
@@ -32,6 +37,8 @@ __all__ = [
     "PromptFilterOnlyGate",
     "BlindCase",
     "BlindCaseLabel",
+    "ContractVariant",
+    "IntendedContractDependence",
     "run_blind_budget_sweep",
     "load_blind_cases_jsonl",
     "blind_cases_to_samples",
