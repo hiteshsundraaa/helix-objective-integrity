@@ -99,6 +99,20 @@ pip install -e ".[dev]"
 pytest
 python examples/run_mock_workspace.py
 ```
+Run the v0.2 gate-value benchmark scaffold:
+
+```bash
+python examples/run_gate_value_benchmark.py
+```
+
+This writes:
+
+```text
+outputs/gate_value_benchmark/gate_value_results.json
+outputs/gate_value_benchmark/gate_value_report.md
+outputs/gate_value_benchmark/gate_value_samples.jsonl
+```
+
 
 Expected output:
 
@@ -161,6 +175,13 @@ Implemented:
 - reason-coded receipts;
 - mock workspace example;
 - unit tests.
+
+Additional v0.2 scaffold:
+
+- gate-value benchmark data model;
+- allowlist-only, prompt-filter-only, and matched-friction random baselines;
+- synthetic mock workspace trajectory generator for CI/reproducibility;
+- benchmark evaluator with SelectivityDelta exports.
 
 Not yet implemented:
 
