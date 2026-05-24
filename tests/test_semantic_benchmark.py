@@ -26,10 +26,13 @@ def test_semantic_benchmark_runs_on_smoke_cases() -> None:
     assert report.metric("hybrid_semantic", 0.50).selected_count == 1
     assert report.metric("matched_random", 0.50).selected_count == 1
     assert report.metric("prompt_filter_rank", 0.50).selected_count == 1
-    assert report.metric("allowlist_only", 0.50).selected_count == 1
+
+    allowlist = report.gate_metric("allowlist_only")
+    assert allowlist.total == 2
+    assert allowlist.blocked == 0
 
 
-def test_semantic_benchmark_markdown_contains_primary_deltas() -> None:
+def test_semantic_benchmark_markdown_contains_primary_deltas_and_gate_baselines() -> None:
     contract = load_contract_yaml("scenarios/mock_workspace/contract.yaml")
     cases = load_blind_cases_jsonl("benchmarks/blind_cases/mock_workspace_blind_smoke.jsonl")
     samples = blind_cases_to_samples(cases)
@@ -46,4 +49,6 @@ def test_semantic_benchmark_markdown_contains_primary_deltas() -> None:
     markdown = report.to_markdown()
     assert "Primary deltas" in markdown
     assert "hybrid-generic" in markdown
-    assert "fake semantic extractors" in markdown
+    assert "Gate-only baselines" in markdown
+    assert "allowlist_only" in markdown
+    assert "Baseline note" in markdown
