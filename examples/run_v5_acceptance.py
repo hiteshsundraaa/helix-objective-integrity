@@ -108,6 +108,11 @@ def main() -> None:
     parser.add_argument("--min-swap-reversal-rate", type=float, default=0.85)
     parser.add_argument("--max-no-violation-overblock-rate", type=float, default=0.10)
     parser.add_argument("--max-irrelevant-overblock-rate", type=float, default=0.10)
+    parser.add_argument(
+        "--out-dir",
+        default="outputs/v5_acceptance",
+        help="Directory for acceptance summary artifacts.",
+    )
     args = parser.parse_args()
 
     contract = load_contract_yaml(args.contract)
@@ -195,6 +200,64 @@ def main() -> None:
         "domain_gated.irrelevant_rule_false_separation_rate",
         float(gated_control.get("irrelevant_rule_false_separation_rate", 1.0)),
         args.max_irrelevant_overblock_rate,
+    )
+
+    out_dir = Path(args.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    acceptance_summary = {
+        "result": "PASS",
+        "main_pair_count": main_report.pair_count,
+        "generic_ambiguous_pair_count": main_report.generic_ambiguous_pair_count,
+        "contract_separated_pair_count": main_report.contract_separated_pair_count,
+        "hybrid_separated_pair_count": main_report.hybrid_separated_pair_count,
+        "raw_irrelevant_rule_overblock_rate": raw_irrelevant_overblock,
+        "domain_gated_swap_reversal_rate": float(gated_control.get("swap_reversal_rate", 0.0)),
+        "domain_gated_no_violation_overblock_rate": float(gated_control.get("no_violation_overblock_rate", 0.0)),
+        "domain_gated_irrelevant_rule_overblock_rate": float(gated_control.get("irrelevant_rule_overblock_rate", 0.0)),
+        "domain_gated_irrelevant_rule_false_separation_rate": float(
+            gated_control.get("irrelevant_rule_false_separation_rate", 0.0)
+        ),
+    }
+
+    (out_dir / "v5_acceptance_summary.json").write_text(
+        json.dumps(acceptance_summary, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    (out_dir / "v5_acceptance_report.md").write_text(
+        "\n".join(
+            [
+                "# HELIX v5 Acceptance Report",
+                "",
+                "Result: `PASS`",
+                "",
+                "## Main paired split-view evidence",
+                "",
+                "| Metric | Value |",
+                "|---|---:|",
+                f"| main_pair_count | {main_report.pair_count} |",
+                f"| generic_ambiguous_pair_count | {main_report.generic_ambiguous_pair_count} |",
+                f"| contract_separated_pair_count | {main_report.contract_separated_pair_count} |",
+                f"| hybrid_separated_pair_count | {main_report.hybrid_separated_pair_count} |",
+                "",
+                "## Control evidence",
+                "",
+                "| Metric | Value |",
+                "|---|---:|",
+                f"| raw_irrelevant_rule_overblock_rate | {raw_irrelevant_overblock:.3f} |",
+                f"| domain_gated_swap_reversal_rate | {acceptance_summary['domain_gated_swap_reversal_rate']:.3f} |",
+                f"| domain_gated_no_violation_overblock_rate | {acceptance_summary['domain_gated_no_violation_overblock_rate']:.3f} |",
+                f"| domain_gated_irrelevant_rule_overblock_rate | {acceptance_summary['domain_gated_irrelevant_rule_overblock_rate']:.3f} |",
+                f"| domain_gated_irrelevant_rule_false_separation_rate | {acceptance_summary['domain_gated_irrelevant_rule_false_separation_rate']:.3f} |",
+                "",
+                "## Interpretation",
+                "",
+                "Raw GPT preserves the prompt-only relevance failure, while deterministic domain gating preserves swap reversal and removes irrelevant-rule overblocking.",
+                "",
+            ]
+        ),
+        encoding="utf-8",
     )
 
     print("HELIX v5 Acceptance")
