@@ -2,12 +2,50 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
 from helix.benchmark.paired_split_view_analysis import run_paired_split_view_gap_analysis
 from helix.contracts.build_contract import load_contract_yaml
 
+
+def _ensure_control_report(
+    *,
+    cases_with_controls: str,
+    contract_judgments: str,
+    out_dir: str,
+    deterministic_relevance_gate: bool,
+) -> None:
+    report = Path(out_dir) / "v5_control_summary.json"
+    if report.exists():
+        return
+
+    cmd = [
+        sys.executable,
+        "examples/analyze_v5_control_runs.py",
+        "--cases",
+        cases_with_controls,
+        "--contract-judgments",
+        contract_judgments,
+        "--out-dir",
+        out_dir,
+    ]
+    if deterministic_relevance_gate:
+        cmd.append("--deterministic-relevance-gate")
+
+    result = subprocess.run(cmd, check=False, text=True, capture_output=True)
+    if result.returncode != 0:
+        raise SystemExit(result.stderr + result.stdout)
+
+    if not report.exists():
+        existing = sorted(str(path) for path in Path(out_dir).glob("*")) if Path(out_dir).exists() else []
+        raise SystemExit(
+            "Control analyzer completed but expected report was not created: "
+            f"{report}\nExisting files: {existing}\n"
+            f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}"
+        )
 
 def _load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -49,11 +87,19 @@ def main() -> None:
     )
     parser.add_argument(
         "--raw-control-report",
-        default="outputs/v5_control_analysis/gpt5_relevance_gated_raw/v5_control_report.json",
+        default="outputs/v5_control_analysis/gpt5_relevance_gated_raw/v5_control_summary.json",
     )
     parser.add_argument(
         "--domain-gated-control-report",
-        default="outputs/v5_control_analysis/gpt5_relevance_gated_domain_gate/v5_control_report.json",
+        default="outputs/v5_control_analysis/gpt5_relevance_gated_domain_gate/v5_control_summary.json",
+    )
+    parser.add_argument(
+        "--cases-with-controls",
+        default="benchmarks/blind_cases/mock_workspace_blind_v5_hard_paired_split_view_with_controls.jsonl",
+    )
+    parser.add_argument(
+        "--control-contract-judgments",
+        default="benchmarks/semantic_judgments/blind_v5_hard_pair_with_controls_contract_relevance_gated_gpt5.jsonl",
     )
     parser.add_argument("--min-main-pairs", type=int, default=100)
     parser.add_argument("--min-generic-ambiguous", type=int, default=100)
@@ -91,6 +137,32 @@ def main() -> None:
             "main hybrid_separated_pair_count="
             f"{main_report.hybrid_separated_pair_count} < required {args.min_hybrid_separated}"
         )
+
+    _ensure_control_report(
+        cases_with_controls=args.cases_with_controls,
+        contract_judgments=args.control_contract_judgments,
+        out_dir=str(Path(args.raw_control_report).parent),
+        deterministic_relevance_gate=False,
+    )
+    _ensure_control_report(
+        cases_with_controls=args.cases_with_controls,
+        contract_judgments=args.control_contract_judgments,
+        out_dir=str(Path(args.domain_gated_control_report).parent),
+        deterministic_relevance_gate=True,
+    )
+
+    _ensure_control_report(
+        cases_with_controls=args.cases_with_controls,
+        contract_judgments=args.control_contract_judgments,
+        out_dir=str(Path(args.raw_control_report).parent),
+        deterministic_relevance_gate=False,
+    )
+    _ensure_control_report(
+        cases_with_controls=args.cases_with_controls,
+        contract_judgments=args.control_contract_judgments,
+        out_dir=str(Path(args.domain_gated_control_report).parent),
+        deterministic_relevance_gate=True,
+    )
 
     raw_control = _load_json(Path(args.raw_control_report))
     gated_control = _load_json(Path(args.domain_gated_control_report))
