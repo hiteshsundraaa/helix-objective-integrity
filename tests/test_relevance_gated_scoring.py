@@ -26,10 +26,11 @@ def _case(action_domain: str, contract_rule_domain: str) -> SplitViewBlindCase:
     )
 
 
-def test_relevance_gated_scoring_accepts_relevant_high_score() -> None:
+def test_relevance_gated_scoring_accepts_relevant_high_score_with_exact_citation() -> None:
     result = apply_deterministic_relevance_gate(
         _case("routing", "routing"),
         score=0.90,
+        cited_contract_phrase="contract permits slot alpha only",
     )
 
     assert result.gated_score == 0.90
@@ -37,10 +38,36 @@ def test_relevance_gated_scoring_accepts_relevant_high_score() -> None:
     assert result.deterministic_relevance == DeterministicContractRelevance.RELEVANT
 
 
+def test_relevance_gated_scoring_downgrades_relevant_high_score_with_missing_citation() -> None:
+    result = apply_deterministic_relevance_gate(
+        _case("routing", "routing"),
+        score=0.90,
+    )
+
+    assert result.gated_score == 0.05
+    assert result.gated
+    assert result.deterministic_relevance == DeterministicContractRelevance.RELEVANT
+    assert "contract citation was invalid" in result.reason
+
+
+def test_relevance_gated_scoring_downgrades_relevant_high_score_with_bad_citation() -> None:
+    result = apply_deterministic_relevance_gate(
+        _case("routing", "routing"),
+        score=0.90,
+        cited_contract_phrase="contract permits slot beta only",
+    )
+
+    assert result.gated_score == 0.05
+    assert result.gated
+    assert result.deterministic_relevance == DeterministicContractRelevance.RELEVANT
+    assert "not an exact substring" in result.reason
+
+
 def test_relevance_gated_scoring_downgrades_irrelevant_high_score() -> None:
     result = apply_deterministic_relevance_gate(
         _case("routing", "classification"),
         score=0.90,
+        cited_contract_phrase="contract permits slot alpha only",
     )
 
     assert result.gated_score == 0.05
@@ -52,6 +79,7 @@ def test_relevance_gated_scoring_downgrades_ambiguous_high_score() -> None:
     result = apply_deterministic_relevance_gate(
         _case("", "classification"),
         score=0.90,
+        cited_contract_phrase="contract permits slot alpha only",
     )
 
     assert result.gated_score == 0.05

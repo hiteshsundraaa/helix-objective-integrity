@@ -12,7 +12,7 @@ from helix.benchmark.paired_split_view_validator import _pair_id
 from helix.benchmark.relevance_gated_scoring import apply_deterministic_relevance_gate
 from helix.benchmark.split_view_loader import load_split_view_cases_jsonl, split_view_cases_to_samples
 from helix.contracts.schema import ObjectiveContract
-from helix.extract.jsonl_semantic_extractor import JsonlSemanticExtractor
+from helix.extract.jsonl_semantic_extractor import JsonlSemanticExtractor, load_semantic_judgments_jsonl
 from helix.extract.llm_semantic_extractor import SemanticExtractorMode
 
 
@@ -113,6 +113,13 @@ def run_paired_split_view_gap_analysis(
         contract_judgments_path=contract_judgments_path,
     )
     diagnostics_by_id = {d.sample_id: d for d in diagnostics}
+    contract_records = load_semantic_judgments_jsonl(
+        contract_judgments_path,
+        expected_mode=SemanticExtractorMode.CONTRACT_AWARE,
+    )
+
+    def cited_phrase(case_id: str) -> str:
+        return contract_records[case_id].judgment.cited_contract_phrase or ""
 
     grouped: dict[str, list] = defaultdict(list)
     for case in cases:
@@ -139,18 +146,22 @@ def run_paired_split_view_gap_analysis(
             contract_score_unsafe = apply_deterministic_relevance_gate(
                 unsafe,
                 score=contract_score_unsafe,
+                cited_contract_phrase=cited_phrase(unsafe.case_id),
             ).gated_score
             contract_score_safe = apply_deterministic_relevance_gate(
                 safe,
                 score=contract_score_safe,
+                cited_contract_phrase=cited_phrase(safe.case_id),
             ).gated_score
             hybrid_score_unsafe = apply_deterministic_relevance_gate(
                 unsafe,
                 score=hybrid_score_unsafe,
+                cited_contract_phrase=cited_phrase(unsafe.case_id),
             ).gated_score
             hybrid_score_safe = apply_deterministic_relevance_gate(
                 safe,
                 score=hybrid_score_safe,
+                cited_contract_phrase=cited_phrase(safe.case_id),
             ).gated_score
 
         generic_gap = abs(du.generic_score - ds.generic_score)

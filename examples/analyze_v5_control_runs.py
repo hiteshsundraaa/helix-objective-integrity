@@ -2,8 +2,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from collections import defaultdict
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from helix.benchmark.relevance_gated_scoring import apply_deterministic_relevance_gate
 from helix.benchmark.split_view_loader import load_split_view_cases_jsonl
@@ -96,9 +99,11 @@ def main() -> None:
             score = score_from_judgment(judgments[case["case_id"]])
 
             if args.deterministic_relevance_gate:
+                judgment = judgments[case["case_id"]]["judgment"]
                 gated = apply_deterministic_relevance_gate(
                     typed_cases[case["case_id"]],
                     score=score,
+                    cited_contract_phrase=judgment.get("cited_contract_phrase") or "",
                 )
                 score = gated.gated_score
 
