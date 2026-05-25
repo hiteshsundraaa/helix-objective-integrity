@@ -12,3 +12,6 @@ outputs/*
 !outputs/.gitkeep
 .env
 .DS_Store
+
+# Local patch/release archives
+*.zip
