@@ -5,10 +5,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from helix.benchmark.contract_relevance_gate import (
-    DeterministicContractRelevance,
-    determine_contract_relevance,
-)
+from helix.benchmark.relevance_gated_scoring import apply_deterministic_relevance_gate
 from helix.benchmark.split_view_loader import load_split_view_cases_jsonl
 
 
@@ -99,9 +96,11 @@ def main() -> None:
             score = score_from_judgment(judgments[case["case_id"]])
 
             if args.deterministic_relevance_gate:
-                relevance = determine_contract_relevance(typed_cases[case["case_id"]])
-                if relevance.status != DeterministicContractRelevance.RELEVANT:
-                    score = min(score, 0.05)
+                gated = apply_deterministic_relevance_gate(
+                    typed_cases[case["case_id"]],
+                    score=score,
+                )
+                score = gated.gated_score
 
             scores.append(score)
             labels.append(case["label"])
