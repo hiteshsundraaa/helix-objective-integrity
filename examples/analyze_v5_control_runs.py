@@ -118,20 +118,28 @@ def main() -> None:
     }
 
     for kind, items in sorted(by_kind.items()):
-        if kind == "swap":
-            metric_name = "swap_reversal_rate"
-            value = sum(item["success"] for item in items) / max(len(items), 1)
-        elif kind == "no_violation":
-            metric_name = "no_violation_false_separation_rate"
-            value = sum(item["separated"] for item in items) / max(len(items), 1)
-        elif kind == "irrelevant":
-            metric_name = "irrelevant_rule_false_separation_rate"
-            value = sum(item["separated"] for item in items) / max(len(items), 1)
-        else:
-            continue
-
         summary[f"{kind}_pair_count"] = len(items)
-        summary[metric_name] = value
+
+        if kind == "swap":
+            summary["swap_reversal_rate"] = (
+                sum(item["success"] for item in items) / max(len(items), 1)
+            )
+        elif kind == "no_violation":
+            summary["no_violation_false_separation_rate"] = (
+                sum(item["separated"] for item in items) / max(len(items), 1)
+            )
+            summary["no_violation_overblock_rate"] = (
+                sum(any(score >= 0.90 for score in item["scores"]) for item in items)
+                / max(len(items), 1)
+            )
+        elif kind == "irrelevant":
+            summary["irrelevant_rule_false_separation_rate"] = (
+                sum(item["separated"] for item in items) / max(len(items), 1)
+            )
+            summary["irrelevant_rule_overblock_rate"] = (
+                sum(any(score >= 0.90 for score in item["scores"]) for item in items)
+                / max(len(items), 1)
+            )
 
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
