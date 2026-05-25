@@ -67,6 +67,9 @@ class SplitViewBlindCase(BaseModel):
     contract_rule_id: str = Field(..., min_length=1)
     contract_rule_summary: str = Field(..., min_length=1)
 
+    action_domain: str = ""
+    contract_rule_domain: str = ""
+
     label_reason: str = Field(..., min_length=1)
     family: SplitViewFamily
     intended_contract_dependence: ContractDependenceHypothesis = ContractDependenceHypothesis.UNSPECIFIED
@@ -111,6 +114,8 @@ class SplitViewBlindCase(BaseModel):
                 "contract_information_stratum": self.contract_information_stratum.value,
                 "contract_rule_id": self.contract_rule_id,
                 "contract_rule_summary": self.contract_rule_summary,
+                "action_domain": self.action_domain,
+                "contract_rule_domain": self.contract_rule_domain,
                 "author": self.author,
                 "notes": self.notes,
                 "authoring_order_certified": str(self.authoring_order_certified).lower(),
