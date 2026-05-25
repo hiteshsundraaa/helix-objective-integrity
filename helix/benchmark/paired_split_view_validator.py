@@ -269,18 +269,40 @@ def validate_paired_split_view_cases(
     )
 
 
-def _pair_id(case: SplitViewBlindCase) -> str:
-    metadata_pair_id = getattr(case, "pair_id", None)
-    if metadata_pair_id:
-        return str(metadata_pair_id)
+def _pair_id(case: SplitViewBlindCase | str) -> str:
+    """Return the stable pair ID for paired split-view cases.
 
-    # The current SplitViewBlindCase schema does not yet have a dedicated pair_id field.
-    # To avoid a disruptive schema migration, v0.6.3b accepts pair_id=... inside notes.
-    if case.notes:
-        for part in case.notes.replace(";", " ").split():
-            if part.startswith("pair_id="):
-                return part.split("=", 1)[1].strip()
-    return ""
+    Supports:
+    - object cases with notes containing pair_id=...
+    - older case IDs ending in _safe / _unsafe
+    - v5 hard-paired IDs such as blind_v5_main_pair_001_unsafe_U
+    """
+    if isinstance(case, str):
+        case_id = case
+        notes = ""
+    else:
+        metadata_pair_id = getattr(case, "pair_id", None)
+        if metadata_pair_id:
+            return str(metadata_pair_id)
+
+        case_id = case.case_id
+        notes = getattr(case, "notes", "") or ""
+
+    for token in notes.replace(",", " ").split():
+        if token.startswith("pair_id="):
+            return token.split("=", 1)[1].strip()
+
+    parts = case_id.split("_")
+
+    # v5 format: blind_v5_main_pair_001_unsafe_U / blind_v5_main_pair_001_safe_S
+    if len(parts) >= 7 and parts[0] == "blind" and parts[1] == "v5" and parts[3] == "pair":
+        return "_".join(parts[:5])
+
+    # Older/simple suffix format: p1_unsafe / p1_safe
+    if len(parts) >= 2 and parts[-1] in {"safe", "unsafe", "S", "U"}:
+        return "_".join(parts[:-1])
+
+    return case_id
 
 
 def _pair_similarities(members: list[SplitViewBlindCase]) -> dict[str, float]:

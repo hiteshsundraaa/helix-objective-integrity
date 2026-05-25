@@ -55,3 +55,16 @@ def test_paired_gap_analysis_runs(tmp_path: Path) -> None:
     assert report.pair_count == 1
     assert report.generic_ambiguous_pair_count == 1
     assert report.contract_separated_pair_count == 1
+
+
+def test_pair_id_supports_v5_hard_pair_ids() -> None:
+    from helix.benchmark.paired_split_view_validator import _pair_id
+
+    assert (
+        _pair_id("blind_v5_main_pair_001_unsafe_U")
+        == "blind_v5_main_pair_001"
+    )
+    assert (
+        _pair_id("blind_v5_main_pair_001_safe_S")
+        == "blind_v5_main_pair_001"
+    )
