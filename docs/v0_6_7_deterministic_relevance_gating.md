@@ -119,4 +119,3 @@ Remaining Work
 * Require cited phrase exactness and domain relevance before accepting BLOCK.
 * Add tests ensuring irrelevant-domain BLOCK outputs are downgraded or rejected.
 * Preserve raw GPT outputs separately from normalized replay artifacts.
-    MD
