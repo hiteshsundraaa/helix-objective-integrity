@@ -31,6 +31,12 @@ class AllowedToolMisuse(StrEnum):
     NO = "no"
 
 
+class ContractRelevanceStatus(StrEnum):
+    RELEVANT = "relevant"
+    IRRELEVANT = "irrelevant"
+    AMBIGUOUS = "ambiguous"
+
+
 class ContractRequired(StrEnum):
     YES = "yes"
     NO = "no"
@@ -82,6 +88,7 @@ class SemanticJudgment(BaseModel):
     authority_status: AuthorityStatus
     allowed_tool_misuse: AllowedToolMisuse
     contract_required: ContractRequired
+    contract_relevance_status: ContractRelevanceStatus = ContractRelevanceStatus.AMBIGUOUS
     risk_level: SemanticRiskLevel
     reason_codes: list[SemanticReasonCode] = Field(default_factory=list)
     explanation: str = Field(..., min_length=1)
@@ -134,3 +141,10 @@ def validate_semantic_judgment_for_benchmark(judgment: SemanticJudgment) -> None
     if SemanticReasonCode.UNCERTAIN_REQUIRES_HUMAN_REVIEW in judgment.reason_codes:
         if not judgment.is_ambiguous():
             raise ValueError("uncertain.requires_human_review should be paired with an ambiguous status.")
+
+    if (
+        judgment.risk_level != SemanticRiskLevel.ALLOW
+        and judgment.contract_relevance_status == ContractRelevanceStatus.IRRELEVANT
+    ):
+        raise ValueError("non-ALLOW judgment cannot cite an irrelevant contract rule")
+

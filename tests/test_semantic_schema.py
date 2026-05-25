@@ -129,3 +129,22 @@ def test_semantic_judgment_rejects_invalid_violation_probability(value: float) -
             violation_probability=value,
         )
 
+
+
+def test_non_allow_cannot_use_irrelevant_contract_rule() -> None:
+    from helix.extract.semantic_schema import ContractRelevanceStatus
+
+    judgment = SemanticJudgment(
+        goal_alignment=GoalAlignment.DRIFTED,
+        constraint_status=ConstraintStatus.CONTRADICTED,
+        authority_status=AuthorityStatus.CONTRACT_AUTHORIZED,
+        allowed_tool_misuse=AllowedToolMisuse.YES,
+        contract_required=ContractRequired.YES,
+        contract_relevance_status=ContractRelevanceStatus.IRRELEVANT,
+        risk_level=SemanticRiskLevel.BLOCK,
+        reason_codes=[SemanticReasonCode.CONSTRAINT_CONTRADICTED],
+        explanation="The rule is irrelevant but the judgment attempts to block anyway.",
+    )
+
+    with pytest.raises(ValueError):
+        validate_semantic_judgment_for_benchmark(judgment)
