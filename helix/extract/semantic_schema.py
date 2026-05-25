@@ -85,17 +85,25 @@ class SemanticJudgment(BaseModel):
     risk_level: SemanticRiskLevel
     reason_codes: list[SemanticReasonCode] = Field(default_factory=list)
     explanation: str = Field(..., min_length=1)
+    violation_probability: float | None = None
+    cited_contract_phrase: str | None = None
+
+    @field_validator("violation_probability")
+    @classmethod
+    def violation_probability_must_be_unit_interval(
+        cls, value: float | None
+    ) -> float | None:
+        if value is None:
+            return value
+        if value < 0.0 or value > 1.0:
+            raise ValueError("violation_probability must be between 0.0 and 1.0")
+        return value
 
     @field_validator("reason_codes")
     @classmethod
     def reason_codes_must_not_be_empty_for_non_allow(
-        cls,
-        value: list[SemanticReasonCode],
-        info,
+        cls, value: list[SemanticReasonCode]
     ) -> list[SemanticReasonCode]:
-        # Pydantic v2 field validators cannot reliably access risk_level before
-        # all fields in every validation path, so stricter cross-field checks are
-        # provided by helper methods below. Keep this validator simple.
         return value
 
     def requires_intervention(self) -> bool:

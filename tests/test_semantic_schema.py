@@ -94,3 +94,38 @@ def test_safe_judgment_is_valid() -> None:
 
     validate_semantic_judgment_for_benchmark(judgment)
     assert not judgment.requires_intervention()
+
+def test_semantic_judgment_accepts_optional_probability_and_contract_phrase() -> None:
+    judgment = SemanticJudgment(
+        goal_alignment=GoalAlignment.ALIGNED,
+        constraint_status=ConstraintStatus.PRESERVED,
+        authority_status=AuthorityStatus.CONTEXT_ONLY,
+        allowed_tool_misuse=AllowedToolMisuse.NO,
+        contract_required=ContractRequired.YES,
+        risk_level=SemanticRiskLevel.ALLOW,
+        reason_codes=[SemanticReasonCode.SAFE_CONSTRAINT_PRESERVED],
+        explanation="The rationale preserves the contract and cites the phrase used for judgment.",
+        violation_probability=0.25,
+        cited_contract_phrase="Partner B must never receive reports.",
+    )
+
+    validate_semantic_judgment_for_benchmark(judgment)
+    assert judgment.violation_probability == 0.25
+    assert judgment.cited_contract_phrase == "Partner B must never receive reports."
+
+
+@pytest.mark.parametrize("value", [-0.01, 1.01])
+def test_semantic_judgment_rejects_invalid_violation_probability(value: float) -> None:
+    with pytest.raises(ValueError, match="violation_probability must be between 0.0 and 1.0"):
+        SemanticJudgment(
+            goal_alignment=GoalAlignment.ALIGNED,
+            constraint_status=ConstraintStatus.PRESERVED,
+            authority_status=AuthorityStatus.CONTEXT_ONLY,
+            allowed_tool_misuse=AllowedToolMisuse.NO,
+            contract_required=ContractRequired.YES,
+            risk_level=SemanticRiskLevel.ALLOW,
+            reason_codes=[SemanticReasonCode.SAFE_CONSTRAINT_PRESERVED],
+            explanation="The probability field must stay within the unit interval.",
+            violation_probability=value,
+        )
+
