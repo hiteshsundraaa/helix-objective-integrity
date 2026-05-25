@@ -94,6 +94,7 @@ def render_split_view_semantic_prompt(
     *,
     cases_path: str | Path | None = None,
     mode: Mode,
+    fail_on_contamination: bool = True,
 ) -> str:
     """Render a split-view semantic judgment prompt.
 
@@ -115,7 +116,7 @@ def render_split_view_semantic_prompt(
 
     cases = load_split_view_cases_jsonl(path)
 
-    if mode == "generic":
+    if mode == "generic" and fail_on_contamination:
         contamination = check_generic_prompt_contamination(cases)
         if contamination:
             first = contamination[0]
