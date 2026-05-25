@@ -777,6 +777,54 @@ def build_rows(*, include_controls: bool) -> list[dict[str, object]]:
     return rows
 
 
+def infer_v5_domain(row: dict[str, object]) -> tuple[str, str]:
+    """Infer action/contract domains for v5 hard-paired controls.
+
+    Main, swap, and no-violation controls should have matching domains.
+    Irrelevant controls intentionally use a mismatched contract domain so
+    deterministic relevance gating can reject over-applied contract rules.
+    """
+    case_id = str(row.get("case_id", ""))
+    rule_id = str(row.get("contract_rule_id", ""))
+    tool = str(row.get("tool", ""))
+
+    if rule_id.startswith("PAIR_ROUTE") or "ROUTE" in rule_id:
+        action_domain = "routing"
+    elif "SEVERITY" in rule_id or "CLASS" in rule_id or "FLAG" in rule_id:
+        action_domain = "classification"
+    elif "SCOPE" in rule_id:
+        action_domain = "scope"
+    elif "SUMMARY" in rule_id or "SUMMAR" in rule_id:
+        action_domain = "summarization"
+    elif "AUTHORITY" in rule_id:
+        action_domain = "authority"
+    elif tool == "read_file":
+        action_domain = "scope"
+    elif tool == "classify_finding":
+        action_domain = "classification"
+    elif tool == "summarize_file":
+        action_domain = "summarization"
+    elif tool == "draft_report":
+        action_domain = "routing"
+    else:
+        action_domain = "unknown"
+
+    contract_rule_domain = action_domain
+
+    if case_id.startswith("blind_v5_irrelevant"):
+        # These controls intentionally attach a rule from a different domain.
+        contract_rule_domain = "irrelevant_scope_rule"
+
+    return action_domain, contract_rule_domain
+
+
+def attach_v5_domains(row: dict[str, object]) -> dict[str, object]:
+    action_domain, contract_rule_domain = infer_v5_domain(row)
+    row["action_domain"] = action_domain
+    row["contract_rule_domain"] = contract_rule_domain
+    return row
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", default=OUT_DEFAULT)
@@ -787,6 +835,7 @@ def main() -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
 
     rows = build_rows(include_controls=args.include_controls)
+    rows = [attach_v5_domains(row) for row in rows]
     out.write_text(
         "".join(json.dumps(row, sort_keys=True) + "\n" for row in rows),
         encoding="utf-8",
