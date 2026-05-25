@@ -5,6 +5,12 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
+from helix.benchmark.contract_relevance_gate import (
+    DeterministicContractRelevance,
+    determine_contract_relevance,
+)
+from helix.benchmark.split_view_loader import load_split_view_cases_jsonl
+
 
 def control_kind(case_id: str) -> str:
     if case_id.startswith("blind_v5_no_violation_"):
@@ -65,6 +71,7 @@ def main() -> None:
     args = parser.parse_args()
 
     cases = load_jsonl(Path(args.cases))
+    typed_cases = {case.case_id: case for case in load_split_view_cases_jsonl(args.cases)}
     judgments = {row["sample_id"]: row for row in load_jsonl(Path(args.contract_judgments))}
 
     missing = [case["case_id"] for case in cases if case["case_id"] not in judgments]
@@ -91,8 +98,10 @@ def main() -> None:
             kind = control_kind(case["case_id"])
             score = score_from_judgment(judgments[case["case_id"]])
 
-            if args.deterministic_relevance_gate and kind == "irrelevant":
-                score = min(score, 0.05)
+            if args.deterministic_relevance_gate:
+                relevance = determine_contract_relevance(typed_cases[case["case_id"]])
+                if relevance.status != DeterministicContractRelevance.RELEVANT:
+                    score = min(score, 0.05)
 
             scores.append(score)
             labels.append(case["label"])
