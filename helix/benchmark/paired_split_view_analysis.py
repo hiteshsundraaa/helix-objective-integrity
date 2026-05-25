@@ -4,8 +4,12 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
+from helix.benchmark.benchmark_receipts import (
+    BenchmarkDecisionReceipt,
+    build_benchmark_decision_receipt,
+)
 from helix.benchmark.blind_case_schema import BlindCaseLabel
 from helix.benchmark.failure_analysis import build_case_diagnostics
 from helix.benchmark.paired_split_view_validator import _pair_id
@@ -46,6 +50,7 @@ class PairedSplitViewAnalysisReport(BaseModel):
     contract_success_on_generic_ambiguous_count: int
     hybrid_success_on_generic_ambiguous_count: int
     pair_records: list[PairGapRecord]
+    decision_receipts: list[BenchmarkDecisionReceipt] = Field(default_factory=list)
 
     def to_markdown(self) -> str:
         lines = [
@@ -126,6 +131,7 @@ def run_paired_split_view_gap_analysis(
         grouped[_pair_id(case)].append(case)
 
     records: list[PairGapRecord] = []
+    receipts: list[BenchmarkDecisionReceipt] = []
     for pair_id, members in sorted(grouped.items()):
         if len(members) != 2:
             continue
@@ -137,8 +143,10 @@ def run_paired_split_view_gap_analysis(
         du = diagnostics_by_id[unsafe.case_id]
         ds = diagnostics_by_id[safe.case_id]
 
-        contract_score_unsafe = du.contract_aware_score
-        contract_score_safe = ds.contract_aware_score
+        raw_contract_score_unsafe = du.contract_aware_score
+        raw_contract_score_safe = ds.contract_aware_score
+        contract_score_unsafe = raw_contract_score_unsafe
+        contract_score_safe = raw_contract_score_safe
         hybrid_score_unsafe = du.hybrid_score
         hybrid_score_safe = ds.hybrid_score
 
@@ -163,6 +171,25 @@ def run_paired_split_view_gap_analysis(
                 score=hybrid_score_safe,
                 cited_contract_phrase=cited_phrase(safe.case_id),
             ).gated_score
+
+        receipts.extend(
+            [
+                build_benchmark_decision_receipt(
+                    case=unsafe,
+                    dataset_name=Path(cases_path).stem,
+                    judgment_record=contract_records[unsafe.case_id],
+                    raw_score=raw_contract_score_unsafe,
+                    gated_score=contract_score_unsafe,
+                ),
+                build_benchmark_decision_receipt(
+                    case=safe,
+                    dataset_name=Path(cases_path).stem,
+                    judgment_record=contract_records[safe.case_id],
+                    raw_score=raw_contract_score_safe,
+                    gated_score=contract_score_safe,
+                ),
+            ]
+        )
 
         generic_gap = abs(du.generic_score - ds.generic_score)
         contract_gap = contract_score_unsafe - contract_score_safe
@@ -204,6 +231,7 @@ def run_paired_split_view_gap_analysis(
         contract_success_on_generic_ambiguous_count=sum(r.generic_ambiguous and r.contract_separated for r in records),
         hybrid_success_on_generic_ambiguous_count=sum(r.generic_ambiguous and r.hybrid_separated for r in records),
         pair_records=records,
+        decision_receipts=receipts,
     )
 
 
@@ -214,5 +242,13 @@ def write_paired_gap_outputs(report: PairedSplitViewAnalysisReport, out_dir: str
     (target / "paired_gap_report.json").write_text(report.model_dump_json(indent=2), encoding="utf-8")
     (target / "pair_records.jsonl").write_text(
         "\n".join(json.dumps(row.model_dump(mode="json"), sort_keys=True) for row in report.pair_records) + "\n",
+        encoding="utf-8",
+    )
+    (target / "benchmark_decision_receipts.jsonl").write_text(
+        "\n".join(
+            json.dumps(receipt.model_dump(mode="json"), sort_keys=True)
+            for receipt in report.decision_receipts
+        )
+        + ("\n" if report.decision_receipts else ""),
         encoding="utf-8",
     )

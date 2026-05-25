@@ -7,6 +7,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from helix.benchmark.paired_split_view_analysis import run_paired_split_view_gap_analysis
 from helix.contracts.build_contract import load_contract_yaml
 

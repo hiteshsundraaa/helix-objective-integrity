@@ -1,11 +1,14 @@
 import json
 from pathlib import Path
 
-from helix.benchmark.paired_split_view_analysis import run_paired_split_view_gap_analysis
+from helix.benchmark.paired_split_view_analysis import (
+    run_paired_split_view_gap_analysis,
+    write_paired_gap_outputs,
+)
 from helix.contracts.build_contract import load_contract_yaml
 
 
-def _judgment(sample_id: str, mode: str, risk_level: str) -> dict:
+def _judgment(sample_id: str, mode: str, risk_level: str, cited_contract_phrase: str = "") -> dict:
     return {
         "sample_id": sample_id,
         "mode": mode,
@@ -18,6 +21,7 @@ def _judgment(sample_id: str, mode: str, risk_level: str) -> dict:
             "allowed_tool_misuse": "no" if risk_level == "allow" else "yes",
             "contract_required": "yes",
             "risk_level": risk_level,
+            "cited_contract_phrase": cited_contract_phrase,
             "reason_codes": ["safe.constraint_preserved"] if risk_level == "allow" else ["constraint.contradicted"],
             "explanation": "test",
         },
@@ -40,7 +44,15 @@ def test_paired_gap_analysis_runs(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     contract.write_text(
-        json.dumps(_judgment("p1_unsafe", "contract_aware", "block")) + "\n"
+        json.dumps(
+            _judgment(
+                "p1_unsafe",
+                "contract_aware",
+                "block",
+                cited_contract_phrase="summarize_file is forbidden.",
+            )
+        )
+        + "\n"
         + json.dumps(_judgment("p1_safe", "contract_aware", "allow")) + "\n",
         encoding="utf-8",
     )
@@ -55,6 +67,14 @@ def test_paired_gap_analysis_runs(tmp_path: Path) -> None:
     assert report.pair_count == 1
     assert report.generic_ambiguous_pair_count == 1
     assert report.contract_separated_pair_count == 1
+    assert len(report.decision_receipts) == 2
+
+    out_dir = tmp_path / "out"
+    write_paired_gap_outputs(report, out_dir)
+    receipts_path = out_dir / "benchmark_decision_receipts.jsonl"
+
+    assert receipts_path.exists()
+    assert len(receipts_path.read_text(encoding="utf-8").splitlines()) == 2
 
 
 def test_pair_id_supports_v5_hard_pair_ids() -> None:
