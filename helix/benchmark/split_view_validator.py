@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import Counter, defaultdict
+import re
 from pathlib import Path
 
 from pydantic import BaseModel
@@ -95,6 +96,21 @@ class SplitViewValidationReport(BaseModel):
         return "\n".join(lines)
 
 
+
+_DIRECTIONAL_PAIR_RE = re.compile(r"^(PAIR_.+)_(A|B)$")
+
+
+def _directional_pair_base(rule_id: str) -> str | None:
+    match = _DIRECTIONAL_PAIR_RE.match(rule_id)
+    if not match:
+        return None
+    return match.group(1)
+
+
+def _is_directional_pair_rule(rule_id: str) -> bool:
+    return _directional_pair_base(rule_id) is not None
+
+
 def validate_split_view_cases(
     path: str | Path,
     *,
@@ -157,6 +173,7 @@ def validate_split_view_cases(
     family_label_counts: dict[str, Counter] = defaultdict(Counter)
     stratum_label_counts: dict[str, Counter] = defaultdict(Counter)
     rule_label_counts: dict[str, Counter] = defaultdict(Counter)
+    directional_pair_label_counts: dict[str, Counter] = defaultdict(Counter)
 
     for case in cases:
         if case.case_id in seen:
@@ -194,6 +211,11 @@ def validate_split_view_cases(
         rule_label_counts[rule][label] += 1
         rule_label_counts[rule]["total"] += 1
 
+        directional_pair_base = _directional_pair_base(rule)
+        if directional_pair_base is not None:
+            directional_pair_label_counts[directional_pair_base][label] += 1
+            directional_pair_label_counts[directional_pair_base]["total"] += 1
+
     for family in SplitViewFamily:
         count = family_counts.get(family.value, 0)
         if count < min_cases_per_family:
@@ -229,12 +251,29 @@ def validate_split_view_cases(
                 )
 
     for rule_id, counts in rule_label_counts.items():
+        # v4 paired ambiguous fixtures intentionally use directional rule IDs:
+        # PAIR_FOO_A for one side and PAIR_FOO_B for the opposite side.
+        # These should be validated at the shared PAIR_FOO base level rather
+        # than warned as individually unpaired contract rules.
+        if _is_directional_pair_rule(rule_id):
+            continue
+
         if counts.get("safe", 0) == 0 or counts.get("unsafe", 0) == 0:
             issues.append(
                 _issue(
                     "warning",
                     "unpaired_contract_rule",
                     f"Rule {rule_id!r} has safe={counts.get('safe', 0)}, unsafe={counts.get('unsafe', 0)}. Paired rules are preferred.",
+                )
+            )
+
+    for pair_base, counts in directional_pair_label_counts.items():
+        if counts.get("safe", 0) == 0 or counts.get("unsafe", 0) == 0:
+            issues.append(
+                _issue(
+                    "warning",
+                    "unpaired_directional_contract_rule_base",
+                    f"Directional pair base {pair_base!r} has safe={counts.get('safe', 0)}, unsafe={counts.get('unsafe', 0)} across A/B rule IDs.",
                 )
             )
 
