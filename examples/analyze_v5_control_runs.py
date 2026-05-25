@@ -57,6 +57,11 @@ def main() -> None:
     parser.add_argument("--contract-judgments", required=True)
     parser.add_argument("--out-dir", default="outputs/v5_control_analysis")
     parser.add_argument("--separation-threshold", type=float, default=0.30)
+    parser.add_argument(
+        "--deterministic-relevance-gate",
+        action="store_true",
+        help="Treat irrelevant-rule controls as irrelevant before scoring BLOCK decisions.",
+    )
     args = parser.parse_args()
 
     cases = load_jsonl(Path(args.cases))
@@ -83,7 +88,12 @@ def main() -> None:
         scores = []
         labels = []
         for case in members:
+            kind = control_kind(case["case_id"])
             score = score_from_judgment(judgments[case["case_id"]])
+
+            if args.deterministic_relevance_gate and kind == "irrelevant":
+                score = min(score, 0.05)
+
             scores.append(score)
             labels.append(case["label"])
 
@@ -115,6 +125,7 @@ def main() -> None:
     summary = {
         "control_pair_count": len(records),
         "separation_threshold": args.separation_threshold,
+        "deterministic_relevance_gate": args.deterministic_relevance_gate,
     }
 
     for kind, items in sorted(by_kind.items()):
