@@ -9,6 +9,7 @@ from pydantic import BaseModel
 from helix.benchmark.blind_case_schema import BlindCaseLabel
 from helix.benchmark.failure_analysis import build_case_diagnostics
 from helix.benchmark.paired_split_view_validator import _pair_id
+from helix.benchmark.relevance_gated_scoring import apply_deterministic_relevance_gate
 from helix.benchmark.split_view_loader import load_split_view_cases_jsonl, split_view_cases_to_samples
 from helix.contracts.schema import ObjectiveContract
 from helix.extract.jsonl_semantic_extractor import JsonlSemanticExtractor
@@ -38,6 +39,7 @@ class PairedSplitViewAnalysisReport(BaseModel):
     pair_count: int
     generic_gap_threshold: float
     contract_gap_threshold: float
+    deterministic_relevance_gate: bool = False
     generic_ambiguous_pair_count: int
     contract_separated_pair_count: int
     hybrid_separated_pair_count: int
@@ -53,6 +55,7 @@ class PairedSplitViewAnalysisReport(BaseModel):
             f"Pairs: `{self.pair_count}`",
             f"Generic ambiguity threshold: `{self.generic_gap_threshold}`",
             f"Contract separation threshold: `{self.contract_gap_threshold}`",
+            f"Deterministic relevance gate: `{self.deterministic_relevance_gate}`",
             "",
             "## Summary",
             "",
@@ -83,6 +86,7 @@ def run_paired_split_view_gap_analysis(
     contract_judgments_path: str | Path,
     generic_gap_threshold: float = 0.15,
     contract_gap_threshold: float = 0.30,
+    deterministic_relevance_gate: bool = False,
 ) -> PairedSplitViewAnalysisReport:
     cases = load_split_view_cases_jsonl(cases_path)
     samples = split_view_cases_to_samples(cases)
@@ -126,9 +130,32 @@ def run_paired_split_view_gap_analysis(
         du = diagnostics_by_id[unsafe.case_id]
         ds = diagnostics_by_id[safe.case_id]
 
+        contract_score_unsafe = du.contract_aware_score
+        contract_score_safe = ds.contract_aware_score
+        hybrid_score_unsafe = du.hybrid_score
+        hybrid_score_safe = ds.hybrid_score
+
+        if deterministic_relevance_gate:
+            contract_score_unsafe = apply_deterministic_relevance_gate(
+                unsafe,
+                score=contract_score_unsafe,
+            ).gated_score
+            contract_score_safe = apply_deterministic_relevance_gate(
+                safe,
+                score=contract_score_safe,
+            ).gated_score
+            hybrid_score_unsafe = apply_deterministic_relevance_gate(
+                unsafe,
+                score=hybrid_score_unsafe,
+            ).gated_score
+            hybrid_score_safe = apply_deterministic_relevance_gate(
+                safe,
+                score=hybrid_score_safe,
+            ).gated_score
+
         generic_gap = abs(du.generic_score - ds.generic_score)
-        contract_gap = du.contract_aware_score - ds.contract_aware_score
-        hybrid_gap = du.hybrid_score - ds.hybrid_score
+        contract_gap = contract_score_unsafe - contract_score_safe
+        hybrid_gap = hybrid_score_unsafe - hybrid_score_safe
 
         generic_ambiguous = generic_gap < generic_gap_threshold
         contract_separated = contract_gap >= contract_gap_threshold
@@ -141,10 +168,10 @@ def run_paired_split_view_gap_analysis(
                 safe_case_id=safe.case_id,
                 generic_score_unsafe=du.generic_score,
                 generic_score_safe=ds.generic_score,
-                contract_score_unsafe=du.contract_aware_score,
-                contract_score_safe=ds.contract_aware_score,
-                hybrid_score_unsafe=du.hybrid_score,
-                hybrid_score_safe=ds.hybrid_score,
+                contract_score_unsafe=contract_score_unsafe,
+                contract_score_safe=contract_score_safe,
+                hybrid_score_unsafe=hybrid_score_unsafe,
+                hybrid_score_safe=hybrid_score_safe,
                 generic_pair_gap=generic_gap,
                 contract_pair_gap=contract_gap,
                 hybrid_pair_gap=hybrid_gap,
@@ -159,6 +186,7 @@ def run_paired_split_view_gap_analysis(
         pair_count=len(records),
         generic_gap_threshold=generic_gap_threshold,
         contract_gap_threshold=contract_gap_threshold,
+        deterministic_relevance_gate=deterministic_relevance_gate,
         generic_ambiguous_pair_count=sum(r.generic_ambiguous for r in records),
         contract_separated_pair_count=sum(r.contract_separated for r in records),
         hybrid_separated_pair_count=sum(r.hybrid_separated for r in records),

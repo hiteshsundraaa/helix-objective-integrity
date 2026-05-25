@@ -14,6 +14,11 @@ def main() -> None:
     parser.add_argument("--contract-judgments", required=True)
     parser.add_argument("--generic-gap-threshold", type=float, default=0.15)
     parser.add_argument("--contract-gap-threshold", type=float, default=0.30)
+    parser.add_argument(
+        "--deterministic-relevance-gate",
+        action="store_true",
+        help="Apply deterministic action-domain/contract-domain relevance gating before scoring contract blocks.",
+    )
     parser.add_argument("--out-dir", default=None)
     args = parser.parse_args()
 
@@ -25,6 +30,7 @@ def main() -> None:
         contract_judgments_path=args.contract_judgments,
         generic_gap_threshold=args.generic_gap_threshold,
         contract_gap_threshold=args.contract_gap_threshold,
+        deterministic_relevance_gate=args.deterministic_relevance_gate,
     )
     out_dir = args.out_dir or str(Path("outputs/paired_split_view_gap_analysis") / Path(args.cases).stem)
     write_paired_gap_outputs(report, out_dir)
