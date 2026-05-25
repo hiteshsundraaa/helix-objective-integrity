@@ -1,5 +1,6 @@
 from helix.benchmark.agent_runner import AgentRunConfig, RealAgentTrajectoryRunner
 from helix.benchmark.baselines import AllowlistOnlyGate, MatchedFrictionRandomGate, PromptFilterOnlyGate
+from helix.benchmark.blind_case_sanitizer import SanitizationReport, sanitize_blind_cases
 from helix.benchmark.blind_case_schema import (
     BlindCase,
     BlindCaseLabel,
@@ -10,15 +11,30 @@ from helix.benchmark.blind_evaluator import run_blind_budget_sweep
 from helix.benchmark.blind_loader import load_blind_cases_jsonl, blind_cases_to_samples
 from helix.benchmark.blind_v2_validator import BlindV2ValidationReport, validate_blind_v2_cases
 from helix.benchmark.budget_sweep import BudgetSweepReport, run_budget_selectivity_sweep
+from helix.benchmark.contract_leakage_audit import ContractLeakageAuditReport, audit_contract_leakage
 from helix.benchmark.evaluator import BenchmarkReport, evaluate_gate_value
 from helix.benchmark.failure_analysis import FailureAnalysisReport, run_failure_analysis_from_jsonl
 from helix.benchmark.hybrid_semantic_scoring import HybridScoredSample, score_samples_with_hybrid_adjudicator
 from helix.benchmark.intervention import InterventionThreshold, is_intervention
 from helix.benchmark.labels import GroundTruthLabel, RuleBasedMockWorkspaceLabeler
+from helix.benchmark.paired_split_view_analysis import run_paired_split_view_gap_analysis
+from helix.benchmark.paired_split_view_validator import PairedSplitViewValidationReport, validate_paired_split_view_cases
 from helix.benchmark.prompt_rendering import render_semantic_judgment_prompt
 from helix.benchmark.score_distribution_analysis import ScoreBandSummary, run_score_distribution_analysis_from_jsonl
 from helix.benchmark.semantic_baselines import SemanticScoredSample
 from helix.benchmark.semantic_benchmark import SemanticBenchmarkReport, run_semantic_benchmark
+from helix.benchmark.split_view_failure_analysis import run_split_view_failure_analysis_from_jsonl
+from helix.benchmark.split_view_loader import load_split_view_cases_jsonl, split_view_cases_to_samples
+from helix.benchmark.split_view_prompt_rendering import render_split_view_semantic_prompt
+from helix.benchmark.split_view_schema import (
+    ContractDependenceHypothesis,
+    ContractInformationStratum,
+    EmpiricalContractDependence,
+    SplitViewBlindCase,
+    SplitViewFamily,
+)
+from helix.benchmark.split_view_semantic_benchmark import run_split_view_semantic_benchmark
+from helix.benchmark.split_view_validator import SplitViewValidationReport, validate_split_view_cases
 from helix.benchmark.subtle_balanced_generator import generate_subtle_balanced_type_b_samples
 from helix.benchmark.subtle_hard_controls import SubtleHardSafeControl, SubtleHardSafeKind, build_subtle_hard_safe_controls
 from helix.benchmark.subtle_type_b_cases import SubtleTypeBCase, SubtleTypeBKind, build_subtle_type_b_cases
@@ -36,6 +52,8 @@ __all__ = [
     "AllowlistOnlyGate",
     "MatchedFrictionRandomGate",
     "PromptFilterOnlyGate",
+    "SanitizationReport",
+    "sanitize_blind_cases",
     "BlindCase",
     "BlindCaseLabel",
     "ContractVariant",
@@ -47,6 +65,8 @@ __all__ = [
     "validate_blind_v2_cases",
     "BudgetSweepReport",
     "run_budget_selectivity_sweep",
+    "ContractLeakageAuditReport",
+    "audit_contract_leakage",
     "BenchmarkReport",
     "evaluate_gate_value",
     "FailureAnalysisReport",
@@ -57,12 +77,27 @@ __all__ = [
     "is_intervention",
     "GroundTruthLabel",
     "RuleBasedMockWorkspaceLabeler",
+    "run_paired_split_view_gap_analysis",
+    "PairedSplitViewValidationReport",
+    "validate_paired_split_view_cases",
     "render_semantic_judgment_prompt",
     "ScoreBandSummary",
     "run_score_distribution_analysis_from_jsonl",
     "SemanticScoredSample",
     "SemanticBenchmarkReport",
     "run_semantic_benchmark",
+    "run_split_view_failure_analysis_from_jsonl",
+    "load_split_view_cases_jsonl",
+    "split_view_cases_to_samples",
+    "render_split_view_semantic_prompt",
+    "run_split_view_semantic_benchmark",
+    "SplitViewValidationReport",
+    "validate_split_view_cases",
+    "ContractDependenceHypothesis",
+    "ContractInformationStratum",
+    "EmpiricalContractDependence",
+    "SplitViewBlindCase",
+    "SplitViewFamily",
     "generate_subtle_balanced_type_b_samples",
     "SubtleHardSafeControl",
     "SubtleHardSafeKind",
