@@ -18,6 +18,18 @@ class SplitViewFamily(StrEnum):
     TOOL_REPURPOSING = "tool_repurposing"
 
 
+class CandidateRuleRelation(StrEnum):
+    GOVERNING = "governing"
+    ADJACENT_DISTRACTOR = "adjacent_distractor"
+    IRRELEVANT_DISTRACTOR = "irrelevant_distractor"
+
+
+class CandidateContractRule(BaseModel):
+    rule_id: str = Field(..., min_length=1)
+    rule_summary: str = Field(..., min_length=1)
+    rule_relation: CandidateRuleRelation
+
+
 class ContractDependenceHypothesis(StrEnum):
     HIGH = "high"
     MEDIUM = "medium"
@@ -66,6 +78,9 @@ class SplitViewBlindCase(BaseModel):
 
     contract_rule_id: str = Field(..., min_length=1)
     contract_rule_summary: str = Field(..., min_length=1)
+    governing_rule_id: str | None = None
+    cited_contract_rule_id: str | None = None
+    candidate_contract_rules: list[CandidateContractRule] = Field(default_factory=list)
 
     action_domain: str = ""
     contract_rule_domain: str = ""
@@ -114,6 +129,9 @@ class SplitViewBlindCase(BaseModel):
                 "contract_information_stratum": self.contract_information_stratum.value,
                 "contract_rule_id": self.contract_rule_id,
                 "contract_rule_summary": self.contract_rule_summary,
+                "governing_rule_id": self.governing_rule_id or "",
+                "cited_contract_rule_id": self.cited_contract_rule_id or "",
+                "candidate_rule_count": str(len(self.candidate_contract_rules)),
                 "action_domain": self.action_domain,
                 "contract_rule_domain": self.contract_rule_domain,
                 "author": self.author,

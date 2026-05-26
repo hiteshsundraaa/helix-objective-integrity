@@ -28,6 +28,7 @@ CANONICAL_JUDGMENT_FIELDS = [
     "contract_required",
     "contract_relevance_status",
     "cited_contract_phrase",
+    "cited_contract_rule_id",
     "reason_codes",
 ]
 
@@ -44,6 +45,18 @@ class BenchmarkDecisionReceipt(BaseModel):
     decision: str
     contract_rule_id: str
     contract_rule_summary: str
+    governing_rule_id: str | None = None
+    cited_contract_rule_id: str | None = None
+    candidate_rule_count: int = 0
+    wrong_rule_citation: bool = False
+    citation_rule_match_status: Literal[
+        "governing_rule",
+        "adjacent_distractor",
+        "irrelevant_distractor",
+        "ambiguous_match",
+        "no_match",
+        "not_applicable",
+    ] = "not_applicable"
     cited_contract_phrase: str
     citation_exact: bool
     citation_verification_method: Literal[
@@ -90,6 +103,20 @@ class BenchmarkReceiptThresholdSnapshot(BaseModel):
     degrade: float
     quarantine: float
     block: float
+
+
+class CitationRuleMatch(BaseModel):
+    cited_contract_rule_id: str | None
+    candidate_rule_count: int
+    wrong_rule_citation: bool
+    citation_rule_match_status: Literal[
+        "governing_rule",
+        "adjacent_distractor",
+        "irrelevant_distractor",
+        "ambiguous_match",
+        "no_match",
+        "not_applicable",
+    ]
 
 
 class BenchmarkRunManifest(BaseModel):
@@ -144,6 +171,7 @@ def canonical_normalized_judgment_payload(record: JsonlSemanticJudgmentRecord) -
         "contract_required": judgment.contract_required.value,
         "contract_relevance_status": judgment.contract_relevance_status.value,
         "cited_contract_phrase": judgment.cited_contract_phrase or "",
+        "cited_contract_rule_id": record.cited_contract_rule_id or "",
         "reason_codes": sorted(code.value for code in judgment.reason_codes),
     }
     return {field: payload[field] for field in CANONICAL_JUDGMENT_FIELDS}
@@ -185,6 +213,85 @@ def score_to_decision(score: float, thresholds: BenchmarkReceiptThresholdSnapsho
     return "ALLOW"
 
 
+def resolve_citation_rule_match(
+    case: SplitViewBlindCase,
+    *,
+    cited_contract_phrase: str,
+    cited_contract_rule_id: str | None = None,
+) -> CitationRuleMatch:
+    """Resolve whether a citation points to the governing candidate rule.
+
+    Candidate-rule controls use exact substring matching only. If a judgment
+    omits cited_contract_rule_id, the rule id is inferred only when the cited
+    phrase appears in exactly one candidate rule summary.
+    """
+    candidates = list(case.candidate_contract_rules or [])
+    candidate_count = len(candidates)
+    explicit_rule_id = (cited_contract_rule_id or "").strip()
+    governing_rule_id = (case.governing_rule_id or case.contract_rule_id or "").strip()
+
+    if candidate_count == 0:
+        return CitationRuleMatch(
+            cited_contract_rule_id=explicit_rule_id or None,
+            candidate_rule_count=0,
+            wrong_rule_citation=False,
+            citation_rule_match_status="not_applicable",
+        )
+
+    if explicit_rule_id:
+        matched = next((rule for rule in candidates if rule.rule_id == explicit_rule_id), None)
+        if matched is None:
+            return CitationRuleMatch(
+                cited_contract_rule_id=explicit_rule_id,
+                candidate_rule_count=candidate_count,
+                wrong_rule_citation=explicit_rule_id != governing_rule_id,
+                citation_rule_match_status="no_match",
+            )
+        return _citation_rule_match_from_candidate(
+            rule_id=matched.rule_id,
+            rule_relation=matched.rule_relation.value,
+            governing_rule_id=governing_rule_id,
+            candidate_rule_count=candidate_count,
+        )
+
+    phrase = cited_contract_phrase.strip()
+    if not phrase:
+        return CitationRuleMatch(
+            cited_contract_rule_id=None,
+            candidate_rule_count=candidate_count,
+            wrong_rule_citation=False,
+            citation_rule_match_status="no_match",
+        )
+
+    matches = [
+        rule
+        for rule in candidates
+        if phrase in rule.rule_summary.strip()
+    ]
+    if len(matches) > 1:
+        return CitationRuleMatch(
+            cited_contract_rule_id=None,
+            candidate_rule_count=candidate_count,
+            wrong_rule_citation=False,
+            citation_rule_match_status="ambiguous_match",
+        )
+    if not matches:
+        return CitationRuleMatch(
+            cited_contract_rule_id=None,
+            candidate_rule_count=candidate_count,
+            wrong_rule_citation=False,
+            citation_rule_match_status="no_match",
+        )
+
+    matched = matches[0]
+    return _citation_rule_match_from_candidate(
+        rule_id=matched.rule_id,
+        rule_relation=matched.rule_relation.value,
+        governing_rule_id=governing_rule_id,
+        candidate_rule_count=candidate_count,
+    )
+
+
 def build_benchmark_decision_receipt(
     *,
     case: SplitViewBlindCase,
@@ -201,6 +308,11 @@ def build_benchmark_decision_receipt(
         case,
         cited_contract_phrase=cited_contract_phrase,
         requires_citation=True,
+    )
+    rule_match = resolve_citation_rule_match(
+        case,
+        cited_contract_phrase=cited_contract_phrase,
+        cited_contract_rule_id=judgment_record.cited_contract_rule_id or case.cited_contract_rule_id,
     )
     relevance = determine_contract_relevance(case)
     reason_codes = [code.value for code in judgment.reason_codes]
@@ -219,6 +331,11 @@ def build_benchmark_decision_receipt(
         decision="downgraded" if gated_score < raw_score else "accepted",
         contract_rule_id=case.contract_rule_id,
         contract_rule_summary=case.contract_rule_summary.strip(),
+        governing_rule_id=case.governing_rule_id,
+        cited_contract_rule_id=rule_match.cited_contract_rule_id,
+        candidate_rule_count=rule_match.candidate_rule_count,
+        wrong_rule_citation=rule_match.wrong_rule_citation,
+        citation_rule_match_status=rule_match.citation_rule_match_status,
         cited_contract_phrase=cited_contract_phrase,
         citation_exact=citation.valid,
         citation_verification_method=citation_verification_method,
@@ -252,6 +369,7 @@ def build_benchmark_decision_receipt(
                 "mode": judgment_record.mode.value,
                 "provider": judgment_record.provider,
                 "model": judgment_record.model,
+                "cited_contract_rule_id": judgment_record.cited_contract_rule_id or "",
                 "judgment": judgment.model_dump(mode="json"),
             }
         ),
@@ -269,7 +387,9 @@ def build_receipt_hash_preimage(receipt_without_hash: BenchmarkDecisionReceipt |
     case_hash | judgment_hash | provenance.normalized_judgment_hash | decision |
     raw_score | gated_score | citation_exact | deterministic_relevance |
     cited_contract_phrase | counterfactuals.generic_only_decision |
-    counterfactuals.contract_aware_decision | counterfactuals.gated_contract_decision
+    counterfactuals.contract_aware_decision | counterfactuals.gated_contract_decision |
+    governing_rule_id | cited_contract_rule_id | citation_rule_match_status |
+    wrong_rule_citation
     """
     receipt = _stable_payload(receipt_without_hash)
     provenance = receipt.get("provenance") or {}
@@ -287,6 +407,10 @@ def build_receipt_hash_preimage(receipt_without_hash: BenchmarkDecisionReceipt |
         str(counterfactuals.get("generic_only_decision", "")),
         str(counterfactuals.get("contract_aware_decision", "")),
         str(counterfactuals.get("gated_contract_decision", "")),
+        str(receipt.get("governing_rule_id") or ""),
+        str(receipt.get("cited_contract_rule_id") or ""),
+        str(receipt.get("citation_rule_match_status", "")),
+        str(bool(receipt.get("wrong_rule_citation", False))).lower(),
     ]
     return "|".join(parts)
 
@@ -334,6 +458,18 @@ def validate_benchmark_receipt(
             issues.append("high_risk_invalid_citation_method")
         if method == "exact_substring" and receipt.citation_match_score < 1.0:
             issues.append("high_risk_invalid_citation_method")
+        if receipt.candidate_rule_count > 0:
+            if (
+                receipt.wrong_rule_citation
+                or receipt.citation_rule_match_status != "governing_rule"
+            ):
+                issues.append("high_risk_wrong_rule_citation")
+            if (
+                receipt.governing_rule_id
+                and receipt.cited_contract_rule_id
+                and receipt.cited_contract_rule_id != receipt.governing_rule_id
+            ):
+                issues.append("high_risk_wrong_rule_citation")
         if not receipt.receipt_hash:
             issues.append("missing_receipt_hash")
         if not receipt.case_hash:
@@ -496,6 +632,12 @@ def _case_hash_payload(case: SplitViewBlindCase) -> dict[str, Any]:
         "generic_context": case.generic_context,
         "contract_rule_id": case.contract_rule_id,
         "contract_rule_summary": case.contract_rule_summary,
+        "governing_rule_id": case.governing_rule_id or "",
+        "cited_contract_rule_id": case.cited_contract_rule_id or "",
+        "candidate_contract_rules": [
+            rule.model_dump(mode="json")
+            for rule in case.candidate_contract_rules
+        ],
         "action_domain": case.action_domain,
         "contract_rule_domain": case.contract_rule_domain,
         "label_reason": case.label_reason,
@@ -508,6 +650,30 @@ def _case_hash_payload(case: SplitViewBlindCase) -> dict[str, Any]:
 
 def _canonical_score_string(value: Any) -> str:
     return json.dumps(float(value), ensure_ascii=True, allow_nan=False, separators=(",", ":"))
+
+
+def _citation_rule_match_from_candidate(
+    *,
+    rule_id: str,
+    rule_relation: str,
+    governing_rule_id: str,
+    candidate_rule_count: int,
+) -> CitationRuleMatch:
+    if rule_id == governing_rule_id or rule_relation == "governing":
+        status = "governing_rule"
+    elif rule_relation == "adjacent_distractor":
+        status = "adjacent_distractor"
+    elif rule_relation == "irrelevant_distractor":
+        status = "irrelevant_distractor"
+    else:
+        status = "no_match"
+
+    return CitationRuleMatch(
+        cited_contract_rule_id=rule_id,
+        candidate_rule_count=candidate_rule_count,
+        wrong_rule_citation=status in {"adjacent_distractor", "irrelevant_distractor"},
+        citation_rule_match_status=status,
+    )
 
 
 def _sha256_bytes(payload: bytes) -> str:

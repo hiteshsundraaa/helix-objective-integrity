@@ -29,6 +29,7 @@ class JsonlSemanticJudgmentRecord(BaseModel):
     provider: str = "jsonl"
     model: str = "external"
     raw_text: str = ""
+    cited_contract_rule_id: str | None = None
 
 
 class JsonlSemanticJudgmentLoadError(ValueError):
