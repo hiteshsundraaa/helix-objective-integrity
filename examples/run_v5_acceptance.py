@@ -11,9 +11,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from helix.benchmark.benchmark_receipts import (
     BenchmarkDecisionReceipt,
+    validate_benchmark_run_manifest,
     validate_benchmark_receipt,
 )
-from helix.benchmark.paired_split_view_analysis import run_paired_split_view_gap_analysis
+from helix.benchmark.paired_split_view_analysis import (
+    run_paired_split_view_gap_analysis,
+    write_paired_gap_outputs,
+)
 from helix.contracts.build_contract import load_contract_yaml
 from helix.gate.policy import GateThresholds
 
@@ -107,6 +111,36 @@ def _validate_receipt_evidence(
         "receipt_count": receipt_count,
         "high_risk_receipt_count": high_risk_count,
         "invalid_high_risk_receipt_count": 0,
+        "receipt_validation_issue_count": 0,
+    }
+
+
+def _validate_manifest_evidence(
+    manifest_path: Path,
+    *,
+    dataset_path: Path,
+    generic_judgments_path: Path,
+    contract_judgments_path: Path,
+    receipt_path: Path,
+) -> dict[str, Any]:
+    if not manifest_path.exists():
+        _fail(f"benchmark manifest missing: {manifest_path}")
+
+    manifest = _load_json(manifest_path)
+    issues = validate_benchmark_run_manifest(
+        manifest,
+        dataset_path=dataset_path,
+        generic_judgments_path=generic_judgments_path,
+        contract_judgments_path=contract_judgments_path,
+        receipt_path=receipt_path,
+    )
+    if issues:
+        _fail(f"manifest validation failed for {manifest_path}: {','.join(issues)}")
+
+    return {
+        "manifest_hash": manifest.get("manifest_hash", ""),
+        "manifest_validation_issue_count": 0,
+        "case_count": int(manifest.get("case_count", 0)),
     }
 
 
@@ -163,6 +197,11 @@ def main() -> None:
         default=None,
         help="Optional benchmark_decision_receipts.jsonl path to validate instead of in-memory receipts.",
     )
+    parser.add_argument(
+        "--benchmark-manifest",
+        default=None,
+        help="Optional benchmark_run_manifest.json path to validate instead of inferring next to receipts.",
+    )
     args = parser.parse_args()
 
     contract = load_contract_yaml(args.contract)
@@ -193,14 +232,36 @@ def main() -> None:
             f"{main_report.hybrid_separated_pair_count} < required {args.min_hybrid_separated}"
         )
 
-    receipts = (
-        _load_receipts(Path(args.receipt_path))
+    out_dir = Path(args.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    paired_output_dir = out_dir / "paired_split_view_analysis"
+    write_paired_gap_outputs(main_report, paired_output_dir)
+
+    receipt_path = (
+        Path(args.receipt_path)
         if args.receipt_path is not None
-        else main_report.decision_receipts
+        else paired_output_dir / "benchmark_decision_receipts.jsonl"
     )
+    manifest_path = (
+        Path(args.benchmark_manifest)
+        if args.benchmark_manifest is not None
+        else receipt_path.parent / "benchmark_run_manifest.json"
+    )
+
+    if not receipt_path.exists():
+        _fail(f"benchmark receipts missing: {receipt_path}")
+
+    receipts = _load_receipts(receipt_path)
     receipt_summary = _validate_receipt_evidence(
         receipts,
         expected_case_count=main_report.case_count,
+    )
+    manifest_summary = _validate_manifest_evidence(
+        manifest_path,
+        dataset_path=Path(args.cases),
+        generic_judgments_path=Path(args.generic_judgments),
+        contract_judgments_path=Path(args.contract_judgments),
+        receipt_path=receipt_path,
     )
 
     _ensure_control_report(
@@ -232,7 +293,7 @@ def main() -> None:
     raw_control = _load_json(Path(args.raw_control_report))
     gated_control = _load_json(Path(args.domain_gated_control_report))
 
-    # The raw report should preserve the discovered GPT failure. This prevents
+    # The raw report should preserve the discovered prompt-only relevance failure. This prevents
     # accidentally hiding the prompt-only relevance failure.
     raw_irrelevant_overblock = float(raw_control.get("irrelevant_rule_overblock_rate", 0.0))
     if raw_irrelevant_overblock < 0.90:
@@ -262,9 +323,6 @@ def main() -> None:
         args.max_irrelevant_overblock_rate,
     )
 
-    out_dir = Path(args.out_dir)
-    out_dir.mkdir(parents=True, exist_ok=True)
-
     acceptance_summary = {
         "result": "PASS",
         "main_pair_count": main_report.pair_count,
@@ -279,6 +337,7 @@ def main() -> None:
             gated_control.get("irrelevant_rule_false_separation_rate", 0.0)
         ),
         **receipt_summary,
+        **manifest_summary,
     }
 
     (out_dir / "v5_acceptance_summary.json").write_text(
@@ -302,6 +361,10 @@ def main() -> None:
                 f"| contract_separated_pair_count | {main_report.contract_separated_pair_count} |",
                 f"| hybrid_separated_pair_count | {main_report.hybrid_separated_pair_count} |",
                 f"| receipt_count | {receipt_summary['receipt_count']} |",
+                f"| case_count | {manifest_summary['case_count']} |",
+                f"| manifest_hash | {manifest_summary['manifest_hash']} |",
+                f"| receipt_validation_issue_count | {receipt_summary['receipt_validation_issue_count']} |",
+                f"| manifest_validation_issue_count | {manifest_summary['manifest_validation_issue_count']} |",
                 f"| high_risk_receipt_count | {receipt_summary['high_risk_receipt_count']} |",
                 f"| invalid_high_risk_receipt_count | {receipt_summary['invalid_high_risk_receipt_count']} |",
                 "",
@@ -317,7 +380,7 @@ def main() -> None:
                 "",
                 "## Interpretation",
                 "",
-                "Raw GPT preserves the prompt-only relevance failure, while deterministic domain gating preserves swap reversal and removes irrelevant-rule overblocking.",
+                "Raw prompt-only control evidence preserves the relevance failure, while deterministic domain gating preserves swap reversal and removes irrelevant-rule overblocking.",
                 "",
             ]
         ),
@@ -332,7 +395,11 @@ def main() -> None:
     print(f"- generic ambiguous pairs: {main_report.generic_ambiguous_pair_count}")
     print(f"- contract separated pairs: {main_report.contract_separated_pair_count}")
     print(f"- hybrid separated pairs: {main_report.hybrid_separated_pair_count}")
+    print(f"- manifest hash: {manifest_summary['manifest_hash']}")
+    print(f"- case count: {manifest_summary['case_count']}")
     print(f"- receipt count: {receipt_summary['receipt_count']}")
+    print(f"- receipt validation issues: {receipt_summary['receipt_validation_issue_count']}")
+    print(f"- manifest validation issues: {manifest_summary['manifest_validation_issue_count']}")
     print(f"- high-risk receipts: {receipt_summary['high_risk_receipt_count']}")
     print()
     print("Raw control evidence:")

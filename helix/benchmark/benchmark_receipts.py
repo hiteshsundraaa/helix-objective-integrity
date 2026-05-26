@@ -389,6 +389,50 @@ def build_benchmark_run_manifest(
     )
 
 
+def validate_benchmark_run_manifest(
+    manifest: dict[str, Any],
+    *,
+    dataset_path: Path,
+    generic_judgments_path: Path,
+    contract_judgments_path: Path,
+    receipt_path: Path,
+) -> list[str]:
+    issues: list[str] = []
+
+    manifest_hash = manifest.get("manifest_hash")
+    if not manifest_hash:
+        issues.append("missing_manifest_hash")
+    else:
+        expected_hash = stable_json_hash(
+            {key: value for key, value in manifest.items() if key != "manifest_hash"}
+        )
+        if manifest_hash != expected_hash:
+            issues.append("invalid_manifest_hash")
+
+    if manifest.get("dataset_hash") != _safe_hash_file(dataset_path):
+        issues.append("dataset_hash_mismatch")
+    if manifest.get("generic_judgments_hash") != _safe_hash_file(generic_judgments_path):
+        issues.append("generic_judgments_hash_mismatch")
+    if manifest.get("contract_judgments_hash") != _safe_hash_file(contract_judgments_path):
+        issues.append("contract_judgments_hash_mismatch")
+
+    actual_case_count = _count_nonempty_jsonl_lines(dataset_path)
+    actual_receipt_count = _count_nonempty_jsonl_lines(receipt_path)
+    if manifest.get("case_count") != actual_case_count:
+        issues.append("case_count_mismatch")
+    if manifest.get("receipt_count") != actual_receipt_count:
+        issues.append("receipt_count_mismatch")
+    if actual_receipt_count != actual_case_count:
+        issues.append("receipt_count_mismatch")
+
+    if not manifest.get("gate_thresholds"):
+        issues.append("missing_gate_thresholds")
+    if not manifest.get("acceptance_criteria"):
+        issues.append("missing_acceptance_criteria")
+
+    return sorted(set(issues))
+
+
 def _evidence_quality_flags(
     *,
     citation_exact: bool,
@@ -475,6 +519,20 @@ def _helix_version() -> str:
         return version("helix-objective-integrity")
     except PackageNotFoundError:
         return "unknown"
+
+
+def _safe_hash_file(path: Path) -> str | None:
+    try:
+        return hash_file(path)
+    except OSError:
+        return None
+
+
+def _count_nonempty_jsonl_lines(path: Path) -> int | None:
+    try:
+        return sum(1 for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
+    except OSError:
+        return None
 
 
 def _stable_payload(obj: Any) -> Any:

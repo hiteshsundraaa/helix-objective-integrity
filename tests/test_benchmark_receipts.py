@@ -1,9 +1,15 @@
+import json
+from pathlib import Path
+
 from helix.benchmark.benchmark_receipts import (
     BenchmarkDecisionReceipt,
+    build_benchmark_run_manifest,
     build_benchmark_decision_receipt,
     build_receipt_hash_preimage,
     canonical_normalized_judgment_hash,
     stable_json_hash,
+    threshold_snapshot_from_gate,
+    validate_benchmark_run_manifest,
     validate_benchmark_receipt,
 )
 from helix.benchmark.blind_case_schema import BlindCaseLabel
@@ -78,6 +84,34 @@ def _receipt(
         raw_score=raw_score,
         gated_score=gated_score,
     )
+
+
+def _write_manifest_fixture(tmp_path: Path) -> tuple[dict, Path, Path, Path, Path]:
+    dataset = tmp_path / "cases.jsonl"
+    generic = tmp_path / "generic.jsonl"
+    contract = tmp_path / "contract.jsonl"
+    receipts_path = tmp_path / "benchmark_decision_receipts.jsonl"
+
+    dataset.write_text('{"case_id":"a"}\n{"case_id":"b"}\n', encoding="utf-8")
+    generic.write_text('{"sample_id":"a"}\n{"sample_id":"b"}\n', encoding="utf-8")
+    contract.write_text('{"sample_id":"a"}\n{"sample_id":"b"}\n', encoding="utf-8")
+    receipts = [_receipt(), _receipt()]
+    receipts_path.write_text(
+        "\n".join(receipt.model_dump_json() for receipt in receipts) + "\n",
+        encoding="utf-8",
+    )
+
+    manifest = build_benchmark_run_manifest(
+        dataset_name="dataset",
+        dataset_path=dataset,
+        generic_judgments_path=generic,
+        contract_judgments_path=contract,
+        receipts=receipts,
+        case_count=2,
+        gate_thresholds=threshold_snapshot_from_gate(),
+        acceptance_criteria={"contract_gap_threshold": 0.30},
+    ).model_dump(mode="json")
+    return manifest, dataset, generic, contract, receipts_path
 
 
 def test_stable_json_hash_is_deterministic() -> None:
@@ -243,3 +277,59 @@ def test_receipt_json_round_trips_through_pydantic_validation() -> None:
     receipt = _receipt()
 
     assert BenchmarkDecisionReceipt.model_validate_json(receipt.model_dump_json()) == receipt
+
+
+def test_valid_manifest_passes_validation(tmp_path: Path) -> None:
+    manifest, dataset, generic, contract, receipts = _write_manifest_fixture(tmp_path)
+
+    assert (
+        validate_benchmark_run_manifest(
+            manifest,
+            dataset_path=dataset,
+            generic_judgments_path=generic,
+            contract_judgments_path=contract,
+            receipt_path=receipts,
+        )
+        == []
+    )
+
+
+def test_tampered_manifest_hash_fails_validation(tmp_path: Path) -> None:
+    manifest, dataset, generic, contract, receipts = _write_manifest_fixture(tmp_path)
+    manifest["dataset_name"] = "tampered"
+
+    assert "invalid_manifest_hash" in validate_benchmark_run_manifest(
+        manifest,
+        dataset_path=dataset,
+        generic_judgments_path=generic,
+        contract_judgments_path=contract,
+        receipt_path=receipts,
+    )
+
+
+def test_tampered_dataset_file_causes_hash_mismatch(tmp_path: Path) -> None:
+    manifest, dataset, generic, contract, receipts = _write_manifest_fixture(tmp_path)
+    dataset.write_text(dataset.read_text(encoding="utf-8") + '{"case_id":"c"}\n', encoding="utf-8")
+
+    issues = validate_benchmark_run_manifest(
+        manifest,
+        dataset_path=dataset,
+        generic_judgments_path=generic,
+        contract_judgments_path=contract,
+        receipt_path=receipts,
+    )
+
+    assert "dataset_hash_mismatch" in issues
+
+
+def test_receipt_count_mismatch_fails_validation(tmp_path: Path) -> None:
+    manifest, dataset, generic, contract, receipts = _write_manifest_fixture(tmp_path)
+    receipts.write_text("{}\n", encoding="utf-8")
+
+    assert "receipt_count_mismatch" in validate_benchmark_run_manifest(
+        manifest,
+        dataset_path=dataset,
+        generic_judgments_path=generic,
+        contract_judgments_path=contract,
+        receipt_path=receipts,
+    )

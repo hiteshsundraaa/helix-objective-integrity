@@ -93,7 +93,7 @@ def _write_valid_receipts(
     cases: Path,
     generic: Path,
     contract: Path,
-) -> Path:
+) -> tuple[Path, Path]:
     report = run_paired_split_view_gap_analysis(
         load_contract_yaml("scenarios/mock_workspace/contract.yaml"),
         cases_path=cases,
@@ -103,7 +103,10 @@ def _write_valid_receipts(
     )
     out_dir = tmp_path / "paired"
     write_paired_gap_outputs(report, out_dir)
-    return out_dir / "benchmark_decision_receipts.jsonl"
+    return (
+        out_dir / "benchmark_decision_receipts.jsonl",
+        out_dir / "benchmark_run_manifest.json",
+    )
 
 
 def _acceptance_command(
@@ -115,6 +118,7 @@ def _acceptance_command(
     gated: Path,
     out_dir: Path,
     receipt_path: Path | None = None,
+    benchmark_manifest: Path | None = None,
 ) -> list[str]:
     cmd = [
         sys.executable,
@@ -142,6 +146,8 @@ def _acceptance_command(
     ]
     if receipt_path is not None:
         cmd.extend(["--receipt-path", str(receipt_path)])
+    if benchmark_manifest is not None:
+        cmd.extend(["--benchmark-manifest", str(benchmark_manifest)])
     return cmd
 
 
@@ -162,11 +168,11 @@ def test_v5_acceptance_runner_passes_on_minimal_reports(tmp_path: Path) -> None:
             "100",
             "--min-contract-separated",
             "100",
-                "--min-hybrid-separated",
-                "100",
-                "--out-dir",
-                str(tmp_path / "acceptance_default"),
-            ],
+            "--min-hybrid-separated",
+            "100",
+            "--out-dir",
+            str(tmp_path / "acceptance_default"),
+        ],
         check=False,
         text=True,
         capture_output=True,
@@ -179,7 +185,7 @@ def test_v5_acceptance_runner_passes_on_minimal_reports(tmp_path: Path) -> None:
 def test_v5_acceptance_runner_passes_on_valid_receipt_file(tmp_path: Path) -> None:
     raw, gated = _write_control_reports(tmp_path)
     cases, generic, contract = _write_tiny_split_view_inputs(tmp_path)
-    receipt_path = _write_valid_receipts(tmp_path, cases, generic, contract)
+    receipt_path, manifest_path = _write_valid_receipts(tmp_path, cases, generic, contract)
 
     result = subprocess.run(
         _acceptance_command(
@@ -190,6 +196,7 @@ def test_v5_acceptance_runner_passes_on_valid_receipt_file(tmp_path: Path) -> No
             gated=gated,
             out_dir=tmp_path / "acceptance",
             receipt_path=receipt_path,
+            benchmark_manifest=manifest_path,
         ),
         check=False,
         text=True,
@@ -203,7 +210,7 @@ def test_v5_acceptance_runner_passes_on_valid_receipt_file(tmp_path: Path) -> No
 def test_v5_acceptance_runner_fails_on_invalid_high_risk_receipt(tmp_path: Path) -> None:
     raw, gated = _write_control_reports(tmp_path)
     cases, generic, contract = _write_tiny_split_view_inputs(tmp_path)
-    receipt_path = _write_valid_receipts(tmp_path, cases, generic, contract)
+    receipt_path, manifest_path = _write_valid_receipts(tmp_path, cases, generic, contract)
     rows = [
         json.loads(line)
         for line in receipt_path.read_text(encoding="utf-8").splitlines()
@@ -227,6 +234,7 @@ def test_v5_acceptance_runner_fails_on_invalid_high_risk_receipt(tmp_path: Path)
             gated=gated,
             out_dir=tmp_path / "acceptance_invalid",
             receipt_path=invalid_path,
+            benchmark_manifest=manifest_path,
         ),
         check=False,
         text=True,
@@ -235,3 +243,32 @@ def test_v5_acceptance_runner_fails_on_invalid_high_risk_receipt(tmp_path: Path)
 
     assert result.returncode != 0
     assert "receipt validation failed" in result.stderr + result.stdout
+
+
+def test_v5_acceptance_runner_fails_on_invalid_manifest(tmp_path: Path) -> None:
+    raw, gated = _write_control_reports(tmp_path)
+    cases, generic, contract = _write_tiny_split_view_inputs(tmp_path)
+    receipt_path, manifest_path = _write_valid_receipts(tmp_path, cases, generic, contract)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["receipt_count"] = 1
+    invalid_manifest = tmp_path / "invalid_manifest.json"
+    invalid_manifest.write_text(json.dumps(manifest, sort_keys=True), encoding="utf-8")
+
+    result = subprocess.run(
+        _acceptance_command(
+            cases=cases,
+            generic=generic,
+            contract=contract,
+            raw=raw,
+            gated=gated,
+            out_dir=tmp_path / "acceptance_bad_manifest",
+            receipt_path=receipt_path,
+            benchmark_manifest=invalid_manifest,
+        ),
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode != 0
+    assert "manifest validation failed" in result.stderr + result.stdout
