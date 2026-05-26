@@ -8,7 +8,10 @@ from pydantic import BaseModel, Field
 
 from helix.benchmark.benchmark_receipts import (
     BenchmarkDecisionReceipt,
+    BenchmarkReceiptThresholdSnapshot,
     build_benchmark_decision_receipt,
+    build_benchmark_run_manifest,
+    threshold_snapshot_from_gate,
 )
 from helix.benchmark.blind_case_schema import BlindCaseLabel
 from helix.benchmark.failure_analysis import build_case_diagnostics
@@ -40,10 +43,15 @@ class PairGapRecord(BaseModel):
 
 class PairedSplitViewAnalysisReport(BaseModel):
     dataset_name: str
+    dataset_path: str
+    generic_judgments_path: str
+    contract_judgments_path: str
+    case_count: int
     pair_count: int
     generic_gap_threshold: float
     contract_gap_threshold: float
     deterministic_relevance_gate: bool = False
+    gate_thresholds: BenchmarkReceiptThresholdSnapshot
     generic_ambiguous_pair_count: int
     contract_separated_pair_count: int
     hybrid_separated_pair_count: int
@@ -95,6 +103,7 @@ def run_paired_split_view_gap_analysis(
 ) -> PairedSplitViewAnalysisReport:
     cases = load_split_view_cases_jsonl(cases_path)
     samples = split_view_cases_to_samples(cases)
+    threshold_snapshot = threshold_snapshot_from_gate()
 
     generic_extractor = JsonlSemanticExtractor(
         generic_judgments_path,
@@ -178,15 +187,19 @@ def run_paired_split_view_gap_analysis(
                     case=unsafe,
                     dataset_name=Path(cases_path).stem,
                     judgment_record=contract_records[unsafe.case_id],
+                    generic_score=du.generic_score,
                     raw_score=raw_contract_score_unsafe,
                     gated_score=contract_score_unsafe,
+                    thresholds=threshold_snapshot,
                 ),
                 build_benchmark_decision_receipt(
                     case=safe,
                     dataset_name=Path(cases_path).stem,
                     judgment_record=contract_records[safe.case_id],
+                    generic_score=ds.generic_score,
                     raw_score=raw_contract_score_safe,
                     gated_score=contract_score_safe,
+                    thresholds=threshold_snapshot,
                 ),
             ]
         )
@@ -221,10 +234,15 @@ def run_paired_split_view_gap_analysis(
 
     return PairedSplitViewAnalysisReport(
         dataset_name=Path(cases_path).stem,
+        dataset_path=str(cases_path),
+        generic_judgments_path=str(generic_judgments_path),
+        contract_judgments_path=str(contract_judgments_path),
+        case_count=len(cases),
         pair_count=len(records),
         generic_gap_threshold=generic_gap_threshold,
         contract_gap_threshold=contract_gap_threshold,
         deterministic_relevance_gate=deterministic_relevance_gate,
+        gate_thresholds=threshold_snapshot,
         generic_ambiguous_pair_count=sum(r.generic_ambiguous for r in records),
         contract_separated_pair_count=sum(r.contract_separated for r in records),
         hybrid_separated_pair_count=sum(r.hybrid_separated for r in records),
@@ -250,5 +268,23 @@ def write_paired_gap_outputs(report: PairedSplitViewAnalysisReport, out_dir: str
             for receipt in report.decision_receipts
         )
         + ("\n" if report.decision_receipts else ""),
+        encoding="utf-8",
+    )
+    manifest = build_benchmark_run_manifest(
+        dataset_name=report.dataset_name,
+        dataset_path=report.dataset_path,
+        generic_judgments_path=report.generic_judgments_path,
+        contract_judgments_path=report.contract_judgments_path,
+        receipts=report.decision_receipts,
+        case_count=report.case_count,
+        gate_thresholds=report.gate_thresholds,
+        acceptance_criteria={
+            "generic_gap_threshold": report.generic_gap_threshold,
+            "contract_gap_threshold": report.contract_gap_threshold,
+            "deterministic_relevance_gate": report.deterministic_relevance_gate,
+        },
+    )
+    (target / "benchmark_run_manifest.json").write_text(
+        manifest.model_dump_json(indent=2) + "\n",
         encoding="utf-8",
     )

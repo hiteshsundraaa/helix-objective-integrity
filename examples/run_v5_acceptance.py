@@ -9,8 +9,13 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from helix.benchmark.benchmark_receipts import (
+    BenchmarkDecisionReceipt,
+    validate_benchmark_receipt,
+)
 from helix.benchmark.paired_split_view_analysis import run_paired_split_view_gap_analysis
 from helix.contracts.build_contract import load_contract_yaml
+from helix.gate.policy import GateThresholds
 
 
 def _ensure_control_report(
@@ -53,6 +58,14 @@ def _load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _load_receipts(path: Path) -> list[BenchmarkDecisionReceipt]:
+    return [
+        BenchmarkDecisionReceipt.model_validate_json(line)
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+
+
 def _fail(message: str) -> None:
     raise SystemExit(f"FAIL: {message}")
 
@@ -65,6 +78,36 @@ def _check_at_least(name: str, value: float, threshold: float) -> None:
 def _check_at_most(name: str, value: float, threshold: float) -> None:
     if value > threshold:
         _fail(f"{name}={value:.3f} > required {threshold:.3f}")
+
+
+def _validate_receipt_evidence(
+    receipts: list[BenchmarkDecisionReceipt],
+    *,
+    expected_case_count: int,
+    block_threshold: float = GateThresholds().block,
+) -> dict[str, int]:
+    receipt_count = len(receipts)
+    if receipt_count != expected_case_count:
+        _fail(f"receipt_count={receipt_count} != case_count={expected_case_count}")
+
+    invalid: list[str] = []
+    high_risk_count = 0
+    for receipt in receipts:
+        if receipt.gated_score >= block_threshold:
+            high_risk_count += 1
+        issues = validate_benchmark_receipt(receipt, block_threshold=block_threshold)
+        if issues:
+            invalid.append(f"{receipt.sample_id}: {','.join(issues)}")
+
+    if invalid:
+        first = "; ".join(invalid[:5])
+        _fail(f"receipt validation failed for {len(invalid)} receipts; first={first}")
+
+    return {
+        "receipt_count": receipt_count,
+        "high_risk_receipt_count": high_risk_count,
+        "invalid_high_risk_receipt_count": 0,
+    }
 
 
 def main() -> None:
@@ -115,6 +158,11 @@ def main() -> None:
         default="outputs/v5_acceptance",
         help="Directory for acceptance summary artifacts.",
     )
+    parser.add_argument(
+        "--receipt-path",
+        default=None,
+        help="Optional benchmark_decision_receipts.jsonl path to validate instead of in-memory receipts.",
+    )
     args = parser.parse_args()
 
     contract = load_contract_yaml(args.contract)
@@ -144,6 +192,16 @@ def main() -> None:
             "main hybrid_separated_pair_count="
             f"{main_report.hybrid_separated_pair_count} < required {args.min_hybrid_separated}"
         )
+
+    receipts = (
+        _load_receipts(Path(args.receipt_path))
+        if args.receipt_path is not None
+        else main_report.decision_receipts
+    )
+    receipt_summary = _validate_receipt_evidence(
+        receipts,
+        expected_case_count=main_report.case_count,
+    )
 
     _ensure_control_report(
         cases_with_controls=args.cases_with_controls,
@@ -220,6 +278,7 @@ def main() -> None:
         "domain_gated_irrelevant_rule_false_separation_rate": float(
             gated_control.get("irrelevant_rule_false_separation_rate", 0.0)
         ),
+        **receipt_summary,
     }
 
     (out_dir / "v5_acceptance_summary.json").write_text(
@@ -242,6 +301,9 @@ def main() -> None:
                 f"| generic_ambiguous_pair_count | {main_report.generic_ambiguous_pair_count} |",
                 f"| contract_separated_pair_count | {main_report.contract_separated_pair_count} |",
                 f"| hybrid_separated_pair_count | {main_report.hybrid_separated_pair_count} |",
+                f"| receipt_count | {receipt_summary['receipt_count']} |",
+                f"| high_risk_receipt_count | {receipt_summary['high_risk_receipt_count']} |",
+                f"| invalid_high_risk_receipt_count | {receipt_summary['invalid_high_risk_receipt_count']} |",
                 "",
                 "## Control evidence",
                 "",
@@ -270,6 +332,8 @@ def main() -> None:
     print(f"- generic ambiguous pairs: {main_report.generic_ambiguous_pair_count}")
     print(f"- contract separated pairs: {main_report.contract_separated_pair_count}")
     print(f"- hybrid separated pairs: {main_report.hybrid_separated_pair_count}")
+    print(f"- receipt count: {receipt_summary['receipt_count']}")
+    print(f"- high-risk receipts: {receipt_summary['high_risk_receipt_count']}")
     print()
     print("Raw control evidence:")
     print(f"- irrelevant_rule_overblock_rate: {raw_irrelevant_overblock:.3f}")

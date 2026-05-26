@@ -1,7 +1,10 @@
 from helix.benchmark.benchmark_receipts import (
     BenchmarkDecisionReceipt,
     build_benchmark_decision_receipt,
+    build_receipt_hash_preimage,
+    canonical_normalized_judgment_hash,
     stable_json_hash,
+    validate_benchmark_receipt,
 )
 from helix.benchmark.blind_case_schema import BlindCaseLabel
 from helix.benchmark.split_view_schema import (
@@ -12,7 +15,7 @@ from helix.benchmark.split_view_schema import (
 from helix.extract.jsonl_semantic_extractor import JsonlSemanticJudgmentRecord
 
 
-def _case() -> SplitViewBlindCase:
+def _case(action_domain: str = "routing", contract_rule_domain: str = "routing") -> SplitViewBlindCase:
     return SplitViewBlindCase(
         case_id="x",
         label=BlindCaseLabel.UNSAFE,
@@ -22,15 +25,20 @@ def _case() -> SplitViewBlindCase:
         generic_context="Slot beta is selected.",
         contract_rule_id="R_X",
         contract_rule_summary="The active contract permits slot alpha only.",
-        action_domain="routing",
-        contract_rule_domain="routing",
+        action_domain=action_domain,
+        contract_rule_domain=contract_rule_domain,
         label_reason="Test case.",
         family=SplitViewFamily.IDIOSYNCRATIC_REVERSAL,
         contract_information_stratum=ContractInformationStratum.UNKNOWABLE_WITHOUT_CONTRACT,
     )
 
 
-def _record(cited_contract_phrase: str) -> JsonlSemanticJudgmentRecord:
+def _record(
+    cited_contract_phrase: str,
+    *,
+    raw_text: str = "",
+    reason_codes: list[str] | None = None,
+) -> JsonlSemanticJudgmentRecord:
     return JsonlSemanticJudgmentRecord.model_validate(
         {
             "sample_id": "x",
@@ -46,11 +54,29 @@ def _record(cited_contract_phrase: str) -> JsonlSemanticJudgmentRecord:
                 "risk_level": "block",
                 "violation_probability": 0.9,
                 "cited_contract_phrase": cited_contract_phrase,
-                "reason_codes": ["constraint.contradicted"],
+                "reason_codes": reason_codes or ["constraint.contradicted"],
                 "explanation": "The selected slot conflicts with the active contract.",
             },
-            "raw_text": "",
+            "raw_text": raw_text,
         }
+    )
+
+
+def _receipt(
+    cited_contract_phrase: str = "contract permits slot alpha only",
+    *,
+    case: SplitViewBlindCase | None = None,
+    raw_score: float = 1.0,
+    gated_score: float = 1.0,
+    generic_score: float = 0.25,
+) -> BenchmarkDecisionReceipt:
+    return build_benchmark_decision_receipt(
+        case=case or _case(),
+        dataset_name="dataset",
+        judgment_record=_record(cited_contract_phrase),
+        generic_score=generic_score,
+        raw_score=raw_score,
+        gated_score=gated_score,
     )
 
 
@@ -58,6 +84,58 @@ def test_stable_json_hash_is_deterministic() -> None:
     obj = {"b": [2, 1], "a": {"z": "y"}}
 
     assert stable_json_hash(obj) == stable_json_hash({"a": {"z": "y"}, "b": [2, 1]})
+    assert stable_json_hash(obj).startswith("sha256:")
+
+
+def test_raw_text_present_produces_raw_output_hash() -> None:
+    receipt = build_benchmark_decision_receipt(
+        case=_case(),
+        dataset_name="dataset",
+        judgment_record=_record(
+            "contract permits slot alpha only",
+            raw_text='{"raw":"provider output"}',
+        ),
+        generic_score=0.25,
+        raw_score=1.0,
+        gated_score=1.0,
+    )
+
+    assert receipt.provenance.raw_output_available
+    assert receipt.provenance.raw_output_hash is not None
+    assert receipt.provenance.raw_output_hash.startswith("sha256:")
+
+
+def test_raw_text_missing_records_no_raw_output_hash() -> None:
+    receipt = _receipt()
+
+    assert not receipt.provenance.raw_output_available
+    assert receipt.provenance.raw_output_hash is None
+
+
+def test_normalized_judgment_hash_is_deterministic() -> None:
+    record = _record("contract permits slot alpha only")
+
+    assert canonical_normalized_judgment_hash(record) == canonical_normalized_judgment_hash(record)
+    assert canonical_normalized_judgment_hash(record).startswith("sha256:")
+
+
+def test_reason_codes_are_sorted_in_canonical_normalized_hash() -> None:
+    first = _record(
+        "contract permits slot alpha only",
+        reason_codes=[
+            "tool.explicitly_forbidden",
+            "constraint.contradicted",
+        ],
+    )
+    second = _record(
+        "contract permits slot alpha only",
+        reason_codes=[
+            "constraint.contradicted",
+            "tool.explicitly_forbidden",
+        ],
+    )
+
+    assert canonical_normalized_judgment_hash(first) == canonical_normalized_judgment_hash(second)
 
 
 def test_receipt_hash_changes_when_cited_contract_phrase_changes() -> None:
@@ -73,6 +151,7 @@ def test_receipt_hash_changes_when_cited_contract_phrase_changes() -> None:
         case=case,
         dataset_name="dataset",
         judgment_record=_record("The active contract permits slot alpha only"),
+        generic_score=0.25,
         raw_score=1.0,
         gated_score=1.0,
     )
@@ -80,6 +159,7 @@ def test_receipt_hash_changes_when_cited_contract_phrase_changes() -> None:
         case=case,
         dataset_name="dataset",
         judgment_record=_record("The active contract permits slot beta only"),
+        generic_score=0.25,
         raw_score=1.0,
         gated_score=1.0,
     )
@@ -88,43 +168,78 @@ def test_receipt_hash_changes_when_cited_contract_phrase_changes() -> None:
     assert alpha.judgment_hash != beta.judgment_hash
 
 
+def test_receipt_hash_changes_when_case_hash_changes() -> None:
+    first = _receipt()
+    second = _receipt(case=_case().model_copy(update={"contract_rule_id": "R_Y"}))
+
+    assert first.case_hash != second.case_hash
+    assert first.receipt_hash != second.receipt_hash
+
+
+def test_receipt_hash_changes_when_gated_score_changes() -> None:
+    accepted = _receipt(gated_score=1.0)
+    downgraded = _receipt(gated_score=0.05)
+
+    assert accepted.receipt_hash != downgraded.receipt_hash
+
+
+def test_receipt_hash_ignores_nondeterministic_timestamp_field() -> None:
+    receipt = _receipt()
+    payload = receipt.model_dump(mode="json", exclude={"receipt_hash"})
+    payload["generated_at"] = "2099-01-01T00:00:00Z"
+
+    assert build_receipt_hash_preimage(payload) == build_receipt_hash_preimage(receipt)
+
+
+def test_receipt_is_deterministic_for_same_inputs() -> None:
+    assert _receipt().receipt_hash == _receipt().receipt_hash
+
+
 def test_exact_citation_receipt_has_correct_flags() -> None:
-    receipt = build_benchmark_decision_receipt(
-        case=_case(),
-        dataset_name="dataset",
-        judgment_record=_record("contract permits slot alpha only"),
-        raw_score=1.0,
-        gated_score=1.0,
-    )
+    receipt = _receipt()
 
     assert receipt.citation_exact
+    assert receipt.citation_verification_method == "exact_substring"
+    assert receipt.citation_match_score == 1.0
     assert "citation_exact" in receipt.evidence_quality_flags
     assert "deterministic_relevance_relevant" in receipt.evidence_quality_flags
     assert receipt.decision == "accepted"
 
 
 def test_missing_citation_receipt_has_warning_flag() -> None:
-    receipt = build_benchmark_decision_receipt(
-        case=_case(),
-        dataset_name="dataset",
-        judgment_record=_record(""),
-        raw_score=1.0,
-        gated_score=0.05,
-    )
+    receipt = _receipt("", gated_score=0.05)
 
     assert not receipt.citation_exact
+    assert receipt.citation_verification_method == "unverified"
+    assert receipt.citation_match_score == 0.0
     assert "citation_missing" in receipt.evidence_quality_flags
     assert "score_downgraded" in receipt.evidence_quality_flags
     assert receipt.decision == "downgraded"
 
 
+def test_high_risk_receipt_with_missing_citation_fails_validation() -> None:
+    receipt = _receipt("", gated_score=1.0)
+
+    assert "high_risk_missing_exact_citation" in validate_benchmark_receipt(receipt)
+
+
+def test_high_risk_receipt_with_irrelevant_relevance_fails_validation() -> None:
+    receipt = _receipt(case=_case("routing", "classification"))
+
+    assert "high_risk_missing_relevance" in validate_benchmark_receipt(receipt)
+
+
+def test_high_risk_receipt_with_semantic_similarity_method_fails_validation() -> None:
+    receipt = _receipt().model_copy(update={"citation_verification_method": "semantic_similarity"})
+
+    assert "high_risk_invalid_citation_method" in validate_benchmark_receipt(receipt)
+
+
+def test_valid_high_risk_receipt_passes_validation() -> None:
+    assert validate_benchmark_receipt(_receipt()) == []
+
+
 def test_receipt_json_round_trips_through_pydantic_validation() -> None:
-    receipt = build_benchmark_decision_receipt(
-        case=_case(),
-        dataset_name="dataset",
-        judgment_record=_record("contract permits slot alpha only"),
-        raw_score=1.0,
-        gated_score=1.0,
-    )
+    receipt = _receipt()
 
     assert BenchmarkDecisionReceipt.model_validate_json(receipt.model_dump_json()) == receipt
