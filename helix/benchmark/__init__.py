@@ -1,4 +1,10 @@
 from helix.benchmark.agent_runner import AgentRunConfig, RealAgentTrajectoryRunner
+from helix.benchmark.asymmetric_trace_analysis import (
+    AsymmetricTraceRecord,
+    AsymmetricTraceSummary,
+    analyze_asymmetric_trace_controls,
+    write_asymmetric_trace_outputs,
+)
 from helix.benchmark.baselines import AllowlistOnlyGate, MatchedFrictionRandomGate, PromptFilterOnlyGate
 from helix.benchmark.blind_case_sanitizer import SanitizationReport, sanitize_blind_cases
 from helix.benchmark.blind_case_schema import (
@@ -12,6 +18,12 @@ from helix.benchmark.blind_loader import load_blind_cases_jsonl, blind_cases_to_
 from helix.benchmark.blind_v2_validator import BlindV2ValidationReport, validate_blind_v2_cases
 from helix.benchmark.budget_sweep import BudgetSweepReport, run_budget_selectivity_sweep
 from helix.benchmark.contract_leakage_audit import ContractLeakageAuditReport, audit_contract_leakage
+from helix.benchmark.dataset_diversity import (
+    ClusterSummary,
+    DatasetDiversitySummary,
+    TextDiversityStats,
+    audit_split_view_dataset_diversity,
+)
 from helix.benchmark.evaluator import BenchmarkReport, evaluate_gate_value
 from helix.benchmark.failure_analysis import FailureAnalysisReport, run_failure_analysis_from_jsonl
 from helix.benchmark.hybrid_semantic_scoring import HybridScoredSample, score_samples_with_hybrid_adjudicator
@@ -51,6 +63,10 @@ from helix.benchmark.type_b_hard_controls import HardSafeControl, HardSafeContro
 __all__ = [
     "AgentRunConfig",
     "RealAgentTrajectoryRunner",
+    "AsymmetricTraceRecord",
+    "AsymmetricTraceSummary",
+    "analyze_asymmetric_trace_controls",
+    "write_asymmetric_trace_outputs",
     "AllowlistOnlyGate",
     "MatchedFrictionRandomGate",
     "PromptFilterOnlyGate",
@@ -69,6 +85,10 @@ __all__ = [
     "run_budget_selectivity_sweep",
     "ContractLeakageAuditReport",
     "audit_contract_leakage",
+    "ClusterSummary",
+    "DatasetDiversitySummary",
+    "TextDiversityStats",
+    "audit_split_view_dataset_diversity",
     "BenchmarkReport",
     "evaluate_gate_value",
     "FailureAnalysisReport",
