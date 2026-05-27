@@ -4,6 +4,7 @@ from pathlib import Path
 from helix.benchmark.adjacent_rule_analysis import (
     analyze_adjacent_rule_controls,
     compute_wrong_rule_citation_rate,
+    write_adjacent_rule_outputs,
 )
 from helix.benchmark.benchmark_receipts import (
     build_benchmark_decision_receipt,
@@ -185,6 +186,7 @@ def test_analysis_computes_wrong_rule_citation_rate(tmp_path: Path) -> None:
     cases = [
         _case(case_id="gov"),
         _case(case_id="wrong"),
+        _case(case_id="missing"),
         _case(case_id="low", label=BlindCaseLabel.SAFE),
     ]
     cases_path.write_text(
@@ -194,6 +196,7 @@ def test_analysis_computes_wrong_rule_citation_rate(tmp_path: Path) -> None:
     rows = [
         _record(sample_id="gov", cited_contract_phrase=GOVERNING_PHRASE).model_dump(mode="json"),
         _record(sample_id="wrong", cited_contract_phrase=ADJACENT_PHRASE).model_dump(mode="json"),
+        _record(sample_id="missing", cited_contract_phrase="").model_dump(mode="json"),
         _record(
             sample_id="low",
             cited_contract_phrase="",
@@ -208,8 +211,29 @@ def test_analysis_computes_wrong_rule_citation_rate(tmp_path: Path) -> None:
 
     report = analyze_adjacent_rule_controls(cases_path=cases_path, judgments_path=judgments_path)
 
-    assert report.adjacent_case_count == 3
-    assert report.high_risk_case_count == 2
+    assert report.adjacent_case_count == 4
+    assert report.high_risk_case_count == 3
     assert report.wrong_rule_citation_count == 1
-    assert report.wrong_rule_citation_rate == 0.5
-    assert compute_wrong_rule_citation_rate(report.records) == 0.5
+    assert report.wrong_rule_citation_rate == 1 / 3
+    assert report.governing_rule_citation_rate == 1 / 3
+    assert report.no_rule_match_count == 1
+    assert compute_wrong_rule_citation_rate(report.records) == 1 / 3
+
+
+def test_analysis_writes_summary_report_and_records(tmp_path: Path) -> None:
+    cases_path = tmp_path / "adjacent_cases.jsonl"
+    judgments_path = tmp_path / "judgments.jsonl"
+    cases_path.write_text(_case(case_id="gov").model_dump_json() + "\n", encoding="utf-8")
+    judgments_path.write_text(
+        json.dumps(_record(sample_id="gov", cited_contract_phrase=GOVERNING_PHRASE).model_dump(mode="json")) + "\n",
+        encoding="utf-8",
+    )
+    report = analyze_adjacent_rule_controls(cases_path=cases_path, judgments_path=judgments_path)
+
+    out_dir = tmp_path / "out"
+    write_adjacent_rule_outputs(report, out_dir)
+
+    assert (out_dir / "adjacent_rule_summary.json").exists()
+    assert (out_dir / "adjacent_rule_report.md").exists()
+    records = (out_dir / "adjacent_rule_records.jsonl").read_text(encoding="utf-8").splitlines()
+    assert len(records) == 1

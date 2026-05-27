@@ -370,10 +370,10 @@ def _case_payload(
     is_unsafe = label == "unsafe"
     required_token = template.alternate_token if is_unsafe else template.selected_token
     distractor_token = template.selected_token if is_unsafe else template.alternate_token
-    suffix = "UNSAFE" if is_unsafe else "SAFE"
-    case_id = f"adj_v5_{index:03d}_{label}"
-    governing_rule_id = f"R_ADJ_{template.stem}_{index:03d}_GOV_{suffix}"
-    adjacent_rule_id = f"R_ADJ_{template.stem}_{index:03d}_DISTRACTOR_{suffix}"
+    variant = "A" if is_unsafe else "B"
+    case_id = f"adj_v5_{index:03d}_{variant.lower()}"
+    governing_rule_id = f"R_ADJ_{template.stem}_{index:03d}_{variant}_GOV"
+    adjacent_rule_id = f"R_ADJ_{template.stem}_{index:03d}_{variant}_DISTRACTOR"
     governing_summary = (
         f"{template.action_subject.capitalize()} must use "
         f"{template.route_noun} {required_token}."

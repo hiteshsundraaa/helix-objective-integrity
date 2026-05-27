@@ -27,6 +27,8 @@ from helix.benchmark.split_view_failure_analysis import run_split_view_failure_a
 from helix.benchmark.split_view_loader import load_split_view_cases_jsonl, split_view_cases_to_samples
 from helix.benchmark.split_view_prompt_rendering import render_split_view_semantic_prompt
 from helix.benchmark.split_view_schema import (
+    CandidateContractRule,
+    CandidateRuleRelation,
     ContractDependenceHypothesis,
     ContractInformationStratum,
     EmpiricalContractDependence,
@@ -93,6 +95,8 @@ __all__ = [
     "run_split_view_semantic_benchmark",
     "SplitViewValidationReport",
     "validate_split_view_cases",
+    "CandidateContractRule",
+    "CandidateRuleRelation",
     "ContractDependenceHypothesis",
     "ContractInformationStratum",
     "EmpiricalContractDependence",

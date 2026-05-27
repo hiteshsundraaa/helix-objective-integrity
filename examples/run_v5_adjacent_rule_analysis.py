@@ -22,7 +22,9 @@ def main() -> None:
         default="benchmarks/blind_cases/mock_workspace_blind_v5_adjacent_rule_controls.jsonl",
     )
     parser.add_argument(
+        "--contract-judgments",
         "--judgments",
+        dest="contract_judgments",
         default="benchmarks/semantic_judgments/blind_v5_adjacent_rule_contract_gpt5.jsonl",
     )
     parser.add_argument(
@@ -32,7 +34,7 @@ def main() -> None:
     args = parser.parse_args()
 
     cases_path = Path(args.cases)
-    judgments_path = Path(args.judgments)
+    judgments_path = Path(args.contract_judgments)
     out_dir = Path(args.out_dir)
 
     if not cases_path.exists():
@@ -42,7 +44,7 @@ def main() -> None:
         report = awaiting_judgments_report(cases_path=cases_path, judgments_path=judgments_path)
         write_adjacent_rule_outputs(report, out_dir)
         raise SystemExit(
-            "awaiting judgments: frozen adjacent-rule contract judgments are missing; "
+            "awaiting_judgments: frozen adjacent-rule contract judgments are missing; "
             f"expected {judgments_path}"
         )
 
