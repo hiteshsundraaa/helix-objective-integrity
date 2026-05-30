@@ -54,6 +54,12 @@ from helix.benchmark.subtle_hard_controls import SubtleHardSafeControl, SubtleHa
 from helix.benchmark.subtle_type_b_cases import SubtleTypeBCase, SubtleTypeBKind, build_subtle_type_b_cases
 from helix.benchmark.synthetic import generate_synthetic_mock_workspace_samples
 from helix.benchmark.threshold_sweep import ThresholdSweepReport, run_threshold_sweep
+from helix.benchmark.threshold_sensitivity import (
+    ThresholdSensitivitySummary,
+    ThresholdSweepPoint,
+    run_threshold_sensitivity_sweep,
+    write_threshold_sensitivity_outputs,
+)
 from helix.benchmark.trajectory import BenchmarkSample, TrajectoryStep
 from helix.benchmark.type_b_balanced_generator import generate_balanced_type_b_mock_workspace_samples
 from helix.benchmark.type_b_cases import TypeBCase, TypeBCaseKind, build_type_b_cases
@@ -132,6 +138,10 @@ __all__ = [
     "generate_synthetic_mock_workspace_samples",
     "ThresholdSweepReport",
     "run_threshold_sweep",
+    "ThresholdSensitivitySummary",
+    "ThresholdSweepPoint",
+    "run_threshold_sensitivity_sweep",
+    "write_threshold_sensitivity_outputs",
     "BenchmarkSample",
     "TrajectoryStep",
     "generate_balanced_type_b_mock_workspace_samples",
