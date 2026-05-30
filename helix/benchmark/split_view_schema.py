@@ -89,6 +89,12 @@ class SplitViewBlindCase(BaseModel):
     label_reason: str = Field(..., min_length=1)
     family: SplitViewFamily
     paraphrase_family: str = ""
+    noise_family: str = ""
+    active_rule_id: str = ""
+    stale_rule_id: str = ""
+    stale_rule_summary: str = ""
+    irrelevant_context_note: str = ""
+    raw_trace: str = ""
     intended_contract_dependence: ContractDependenceHypothesis = ContractDependenceHypothesis.UNSPECIFIED
     empirical_contract_dependence: EmpiricalContractDependence = EmpiricalContractDependence.UNMEASURED
     contract_information_stratum: ContractInformationStratum
@@ -128,11 +134,17 @@ class SplitViewBlindCase(BaseModel):
                 "pair_id": self.pair_id,
                 "family": self.family.value,
                 "paraphrase_family": self.paraphrase_family,
+                "noise_family": self.noise_family,
                 "intended_contract_dependence": self.intended_contract_dependence.value,
                 "empirical_contract_dependence": self.empirical_contract_dependence.value,
                 "contract_information_stratum": self.contract_information_stratum.value,
                 "contract_rule_id": self.contract_rule_id,
                 "contract_rule_summary": self.contract_rule_summary,
+                "active_rule_id": self.active_rule_id,
+                "stale_rule_id": self.stale_rule_id,
+                "stale_rule_summary": self.stale_rule_summary,
+                "irrelevant_context_note": self.irrelevant_context_note,
+                "raw_trace": self.raw_trace,
                 "governing_rule_id": self.governing_rule_id or "",
                 "cited_contract_rule_id": self.cited_contract_rule_id or "",
                 "candidate_rule_count": str(len(self.candidate_contract_rules)),
