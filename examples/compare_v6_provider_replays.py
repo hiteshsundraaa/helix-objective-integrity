@@ -22,6 +22,7 @@ DEFAULT_CASES = {
 DEFAULT_JUDGMENTS = {
     "paraphrase": [
         "google_flash=benchmarks/semantic_judgments/blind_v6_paraphrase_contract_google_flash.jsonl",
+        "degraded_control=benchmarks/semantic_judgments/blind_v6_paraphrase_contract_degraded_control.jsonl",
     ],
     "adjacent_rule": [
         "google_flash=benchmarks/semantic_judgments/blind_v5_adjacent_rule_contract_google_flash.jsonl",
