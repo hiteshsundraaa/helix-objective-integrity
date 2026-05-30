@@ -138,7 +138,7 @@ def build_runtime_authorization_receipt(
     tool_call: MockToolCall,
     decision: RuntimeGateDecision,
 ) -> RuntimeAuthorizationReceipt:
-    tool_call_hash = hash_tool_call(tool_call)
+    tool_call_hash = runtime_tool_call_hash(tool_call)
     exact_citation = (
         bool(decision.cited_contract_phrase)
         and decision.cited_contract_phrase in contract.active_rule_summary
@@ -162,12 +162,17 @@ def build_runtime_authorization_receipt(
         "tool_call_hash": tool_call_hash,
         "receipt_hash": "",
     }
-    receipt_hash = hash_receipt_preimage(payload)
+    receipt_hash = runtime_receipt_hash(payload)
     payload["receipt_hash"] = receipt_hash
     return RuntimeAuthorizationReceipt.model_validate(payload)
 
 
-def validate_runtime_authorization_receipt(receipt: RuntimeAuthorizationReceipt) -> list[str]:
+def validate_runtime_authorization_receipt(
+    receipt: RuntimeAuthorizationReceipt,
+    *,
+    contract: ObjectiveContract | None = None,
+    tool_call: MockToolCall | None = None,
+) -> list[str]:
     issues: list[str] = []
     valid_decisions = {
         "ALLOW",
@@ -177,12 +182,33 @@ def validate_runtime_authorization_receipt(receipt: RuntimeAuthorizationReceipt)
         "BLOCK",
         "ESCALATE_FOR_APPROVAL",
     }
+    recomputed_receipt_hash = runtime_receipt_hash(receipt)
     if not receipt.receipt_hash:
         issues.append("missing_receipt_hash")
+    elif receipt.receipt_hash != recomputed_receipt_hash:
+        issues.append("receipt_hash_mismatch")
+    if not receipt.trace_id:
+        issues.append("missing_trace_id")
+    if not receipt.call_id:
+        issues.append("missing_call_id")
     if not receipt.contract_hash:
         issues.append("missing_contract_hash")
     if not receipt.tool_call_hash:
         issues.append("missing_tool_call_hash")
+    if contract is not None:
+        if receipt.contract_hash != contract.contract_hash:
+            issues.append("contract_hash_mismatch")
+        if (
+            tool_call is not None
+            and tool_call.action not in set(contract.allowed_actions)
+            and tool_call.action not in set(contract.forbidden_actions)
+            and receipt.decision != "ESCALATE_FOR_APPROVAL"
+        ):
+            issues.append("unknown_action_not_escalated")
+    if tool_call is not None and receipt.tool_call_hash:
+        expected_tool_call_hash = runtime_tool_call_hash(tool_call)
+        if receipt.tool_call_hash != expected_tool_call_hash:
+            issues.append("tool_call_hash_mismatch")
     if receipt.decision not in valid_decisions:
         issues.append("invalid_decision")
     if receipt.self_report_used_for_decision:
@@ -192,6 +218,18 @@ def validate_runtime_authorization_receipt(receipt: RuntimeAuthorizationReceipt)
     if receipt.decision == "BLOCK":
         if not receipt.exact_citation or not receipt.cited_contract_phrase:
             issues.append("block_missing_exact_citation")
+        if not receipt.cited_contract_phrase:
+            issues.append("block_missing_cited_contract_phrase")
+        if not receipt.cited_contract_rule_id:
+            issues.append("block_missing_cited_contract_rule_id")
+        if contract is not None:
+            phrase_is_exact = (
+                bool(receipt.cited_contract_phrase)
+                and receipt.cited_contract_phrase in contract.active_rule_summary
+            )
+            rule_id_matches = receipt.cited_contract_rule_id == contract.active_rule_id
+            if not phrase_is_exact or not rule_id_matches:
+                issues.append("invalid_exact_citation")
         if not receipt.reason_code:
             issues.append("block_missing_reason_code")
     return sorted(set(issues))
@@ -245,8 +283,13 @@ def summarize_runtime_receipts(
     receipts: list[RuntimeAuthorizationReceipt],
 ) -> RuntimeHarnessSummary:
     block_receipts = [receipt for receipt in receipts if receipt.decision == "BLOCK"]
+    tool_calls_by_id = {tool_call.call_id: tool_call for tool_call in trace.tool_calls}
     validation_issues = {
-        receipt.call_id: validate_runtime_authorization_receipt(receipt)
+        receipt.call_id: validate_runtime_authorization_receipt(
+            receipt,
+            contract=contract,
+            tool_call=tool_calls_by_id.get(receipt.call_id),
+        )
         for receipt in receipts
     }
     total_issue_count = sum(len(issues) for issues in validation_issues.values())
@@ -309,7 +352,7 @@ def runtime_report_markdown(summary: RuntimeHarnessSummary) -> str:
     )
 
 
-def hash_tool_call(tool_call: MockToolCall) -> str:
+def runtime_tool_call_hash(tool_call: MockToolCall) -> str:
     return stable_json_hash(
         {
             "call_id": tool_call.call_id,
@@ -322,8 +365,13 @@ def hash_tool_call(tool_call: MockToolCall) -> str:
     )
 
 
-def hash_receipt_preimage(payload: dict[str, Any]) -> str:
-    ordered_preimage = [
+def runtime_receipt_hash_preimage(receipt_without_hash_fields: RuntimeAuthorizationReceipt | dict[str, Any]) -> str:
+    payload = _receipt_hash_payload(receipt_without_hash_fields)
+    # Independent validators depend on this exact preimage order:
+    # contract_hash | tool_call_hash | decision | reason_code | cited_contract_phrase |
+    # cited_contract_rule_id | exact_citation | trace_based | self_report_used_for_decision.
+    # latency_ms, receipt_hash, timestamps, and other nondeterministic fields are excluded.
+    ordered_preimage = (
         payload["contract_hash"],
         payload["tool_call_hash"],
         payload["decision"],
@@ -333,8 +381,65 @@ def hash_receipt_preimage(payload: dict[str, Any]) -> str:
         payload["exact_citation"],
         payload["trace_based"],
         payload["self_report_used_for_decision"],
-    ]
-    return stable_json_hash(ordered_preimage)
+    )
+    return "|".join(_canonical_receipt_preimage_value(value) for value in ordered_preimage)
+
+
+def runtime_receipt_hash(receipt_or_fields: RuntimeAuthorizationReceipt | dict[str, Any]) -> str:
+    payload = runtime_receipt_hash_preimage(receipt_or_fields).encode("utf-8")
+    return f"sha256:{hashlib.sha256(payload).hexdigest()}"
+
+
+def hash_tool_call(tool_call: MockToolCall) -> str:
+    return runtime_tool_call_hash(tool_call)
+
+
+def hash_receipt_preimage(payload: dict[str, Any]) -> str:
+    return runtime_receipt_hash(payload)
+
+
+def build_runtime_negative_controls(
+    *,
+    valid_block_receipt: RuntimeAuthorizationReceipt,
+    contract: ObjectiveContract,
+) -> dict[str, RuntimeAuthorizationReceipt]:
+    return {
+        "missing_exact_citation": _receipt_with_recomputed_hash(
+            valid_block_receipt,
+            exact_citation=False,
+        ),
+        "missing_cited_phrase": _receipt_with_recomputed_hash(
+            valid_block_receipt,
+            cited_contract_phrase="",
+            exact_citation=False,
+        ),
+        "wrong_rule_id": _receipt_with_recomputed_hash(
+            valid_block_receipt,
+            cited_contract_rule_id=f"{contract.active_rule_id}_STALE",
+        ),
+        "self_report_used": _receipt_with_recomputed_hash(
+            valid_block_receipt,
+            self_report_used_for_decision=True,
+        ),
+        "non_trace_based": _receipt_with_recomputed_hash(
+            valid_block_receipt,
+            trace_based=False,
+        ),
+        "tampered_tool_hash": _receipt_with_recomputed_hash(
+            valid_block_receipt,
+            tool_call_hash="sha256:tampered-tool-call",
+        ),
+        "tampered_contract_hash": _receipt_with_recomputed_hash(
+            valid_block_receipt,
+            contract_hash="sha256:tampered-contract",
+        ),
+        "tampered_receipt_hash": valid_block_receipt.model_copy(
+            update={"receipt_hash": "sha256:tampered-receipt"}
+        ),
+        "latency_modified_only": valid_block_receipt.model_copy(
+            update={"latency_ms": valid_block_receipt.latency_ms + 9999.0}
+        ),
+    }
 
 
 def stable_json_hash(obj: Any) -> str:
@@ -345,6 +450,26 @@ def stable_json_hash(obj: Any) -> str:
         separators=(",", ":"),
     ).encode("utf-8")
     return f"sha256:{hashlib.sha256(payload).hexdigest()}"
+
+
+def _receipt_hash_payload(receipt_or_fields: RuntimeAuthorizationReceipt | dict[str, Any]) -> dict[str, Any]:
+    if isinstance(receipt_or_fields, BaseModel):
+        return receipt_or_fields.model_dump(mode="json")
+    return dict(receipt_or_fields)
+
+
+def _canonical_receipt_preimage_value(value: Any) -> str:
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    return str(value)
+
+
+def _receipt_with_recomputed_hash(
+    receipt: RuntimeAuthorizationReceipt,
+    **updates: Any,
+) -> RuntimeAuthorizationReceipt:
+    updated = receipt.model_copy(update=updates)
+    return updated.model_copy(update={"receipt_hash": runtime_receipt_hash(updated)})
 
 
 def _evaluate_tool_call_without_latency(
