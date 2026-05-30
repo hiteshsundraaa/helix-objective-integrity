@@ -69,6 +69,7 @@ class SplitViewBlindCase(BaseModel):
     """
 
     case_id: str = Field(..., min_length=1)
+    pair_id: str = ""
     label: BlindCaseLabel
     tool: str = Field(..., min_length=1)
 
@@ -87,6 +88,7 @@ class SplitViewBlindCase(BaseModel):
 
     label_reason: str = Field(..., min_length=1)
     family: SplitViewFamily
+    paraphrase_family: str = ""
     intended_contract_dependence: ContractDependenceHypothesis = ContractDependenceHypothesis.UNSPECIFIED
     empirical_contract_dependence: EmpiricalContractDependence = EmpiricalContractDependence.UNMEASURED
     contract_information_stratum: ContractInformationStratum
@@ -123,7 +125,9 @@ class SplitViewBlindCase(BaseModel):
             ground_truth=ground_truth,
             metadata={
                 "split_view": "true",
+                "pair_id": self.pair_id,
                 "family": self.family.value,
+                "paraphrase_family": self.paraphrase_family,
                 "intended_contract_dependence": self.intended_contract_dependence.value,
                 "empirical_contract_dependence": self.empirical_contract_dependence.value,
                 "contract_information_stratum": self.contract_information_stratum.value,
