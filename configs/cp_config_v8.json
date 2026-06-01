@@ -1,0 +1,11 @@
+{
+  "schema_version": "cp_v8.2",
+  "lambda": 0.85,
+  "tau_warn": 0.45,
+  "tau_degrade": 0.6,
+  "tau_quarantine": 0.75,
+  "tau_block": 0.85,
+  "c_max_expected": 0.2,
+  "registered_before_experiment": true,
+  "notes": "Initial v8.2 pre-registered CP configuration for deterministic trajectory analysis."
+}
