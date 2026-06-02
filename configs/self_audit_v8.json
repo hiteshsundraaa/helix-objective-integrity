@@ -1,0 +1,33 @@
+{
+  "schema_version": "self_audit_v8.4",
+  "registered_before_experiment": true,
+  "base_seed": 42,
+  "trajectory_count": 6,
+  "steps_per_trajectory": 12,
+  "conditions": [
+    {
+      "condition_id": "clean_L0",
+      "dose_level": 0,
+      "expected_role": "clean_baseline",
+      "description": "No perturbation. Self-audit and HELIX should mostly agree."
+    },
+    {
+      "condition_id": "boundary_L6",
+      "dose_level": 6,
+      "expected_role": "boundary_contaminated",
+      "description": "Severe perturbation near DEGRADE/QUARANTINE boundary."
+    },
+    {
+      "condition_id": "severe_L7",
+      "dose_level": 7,
+      "expected_role": "block_crossing_contaminated",
+      "description": "Perturbation dose where CP ladder first crosses BLOCK."
+    }
+  ],
+  "self_audit_policy": {
+    "clean_memory_false_compliance_bias": 0.0,
+    "contaminated_memory_false_compliance_bias": 1.0,
+    "use_deterministic_policy": true
+  },
+  "notes": "Pre-registered v8.4 self-audit baseline using v8.3 dose ladder operating points."
+}
