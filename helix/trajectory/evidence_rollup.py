@@ -29,6 +29,10 @@ DEFAULT_TRAJECTORY_EVIDENCE_ARTIFACTS: dict[str, str] = {
     "fast_path_manifest": "outputs/performance/v8_fast_path/fast_path_latency_manifest.json",
     "fast_path_records": "outputs/performance/v8_fast_path/fast_path_latency_records.jsonl",
     "fast_path_report": "outputs/performance/v8_fast_path/fast_path_latency_report.md",
+    "drift_halflife_summary": "outputs/trajectory_drift_halflife/v8/drift_halflife_summary.json",
+    "drift_halflife_manifest": "outputs/trajectory_drift_halflife/v8/drift_halflife_manifest.json",
+    "drift_halflife_records": "outputs/trajectory_drift_halflife/v8/drift_halflife_records.jsonl",
+    "drift_halflife_report": "outputs/trajectory_drift_halflife/v8/drift_halflife_report.md",
 }
 
 
@@ -36,6 +40,7 @@ DEFAULT_TRAJECTORY_CONFIGS: dict[str, str] = {
     "cp_config": "configs/cp_config_v8.json",
     "dose_ladder_config": "configs/dose_ladder_v8.json",
     "self_audit_config": "configs/self_audit_v8.json",
+    "drift_halflife_config": "configs/drift_halflife_v8.json",
 }
 
 
@@ -43,6 +48,7 @@ CONFIG_ROLES = {
     "cp_config": "Pre-registered v8.2 contradiction-pressure thresholds and retention parameter.",
     "dose_ladder_config": "Pre-registered v8.3 perturbation dose ladder levels.",
     "self_audit_config": "Pre-registered v8.4 clean/boundary/severe self-audit conditions.",
+    "drift_halflife_config": "Pre-registered v8.6 deterministic objective-similarity proxy.",
 }
 
 
@@ -88,6 +94,15 @@ HEADLINE_METRIC_KEYS = [
     "heavy_llm_calls_per_step",
     "estimated_llm_token_cost_per_1000_steps_usd",
     "manifest_hash",
+    "drift_halflife_condition_count",
+    "drift_halflife_record_count",
+    "clean_halflife_crossing_rate",
+    "contaminated_halflife_crossing_rate",
+    "halflife_crossing_lift",
+    "clean_final_similarity_mean",
+    "contaminated_final_similarity_mean",
+    "final_similarity_drop_contaminated_vs_clean",
+    "drift_halflife_manifest_hash",
 ]
 
 
@@ -214,6 +229,19 @@ class TrajectoryEvidenceRollupSummary(BaseModel):
                 f"- estimated_llm_token_cost_per_1000_steps_usd: "
                 f"`{_value(metrics['estimated_llm_token_cost_per_1000_steps_usd'])}`",
                 "",
+                "### v8.6 Drift Halflife Scaffold",
+                "",
+                "v8.6 uses a deterministic perturbation-based objective-similarity proxy. It is a scaffold for Drift Halflife, not the final embedding/model-based semantic drift metric.",
+                "",
+                f"- condition_count: `{_value(metrics['drift_halflife_condition_count'])}`",
+                f"- record_count: `{_value(metrics['drift_halflife_record_count'])}`",
+                f"- clean_halflife_crossing_rate: `{_value(metrics['clean_halflife_crossing_rate'])}`",
+                f"- contaminated_halflife_crossing_rate: `{_value(metrics['contaminated_halflife_crossing_rate'])}`",
+                f"- halflife_crossing_lift: `{_value(metrics['halflife_crossing_lift'])}`",
+                f"- clean_final_similarity_mean: `{_value(metrics['clean_final_similarity_mean'])}`",
+                f"- contaminated_final_similarity_mean: `{_value(metrics['contaminated_final_similarity_mean'])}`",
+                f"- final_similarity_drop_contaminated_vs_clean: `{_value(metrics['final_similarity_drop_contaminated_vs_clean'])}`",
+                "",
                 "## What This Supports",
                 "",
             ]
@@ -228,7 +256,8 @@ class TrajectoryEvidenceRollupSummary(BaseModel):
                 "- No stochastic agent behavior yet.",
                 "- Self-audit is a deterministic simulated policy, not live model self-certification.",
                 "- CP_t increment policy is scaffolded.",
-                "- No drift halflife yet.",
+                "- Drift Halflife is not yet embedding-based or live-agent-derived.",
+                "- No semantic slow-path drift extractor has been implemented yet.",
                 "- No objective curvature yet.",
                 "- No production proxy, network, or database overhead is measured.",
                 "- No external human-audited trajectory dataset yet.",
@@ -437,6 +466,20 @@ def _extract_key_metrics(name: str, path: Path) -> dict[str, Any]:
     if name == "fast_path_manifest":
         data = _read_json(path)
         return {"manifest_hash": data.get("manifest_hash")}
+    if name == "drift_halflife_summary":
+        data = _read_json(path)
+        return {
+            "condition_count": data.get("condition_count"),
+            "clean_halflife_crossing_rate": data.get("clean_halflife_crossing_rate"),
+            "contaminated_halflife_crossing_rate": data.get("contaminated_halflife_crossing_rate"),
+            "halflife_crossing_lift": data.get("halflife_crossing_lift"),
+            "clean_final_similarity_mean": data.get("clean_final_similarity_mean"),
+            "contaminated_final_similarity_mean": data.get("contaminated_final_similarity_mean"),
+            "final_similarity_drop_contaminated_vs_clean": data.get("final_similarity_drop_contaminated_vs_clean"),
+        }
+    if name == "drift_halflife_manifest":
+        data = _read_json(path)
+        return {"manifest_hash": data.get("manifest_hash")}
     if path.suffix == ".jsonl":
         return {"line_count": _count_jsonl_lines(path)}
     return {}
@@ -497,6 +540,18 @@ def _merge_headline_metrics(
         headline["estimated_llm_token_cost_per_1000_steps_usd"] = metrics.get("estimated_llm_token_cost_per_1000_steps_usd")
     elif artifact.name == "fast_path_manifest":
         headline["manifest_hash"] = metrics.get("manifest_hash")
+    elif artifact.name == "drift_halflife_summary":
+        headline["drift_halflife_condition_count"] = metrics.get("condition_count")
+        headline["clean_halflife_crossing_rate"] = metrics.get("clean_halflife_crossing_rate")
+        headline["contaminated_halflife_crossing_rate"] = metrics.get("contaminated_halflife_crossing_rate")
+        headline["halflife_crossing_lift"] = metrics.get("halflife_crossing_lift")
+        headline["clean_final_similarity_mean"] = metrics.get("clean_final_similarity_mean")
+        headline["contaminated_final_similarity_mean"] = metrics.get("contaminated_final_similarity_mean")
+        headline["final_similarity_drop_contaminated_vs_clean"] = metrics.get("final_similarity_drop_contaminated_vs_clean")
+    elif artifact.name == "drift_halflife_manifest":
+        headline["drift_halflife_manifest_hash"] = metrics.get("manifest_hash")
+    elif artifact.name == "drift_halflife_records":
+        headline["drift_halflife_record_count"] = metrics.get("line_count")
 
 
 def _key_result(name: str, metrics: dict[str, Any]) -> str:
@@ -516,6 +571,11 @@ def _key_result(name: str, metrics: dict[str, Any]) -> str:
             f"slowest_p99={_value(metrics.get('slowest_operation_by_p99'))}; "
             f"llm_calls={_value(metrics.get('heavy_llm_calls_per_step'))}"
         )
+    if name == "drift_halflife_summary":
+        return (
+            f"conditions={_value(metrics.get('condition_count'))}; "
+            f"crossing_lift={_value(metrics.get('halflife_crossing_lift'))}"
+        )
     if "manifest_hash" in metrics:
         return f"manifest={_value(metrics.get('manifest_hash'))}"
     if "line_count" in metrics:
@@ -534,6 +594,8 @@ def _strengths(metrics: dict[str, Any]) -> list[str]:
         strengths.append("Fixed-config perturbation dose increases CP_t monotonically in the current fixtures.")
     if metrics.get("false_compliance_lift") is not None:
         strengths.append("Self-audit false-compliance lift is measured for contaminated trajectory conditions.")
+    if metrics.get("halflife_crossing_lift") is not None:
+        strengths.append("HELIX now has a reproducible drift-halflife scaffold showing clean vs contaminated trajectory separation under a fixed deterministic proxy.")
     return strengths
 
 
@@ -549,11 +611,10 @@ def _limitations(missing_artifacts: list[str]) -> list[str]:
 
 def _recommended_next_steps() -> list[str]:
     return [
-        "Add a drift halflife scaffold.",
         "Add failure-space scatter analysis.",
+        "Add a semantic slow-path sampled drift extractor.",
         "Build a live/mock agent-loop adapter using v8 trajectory records.",
         "Create a human-audited trajectory sample.",
-        "Add semantic slow-path sampling, not per-step heavy LLM calls.",
     ]
 
 

@@ -93,6 +93,22 @@ def _artifact_payloads() -> dict[str, dict | str]:
         "fast_path_manifest": {"manifest_hash": "sha256:fast"},
         "fast_path_records": '{"operation":"cp_increment_update"}\n',
         "fast_path_report": "# Fast path report\n",
+        "drift_halflife_summary": {
+            "condition_count": 3,
+            "clean_halflife_crossing_rate": 0.0,
+            "contaminated_halflife_crossing_rate": 1.0,
+            "halflife_crossing_lift": 1.0,
+            "clean_final_similarity_mean": 1.0,
+            "contaminated_final_similarity_mean": 0.185,
+            "final_similarity_drop_contaminated_vs_clean": 0.815,
+        },
+        "drift_halflife_manifest": {"manifest_hash": "sha256:drift"},
+        "drift_halflife_records": (
+            '{"condition_id":"clean_L0"}\n'
+            '{"condition_id":"boundary_L6"}\n'
+            '{"condition_id":"severe_L7"}\n'
+        ),
+        "drift_halflife_report": "# Drift halflife report\n",
     }
 
 
@@ -101,6 +117,7 @@ def _config_payloads() -> dict[str, dict]:
         "cp_config": {"schema_version": "cp_v8.2"},
         "dose_ladder_config": {"schema_version": "dose_ladder_v8.3"},
         "self_audit_config": {"schema_version": "self_audit_v8.4"},
+        "drift_halflife_config": {"schema_version": "drift_halflife_v8.6"},
     }
 
 
@@ -202,6 +219,9 @@ def test_summary_status_complete_when_all_required_artifacts_present(tmp_path: P
     assert summary.headline_metrics["first_block_dose_level"] == 7
     assert summary.headline_metrics["false_compliance_lift"] == 0.916667
     assert summary.headline_metrics["heavy_llm_calls_per_step"] == 0
+    assert summary.headline_metrics["drift_halflife_condition_count"] == 3
+    assert summary.headline_metrics["drift_halflife_record_count"] == 3
+    assert summary.headline_metrics["halflife_crossing_lift"] == 1.0
 
 
 def test_markdown_report_includes_non_proof_section(tmp_path: Path) -> None:
@@ -214,8 +234,73 @@ def test_markdown_report_includes_non_proof_section(tmp_path: Path) -> None:
     markdown = summary.to_markdown()
 
     assert "What This Does Not Yet Prove" in markdown
-    assert "No drift halflife yet." in markdown
+    assert "v8.6 Drift Halflife" in markdown
+    assert "deterministic perturbation-based objective-similarity proxy" in markdown
+    assert "Drift Halflife is not yet embedding-based or live-agent-derived." in markdown
+    assert "No semantic slow-path drift extractor has been implemented yet." in markdown
     assert "Self-audit is a deterministic simulated policy" in markdown
+
+
+def test_drift_halflife_summary_is_detected_hashed_and_extracted(tmp_path: Path) -> None:
+    artifact_paths = _write_artifacts(
+        tmp_path,
+        ["drift_halflife_summary", "drift_halflife_manifest", "drift_halflife_records"],
+    )
+    config_paths = _write_configs(tmp_path)
+
+    summary = collect_v8_trajectory_evidence_rollup(
+        artifact_paths=artifact_paths,
+        config_paths=config_paths,
+        generated_at="2026-06-03T00:00:00Z",
+    )
+
+    assert summary.artifact_hashes["drift_halflife_summary"] == stable_file_hash(
+        artifact_paths["drift_halflife_summary"]
+    )
+    assert summary.headline_metrics["drift_halflife_condition_count"] == 3
+    assert summary.headline_metrics["drift_halflife_record_count"] == 3
+    assert summary.headline_metrics["clean_halflife_crossing_rate"] == 0.0
+    assert summary.headline_metrics["contaminated_halflife_crossing_rate"] == 1.0
+    assert summary.headline_metrics["halflife_crossing_lift"] == 1.0
+    assert summary.headline_metrics["clean_final_similarity_mean"] == 1.0
+    assert summary.headline_metrics["contaminated_final_similarity_mean"] == 0.185
+    assert summary.headline_metrics["final_similarity_drop_contaminated_vs_clean"] == 0.815
+    assert summary.headline_metrics["drift_halflife_manifest_hash"] == "sha256:drift"
+
+
+def test_drift_halflife_config_hash_is_included(tmp_path: Path) -> None:
+    summary = collect_v8_trajectory_evidence_rollup(
+        artifact_paths=_write_artifacts(tmp_path, ["drift_halflife_summary"]),
+        config_paths=_write_configs(tmp_path),
+        generated_at="2026-06-03T00:00:00Z",
+    )
+
+    assert "drift_halflife_config" in summary.config_hashes
+    assert summary.config_hashes["drift_halflife_config"] == stable_file_hash(
+        tmp_path / "drift_halflife_config.json"
+    )
+
+
+def test_missing_drift_artifacts_are_reported_without_fabricated_metrics(tmp_path: Path) -> None:
+    artifact_paths = {
+        "trajectory_summary": _write_artifacts(tmp_path, ["trajectory_summary"])["trajectory_summary"],
+        "drift_halflife_summary": str(tmp_path / "missing_drift_halflife_summary.json"),
+        "drift_halflife_records": str(tmp_path / "missing_drift_halflife_records.jsonl"),
+    }
+    config_paths = _write_configs(tmp_path)
+
+    summary = collect_v8_trajectory_evidence_rollup(
+        artifact_paths=artifact_paths,
+        config_paths=config_paths,
+        generated_at="2026-06-03T00:00:00Z",
+    )
+
+    assert summary.status == "partial"
+    assert summary.missing_artifact_count == 2
+    assert any("drift_halflife_summary" in item for item in summary.missing_artifacts)
+    assert summary.headline_metrics["drift_halflife_condition_count"] is None
+    assert summary.headline_metrics["drift_halflife_record_count"] is None
+    assert summary.headline_metrics["halflife_crossing_lift"] is None
 
 
 def test_output_files_are_written(tmp_path: Path) -> None:
