@@ -33,6 +33,19 @@ DEFAULT_TRAJECTORY_EVIDENCE_ARTIFACTS: dict[str, str] = {
     "drift_halflife_manifest": "outputs/trajectory_drift_halflife/v8/drift_halflife_manifest.json",
     "drift_halflife_records": "outputs/trajectory_drift_halflife/v8/drift_halflife_records.jsonl",
     "drift_halflife_report": "outputs/trajectory_drift_halflife/v8/drift_halflife_report.md",
+    "failure_space_summary": "outputs/trajectory_failure_space/v8/failure_space_summary.json",
+    "failure_space_manifest": "outputs/trajectory_failure_space/v8/failure_space_manifest.json",
+    "failure_space_records": "outputs/trajectory_failure_space/v8/failure_space_records.jsonl",
+    "failure_space_trajectories": "outputs/trajectory_failure_space/v8/failure_space_trajectories.jsonl",
+    "failure_space_report": "outputs/trajectory_failure_space/v8/failure_space_report.md",
+    "failure_space_export_summary": "outputs/trajectory_failure_space_exports/v8/export_summary.json",
+    "failure_space_export_manifest": "outputs/trajectory_failure_space_exports/v8/export_manifest.json",
+    "failure_space_export_report": "outputs/trajectory_failure_space_exports/v8/export_report.md",
+    "failure_space_step_table": "outputs/trajectory_failure_space_exports/v8/failure_space_step_table.csv",
+    "failure_space_trajectory_curves": "outputs/trajectory_failure_space_exports/v8/failure_space_trajectory_curves.csv",
+    "failure_mode_counts_csv": "outputs/trajectory_failure_space_exports/v8/failure_mode_counts.csv",
+    "confidence_counts_csv": "outputs/trajectory_failure_space_exports/v8/confidence_counts.csv",
+    "dose_metric_summary_csv": "outputs/trajectory_failure_space_exports/v8/dose_metric_summary.csv",
 }
 
 
@@ -41,6 +54,7 @@ DEFAULT_TRAJECTORY_CONFIGS: dict[str, str] = {
     "dose_ladder_config": "configs/dose_ladder_v8.json",
     "self_audit_config": "configs/self_audit_v8.json",
     "drift_halflife_config": "configs/drift_halflife_v8.json",
+    "failure_space_config": "configs/failure_space_v8.json",
 }
 
 
@@ -49,6 +63,7 @@ CONFIG_ROLES = {
     "dose_ladder_config": "Pre-registered v8.3 perturbation dose ladder levels.",
     "self_audit_config": "Pre-registered v8.4 clean/boundary/severe self-audit conditions.",
     "drift_halflife_config": "Pre-registered v8.6 deterministic objective-similarity proxy.",
+    "failure_space_config": "Pre-registered v8.7 deterministic failure-space rules and metric implementations.",
 }
 
 
@@ -103,6 +118,34 @@ HEADLINE_METRIC_KEYS = [
     "contaminated_final_similarity_mean",
     "final_similarity_drop_contaminated_vs_clean",
     "drift_halflife_manifest_hash",
+    "failure_space_dose_level_count",
+    "failure_space_trajectory_count",
+    "failure_space_step_count",
+    "dominant_failure_mode_counts",
+    "failure_mode_confidence_counts",
+    "low_confidence_step_count",
+    "compound_failure_step_count",
+    "clean_step_count",
+    "unclassified_step_count",
+    "failure_space_first_block_dose_level",
+    "failure_space_manifest_hash",
+    "mean_D_G_by_dose",
+    "mean_CSR_by_dose",
+    "mean_D_Q_by_dose",
+    "mean_FAP_by_dose",
+    "mean_CP_t_by_dose",
+    "failure_space_max_CP_t_by_dose",
+    "failure_space_export_status",
+    "failure_space_export_manifest_hash",
+    "failure_space_step_table_rows",
+    "failure_space_trajectory_curve_rows",
+    "failure_mode_count_rows",
+    "confidence_count_rows",
+    "dose_metric_rows",
+    "generated_plot_files",
+    "skipped_plot_files",
+    "plot_generation_status",
+    "plot_skip_reason",
 ]
 
 
@@ -242,6 +285,35 @@ class TrajectoryEvidenceRollupSummary(BaseModel):
                 f"- contaminated_final_similarity_mean: `{_value(metrics['contaminated_final_similarity_mean'])}`",
                 f"- final_similarity_drop_contaminated_vs_clean: `{_value(metrics['final_similarity_drop_contaminated_vs_clean'])}`",
                 "",
+                "### v8.7 Failure-Space Trajectory Analysis",
+                "",
+                "v8.7 projects deterministic trajectories into a scaffolded five-dimensional failure space: D_G, CSR, D_Q, FAP, and CP_t. Dominant failure modes are assigned by pre-registered rules in configs/failure_space_v8.json. This is a deterministic diagnostic scaffold, not a final embedding/model-based failure taxonomy.",
+                "",
+                f"- dose_level_count: `{_value(metrics['failure_space_dose_level_count'])}`",
+                f"- trajectory_count: `{_value(metrics['failure_space_trajectory_count'])}`",
+                f"- step_count: `{_value(metrics['failure_space_step_count'])}`",
+                f"- dominant_failure_mode_counts: `{_value(metrics['dominant_failure_mode_counts'])}`",
+                f"- failure_mode_confidence_counts: `{_value(metrics['failure_mode_confidence_counts'])}`",
+                f"- low_confidence_step_count: `{_value(metrics['low_confidence_step_count'])}`",
+                f"- first_block_dose_level: `{_value(metrics['failure_space_first_block_dose_level'])}`",
+                f"- manifest_hash: `{_value(metrics['failure_space_manifest_hash'])}`",
+                "",
+                "### v8.8 Failure-Space Export Scaffold",
+                "",
+                "v8.8 does not create new evidence. It exports existing v8.7 failure-space records into CSV tables and optional static plot files for inspection and future paper figures. In the current environment, plot generation was skipped because matplotlib was unavailable.",
+                "",
+                f"- export_status: `{_value(metrics['failure_space_export_status'])}`",
+                f"- step_table_rows: `{_value(metrics['failure_space_step_table_rows'])}`",
+                f"- trajectory_curve_rows: `{_value(metrics['failure_space_trajectory_curve_rows'])}`",
+                f"- failure_mode_count_rows: `{_value(metrics['failure_mode_count_rows'])}`",
+                f"- confidence_count_rows: `{_value(metrics['confidence_count_rows'])}`",
+                f"- dose_metric_rows: `{_value(metrics['dose_metric_rows'])}`",
+                f"- generated_plot_files: `{_value(metrics['generated_plot_files'])}`",
+                f"- skipped_plot_files: `{_value(metrics['skipped_plot_files'])}`",
+                f"- plot_generation_status: `{_value(metrics['plot_generation_status'])}`",
+                f"- plot_skip_reason: `{_value(metrics['plot_skip_reason'])}`",
+                f"- export_manifest_hash: `{_value(metrics['failure_space_export_manifest_hash'])}`",
+                "",
                 "## What This Supports",
                 "",
             ]
@@ -258,6 +330,12 @@ class TrajectoryEvidenceRollupSummary(BaseModel):
                 "- CP_t increment policy is scaffolded.",
                 "- Drift Halflife is not yet embedding-based or live-agent-derived.",
                 "- No semantic slow-path drift extractor has been implemented yet.",
+                "- Failure-space metrics are deterministic proxy metrics, not final semantic/embedding-based measurements.",
+                "- No live agent trajectories are projected yet.",
+                "- Failure-mode rules are scaffolded and require future validation.",
+                "- CSV exports are inspection aids, not additional statistical validation.",
+                "- Static plots may be unavailable depending on environment dependencies.",
+                "- No new semantic/embedding diagnostics are introduced by v8.8.",
                 "- No objective curvature yet.",
                 "- No production proxy, network, or database overhead is measured.",
                 "- No external human-audited trajectory dataset yet.",
@@ -480,8 +558,51 @@ def _extract_key_metrics(name: str, path: Path) -> dict[str, Any]:
     if name == "drift_halflife_manifest":
         data = _read_json(path)
         return {"manifest_hash": data.get("manifest_hash")}
+    if name == "failure_space_summary":
+        data = _read_json(path)
+        return {
+            "dose_level_count": data.get("dose_level_count"),
+            "trajectory_count": data.get("trajectory_count"),
+            "step_count": data.get("step_count"),
+            "dominant_failure_mode_counts": data.get("dominant_failure_mode_counts"),
+            "failure_mode_confidence_counts": data.get("failure_mode_confidence_counts"),
+            "low_confidence_step_count": data.get("low_confidence_step_count"),
+            "compound_failure_step_count": data.get("compound_failure_step_count"),
+            "clean_step_count": data.get("clean_step_count"),
+            "unclassified_step_count": data.get("unclassified_step_count"),
+            "first_block_dose_level": data.get("first_block_dose_level"),
+            "mean_D_G_by_dose": data.get("mean_D_G_by_dose"),
+            "mean_CSR_by_dose": data.get("mean_CSR_by_dose"),
+            "mean_D_Q_by_dose": data.get("mean_D_Q_by_dose"),
+            "mean_FAP_by_dose": data.get("mean_FAP_by_dose"),
+            "mean_CP_t_by_dose": data.get("mean_CP_t_by_dose"),
+            "max_CP_t_by_dose": data.get("max_CP_t_by_dose"),
+        }
+    if name == "failure_space_manifest":
+        data = _read_json(path)
+        return {"manifest_hash": data.get("manifest_hash")}
+    if name == "failure_space_export_summary":
+        data = _read_json(path)
+        return {
+            "status": data.get("status"),
+            "step_row_count": data.get("step_row_count"),
+            "trajectory_curve_row_count": data.get("trajectory_curve_row_count"),
+            "failure_mode_count_rows": data.get("failure_mode_count_rows"),
+            "confidence_count_rows": data.get("confidence_count_rows"),
+            "dose_metric_rows": data.get("dose_metric_rows"),
+            "generated_plot_files": data.get("generated_plot_files"),
+            "skipped_plot_files": data.get("skipped_plot_files"),
+            "plot_generation_status": data.get("plot_generation_status"),
+            "plot_skip_reason": _plot_skip_reason(data),
+        }
+    if name == "failure_space_export_manifest":
+        data = _read_json(path)
+        return {"manifest_hash": data.get("manifest_hash")}
     if path.suffix == ".jsonl":
         return {"line_count": _count_jsonl_lines(path)}
+    if path.suffix == ".csv":
+        line_count = _count_text_lines(path)
+        return {"line_count": line_count, "data_row_count": max(0, line_count - 1)}
     return {}
 
 
@@ -552,6 +673,38 @@ def _merge_headline_metrics(
         headline["drift_halflife_manifest_hash"] = metrics.get("manifest_hash")
     elif artifact.name == "drift_halflife_records":
         headline["drift_halflife_record_count"] = metrics.get("line_count")
+    elif artifact.name == "failure_space_summary":
+        headline["failure_space_dose_level_count"] = metrics.get("dose_level_count")
+        headline["failure_space_trajectory_count"] = metrics.get("trajectory_count")
+        headline["failure_space_step_count"] = metrics.get("step_count")
+        headline["dominant_failure_mode_counts"] = metrics.get("dominant_failure_mode_counts")
+        headline["failure_mode_confidence_counts"] = metrics.get("failure_mode_confidence_counts")
+        headline["low_confidence_step_count"] = metrics.get("low_confidence_step_count")
+        headline["compound_failure_step_count"] = metrics.get("compound_failure_step_count")
+        headline["clean_step_count"] = metrics.get("clean_step_count")
+        headline["unclassified_step_count"] = metrics.get("unclassified_step_count")
+        headline["failure_space_first_block_dose_level"] = metrics.get("first_block_dose_level")
+        headline["mean_D_G_by_dose"] = metrics.get("mean_D_G_by_dose")
+        headline["mean_CSR_by_dose"] = metrics.get("mean_CSR_by_dose")
+        headline["mean_D_Q_by_dose"] = metrics.get("mean_D_Q_by_dose")
+        headline["mean_FAP_by_dose"] = metrics.get("mean_FAP_by_dose")
+        headline["mean_CP_t_by_dose"] = metrics.get("mean_CP_t_by_dose")
+        headline["failure_space_max_CP_t_by_dose"] = metrics.get("max_CP_t_by_dose")
+    elif artifact.name == "failure_space_manifest":
+        headline["failure_space_manifest_hash"] = metrics.get("manifest_hash")
+    elif artifact.name == "failure_space_export_summary":
+        headline["failure_space_export_status"] = metrics.get("status")
+        headline["failure_space_step_table_rows"] = metrics.get("step_row_count")
+        headline["failure_space_trajectory_curve_rows"] = metrics.get("trajectory_curve_row_count")
+        headline["failure_mode_count_rows"] = metrics.get("failure_mode_count_rows")
+        headline["confidence_count_rows"] = metrics.get("confidence_count_rows")
+        headline["dose_metric_rows"] = metrics.get("dose_metric_rows")
+        headline["generated_plot_files"] = metrics.get("generated_plot_files")
+        headline["skipped_plot_files"] = metrics.get("skipped_plot_files")
+        headline["plot_generation_status"] = metrics.get("plot_generation_status")
+        headline["plot_skip_reason"] = metrics.get("plot_skip_reason")
+    elif artifact.name == "failure_space_export_manifest":
+        headline["failure_space_export_manifest_hash"] = metrics.get("manifest_hash")
 
 
 def _key_result(name: str, metrics: dict[str, Any]) -> str:
@@ -576,6 +729,20 @@ def _key_result(name: str, metrics: dict[str, Any]) -> str:
             f"conditions={_value(metrics.get('condition_count'))}; "
             f"crossing_lift={_value(metrics.get('halflife_crossing_lift'))}"
         )
+    if name == "failure_space_summary":
+        return (
+            f"doses={_value(metrics.get('dose_level_count'))}; "
+            f"steps={_value(metrics.get('step_count'))}; "
+            f"low_confidence={_value(metrics.get('low_confidence_step_count'))}"
+        )
+    if name == "failure_space_export_summary":
+        return (
+            f"status={_value(metrics.get('status'))}; "
+            f"step_rows={_value(metrics.get('step_row_count'))}; "
+            f"plots={_value(metrics.get('plot_generation_status'))}"
+        )
+    if "data_row_count" in metrics:
+        return f"rows={_value(metrics.get('data_row_count'))}"
     if "manifest_hash" in metrics:
         return f"manifest={_value(metrics.get('manifest_hash'))}"
     if "line_count" in metrics:
@@ -596,6 +763,11 @@ def _strengths(metrics: dict[str, Any]) -> list[str]:
         strengths.append("Self-audit false-compliance lift is measured for contaminated trajectory conditions.")
     if metrics.get("halflife_crossing_lift") is not None:
         strengths.append("HELIX now has a reproducible drift-halflife scaffold showing clean vs contaminated trajectory separation under a fixed deterministic proxy.")
+    if metrics.get("dominant_failure_mode_counts") is not None:
+        strengths.append("HELIX now has a reproducible trajectory diagnostic space that separates clean, contradiction-accumulation, objective-drift, and compound-failure regions under pre-registered deterministic rules.")
+        strengths.append("HELIX records low-confidence and unclassified regions rather than forcing every step into a confident failure label.")
+    if metrics.get("failure_space_export_status") is not None:
+        strengths.append("HELIX failure-space evidence can be exported into reproducible table/figure inputs without recomputing or altering the underlying metrics.")
     return strengths
 
 
@@ -611,10 +783,11 @@ def _limitations(missing_artifacts: list[str]) -> list[str]:
 
 def _recommended_next_steps() -> list[str]:
     return [
-        "Add failure-space scatter analysis.",
-        "Add a semantic slow-path sampled drift extractor.",
-        "Build a live/mock agent-loop adapter using v8 trajectory records.",
+        "Run optional matplotlib-enabled plot generation, if needed.",
         "Create a human-audited trajectory sample.",
+        "Add a semantic slow-path sampled drift extractor.",
+        "Build a v9 live/mock agent-loop adapter.",
+        "Add objective curvature only after failure-space validation.",
     ]
 
 
@@ -642,11 +815,26 @@ def _count_jsonl_lines(path: Path) -> int:
     return sum(1 for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
 
 
+def _count_text_lines(path: Path) -> int:
+    return sum(1 for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
+
+
 def _max_cp_by_dose(dose_results: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         str(item.get("dose_level")): item.get("max_cp_t")
         for item in dose_results
     }
+
+
+def _plot_skip_reason(data: dict[str, Any]) -> str | None:
+    warnings = data.get("warnings") or []
+    for warning in warnings:
+        if isinstance(warning, str) and warning.startswith("plot_generation_status:"):
+            return warning.split(":", 1)[1]
+    plot_generation_status = data.get("plot_generation_status")
+    if isinstance(plot_generation_status, str) and plot_generation_status.startswith("skipped"):
+        return plot_generation_status
+    return None
 
 
 def _value(value: Any) -> str:

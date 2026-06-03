@@ -109,6 +109,64 @@ def _artifact_payloads() -> dict[str, dict | str]:
             '{"condition_id":"severe_L7"}\n'
         ),
         "drift_halflife_report": "# Drift halflife report\n",
+        "failure_space_summary": {
+            "dose_level_count": 5,
+            "trajectory_count": 30,
+            "step_count": 360,
+            "dominant_failure_mode_counts": {
+                "clean": 126,
+                "compound_failure": 42,
+                "contradiction_accumulation": 54,
+                "objective_drift": 6,
+                "unclassified": 132,
+            },
+            "failure_mode_confidence_counts": {
+                "high": 156,
+                "medium": 30,
+                "low": 174,
+            },
+            "low_confidence_step_count": 174,
+            "compound_failure_step_count": 42,
+            "clean_step_count": 126,
+            "unclassified_step_count": 132,
+            "first_block_dose_level": 7,
+            "mean_D_G_by_dose": {"0": 0.0, "8": 0.4883333333333333},
+            "mean_CSR_by_dose": {"0": 1.0, "8": 0.4791666666666667},
+            "mean_D_Q_by_dose": {"0": 0.0, "8": 0.18333333333333332},
+            "mean_FAP_by_dose": {"0": 0.0, "8": 0.2},
+            "mean_CP_t_by_dose": {"0": 0.0, "8": 0.7050682199071666},
+            "max_CP_t_by_dose": {"0": 0.0, "8": 1.083384946079},
+        },
+        "failure_space_manifest": {"manifest_hash": "sha256:failure"},
+        "failure_space_records": (
+            '{"trajectory_id":"traj_v8_001"}\n'
+            '{"trajectory_id":"traj_v8_002"}\n'
+        ),
+        "failure_space_trajectories": '{"trajectory_id":"traj_v8_001"}\n',
+        "failure_space_report": "# Failure space report\n",
+        "failure_space_export_summary": {
+            "status": "partial",
+            "step_row_count": 360,
+            "trajectory_curve_row_count": 360,
+            "failure_mode_count_rows": 5,
+            "confidence_count_rows": 3,
+            "dose_metric_rows": 5,
+            "generated_plot_files": [],
+            "skipped_plot_files": [
+                "cp_vs_dg_scatter.png",
+                "dose_vs_max_cp.png",
+                "failure_mode_counts.png",
+            ],
+            "plot_generation_status": "skipped_matplotlib_unavailable",
+            "warnings": ["plot_generation_status:skipped_matplotlib_unavailable"],
+        },
+        "failure_space_export_manifest": {"manifest_hash": "sha256:export"},
+        "failure_space_export_report": "# Failure-space export report\n",
+        "failure_space_step_table": "trajectory_id,step_index,D_G\ntraj_v8_001,0,0.0\n",
+        "failure_space_trajectory_curves": "trajectory_id,dose_level,max_CP_t\ntraj_v8_001,0,0.0\n",
+        "failure_mode_counts_csv": "failure_mode,count\nclean,126\n",
+        "confidence_counts_csv": "confidence,count\nhigh,156\n",
+        "dose_metric_summary_csv": "dose_level,mean_D_G\n0,0.0\n",
     }
 
 
@@ -118,6 +176,7 @@ def _config_payloads() -> dict[str, dict]:
         "dose_ladder_config": {"schema_version": "dose_ladder_v8.3"},
         "self_audit_config": {"schema_version": "self_audit_v8.4"},
         "drift_halflife_config": {"schema_version": "drift_halflife_v8.6"},
+        "failure_space_config": {"schema_version": "failure_space_v8.7"},
     }
 
 
@@ -127,10 +186,15 @@ def _write_artifacts(tmp_path: Path, names: list[str] | None = None) -> dict[str
     paths: dict[str, str] = {}
     for name in names:
         suffix = ".json"
-        if name.endswith("records"):
+        if name.endswith("records") or name.endswith("trajectories"):
             suffix = ".jsonl"
         elif name.endswith("report"):
             suffix = ".md"
+        elif name.endswith("_csv") or name in {
+            "failure_space_step_table",
+            "failure_space_trajectory_curves",
+        }:
+            suffix = ".csv"
         path = tmp_path / f"{name}{suffix}"
         payload = payloads[name]
         if isinstance(payload, dict):
@@ -222,6 +286,19 @@ def test_summary_status_complete_when_all_required_artifacts_present(tmp_path: P
     assert summary.headline_metrics["drift_halflife_condition_count"] == 3
     assert summary.headline_metrics["drift_halflife_record_count"] == 3
     assert summary.headline_metrics["halflife_crossing_lift"] == 1.0
+    assert summary.headline_metrics["failure_space_dose_level_count"] == 5
+    assert summary.headline_metrics["failure_space_trajectory_count"] == 30
+    assert summary.headline_metrics["failure_space_step_count"] == 360
+    assert summary.headline_metrics["low_confidence_step_count"] == 174
+    assert summary.headline_metrics["failure_space_export_status"] == "partial"
+    assert summary.headline_metrics["failure_space_export_manifest_hash"] == "sha256:export"
+    assert summary.headline_metrics["failure_space_step_table_rows"] == 360
+    assert summary.headline_metrics["failure_space_trajectory_curve_rows"] == 360
+    assert summary.headline_metrics["failure_mode_count_rows"] == 5
+    assert summary.headline_metrics["confidence_count_rows"] == 3
+    assert summary.headline_metrics["dose_metric_rows"] == 5
+    assert summary.headline_metrics["plot_generation_status"] == "skipped_matplotlib_unavailable"
+    assert summary.headline_metrics["plot_skip_reason"] == "skipped_matplotlib_unavailable"
 
 
 def test_markdown_report_includes_non_proof_section(tmp_path: Path) -> None:
@@ -235,9 +312,16 @@ def test_markdown_report_includes_non_proof_section(tmp_path: Path) -> None:
 
     assert "What This Does Not Yet Prove" in markdown
     assert "v8.6 Drift Halflife" in markdown
+    assert "v8.7 Failure-Space" in markdown
+    assert "v8.8 Failure-Space Export" in markdown
     assert "deterministic perturbation-based objective-similarity proxy" in markdown
+    assert "scaffolded five-dimensional failure space" in markdown
+    assert "exports existing v8.7 failure-space records into CSV tables" in markdown
+    assert "inspection aids, not additional statistical validation" in markdown
     assert "Drift Halflife is not yet embedding-based or live-agent-derived." in markdown
     assert "No semantic slow-path drift extractor has been implemented yet." in markdown
+    assert "Failure-space metrics are deterministic proxy metrics" in markdown
+    assert "Static plots may be unavailable depending on environment dependencies." in markdown
     assert "Self-audit is a deterministic simulated policy" in markdown
 
 
@@ -301,6 +385,148 @@ def test_missing_drift_artifacts_are_reported_without_fabricated_metrics(tmp_pat
     assert summary.headline_metrics["drift_halflife_condition_count"] is None
     assert summary.headline_metrics["drift_halflife_record_count"] is None
     assert summary.headline_metrics["halflife_crossing_lift"] is None
+
+
+def test_failure_space_summary_is_detected_hashed_and_extracted(tmp_path: Path) -> None:
+    artifact_paths = _write_artifacts(
+        tmp_path,
+        ["failure_space_summary", "failure_space_manifest", "failure_space_records"],
+    )
+    config_paths = _write_configs(tmp_path)
+
+    summary = collect_v8_trajectory_evidence_rollup(
+        artifact_paths=artifact_paths,
+        config_paths=config_paths,
+        generated_at="2026-06-03T00:00:00Z",
+    )
+
+    assert summary.artifact_hashes["failure_space_summary"] == stable_file_hash(
+        artifact_paths["failure_space_summary"]
+    )
+    assert summary.headline_metrics["failure_space_dose_level_count"] == 5
+    assert summary.headline_metrics["failure_space_trajectory_count"] == 30
+    assert summary.headline_metrics["failure_space_step_count"] == 360
+    assert summary.headline_metrics["dominant_failure_mode_counts"]["compound_failure"] == 42
+    assert summary.headline_metrics["failure_mode_confidence_counts"]["low"] == 174
+    assert summary.headline_metrics["low_confidence_step_count"] == 174
+    assert summary.headline_metrics["compound_failure_step_count"] == 42
+    assert summary.headline_metrics["clean_step_count"] == 126
+    assert summary.headline_metrics["unclassified_step_count"] == 132
+    assert summary.headline_metrics["failure_space_first_block_dose_level"] == 7
+    assert summary.headline_metrics["failure_space_manifest_hash"] == "sha256:failure"
+    assert summary.headline_metrics["mean_D_G_by_dose"]["8"] == 0.4883333333333333
+    assert summary.headline_metrics["mean_CSR_by_dose"]["8"] == 0.4791666666666667
+    assert summary.headline_metrics["mean_D_Q_by_dose"]["8"] == 0.18333333333333332
+    assert summary.headline_metrics["mean_FAP_by_dose"]["8"] == 0.2
+    assert summary.headline_metrics["mean_CP_t_by_dose"]["8"] == 0.7050682199071666
+    assert summary.headline_metrics["failure_space_max_CP_t_by_dose"]["8"] == 1.083384946079
+
+
+def test_failure_space_config_hash_is_included(tmp_path: Path) -> None:
+    summary = collect_v8_trajectory_evidence_rollup(
+        artifact_paths=_write_artifacts(tmp_path, ["failure_space_summary"]),
+        config_paths=_write_configs(tmp_path),
+        generated_at="2026-06-03T00:00:00Z",
+    )
+
+    assert "failure_space_config" in summary.config_hashes
+    assert summary.config_hashes["failure_space_config"] == stable_file_hash(
+        tmp_path / "failure_space_config.json"
+    )
+
+
+def test_missing_failure_space_artifacts_are_reported_without_fabricated_metrics(tmp_path: Path) -> None:
+    artifact_paths = {
+        "trajectory_summary": _write_artifacts(tmp_path, ["trajectory_summary"])["trajectory_summary"],
+        "failure_space_summary": str(tmp_path / "missing_failure_space_summary.json"),
+        "failure_space_records": str(tmp_path / "missing_failure_space_records.jsonl"),
+    }
+    config_paths = _write_configs(tmp_path)
+
+    summary = collect_v8_trajectory_evidence_rollup(
+        artifact_paths=artifact_paths,
+        config_paths=config_paths,
+        generated_at="2026-06-03T00:00:00Z",
+    )
+
+    assert summary.status == "partial"
+    assert summary.missing_artifact_count == 2
+    assert any("failure_space_summary" in item for item in summary.missing_artifacts)
+    assert summary.headline_metrics["failure_space_dose_level_count"] is None
+    assert summary.headline_metrics["failure_space_step_count"] is None
+    assert summary.headline_metrics["dominant_failure_mode_counts"] is None
+
+
+def test_failure_space_export_summary_is_detected_hashed_and_extracted(tmp_path: Path) -> None:
+    artifact_paths = _write_artifacts(
+        tmp_path,
+        [
+            "failure_space_export_summary",
+            "failure_space_export_manifest",
+            "failure_space_step_table",
+            "failure_space_trajectory_curves",
+        ],
+    )
+    config_paths = _write_configs(tmp_path)
+
+    summary = collect_v8_trajectory_evidence_rollup(
+        artifact_paths=artifact_paths,
+        config_paths=config_paths,
+        generated_at="2026-06-03T00:00:00Z",
+    )
+
+    export_summary = next(
+        artifact for artifact in summary.artifacts if artifact.name == "failure_space_export_summary"
+    )
+    step_table = next(
+        artifact for artifact in summary.artifacts if artifact.name == "failure_space_step_table"
+    )
+
+    assert summary.artifact_hashes["failure_space_export_summary"] == stable_file_hash(
+        artifact_paths["failure_space_export_summary"]
+    )
+    assert export_summary.key_result == (
+        "status=partial; step_rows=360; plots=skipped_matplotlib_unavailable"
+    )
+    assert summary.headline_metrics["failure_space_export_status"] == "partial"
+    assert summary.headline_metrics["failure_space_export_manifest_hash"] == "sha256:export"
+    assert summary.headline_metrics["failure_space_step_table_rows"] == 360
+    assert summary.headline_metrics["failure_space_trajectory_curve_rows"] == 360
+    assert summary.headline_metrics["failure_mode_count_rows"] == 5
+    assert summary.headline_metrics["confidence_count_rows"] == 3
+    assert summary.headline_metrics["dose_metric_rows"] == 5
+    assert summary.headline_metrics["generated_plot_files"] == []
+    assert summary.headline_metrics["skipped_plot_files"] == [
+        "cp_vs_dg_scatter.png",
+        "dose_vs_max_cp.png",
+        "failure_mode_counts.png",
+    ]
+    assert summary.headline_metrics["plot_generation_status"] == "skipped_matplotlib_unavailable"
+    assert summary.headline_metrics["plot_skip_reason"] == "skipped_matplotlib_unavailable"
+    assert step_table.key_metrics["data_row_count"] == 1
+
+
+def test_missing_failure_space_export_artifacts_are_reported_without_fabricated_metrics(tmp_path: Path) -> None:
+    artifact_paths = {
+        "trajectory_summary": _write_artifacts(tmp_path, ["trajectory_summary"])["trajectory_summary"],
+        "failure_space_export_summary": str(tmp_path / "missing_export_summary.json"),
+        "failure_space_step_table": str(tmp_path / "missing_failure_space_step_table.csv"),
+    }
+    config_paths = _write_configs(tmp_path)
+
+    summary = collect_v8_trajectory_evidence_rollup(
+        artifact_paths=artifact_paths,
+        config_paths=config_paths,
+        generated_at="2026-06-03T00:00:00Z",
+    )
+
+    assert summary.status == "partial"
+    assert summary.missing_artifact_count == 2
+    assert any("failure_space_export_summary" in item for item in summary.missing_artifacts)
+    assert any("failure_space_step_table" in item for item in summary.missing_artifacts)
+    assert summary.headline_metrics["failure_space_export_status"] is None
+    assert summary.headline_metrics["failure_space_step_table_rows"] is None
+    assert summary.headline_metrics["plot_skip_reason"] is None
 
 
 def test_output_files_are_written(tmp_path: Path) -> None:
