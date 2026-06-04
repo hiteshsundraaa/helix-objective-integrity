@@ -201,14 +201,18 @@ def run_mock_agent_loop(
     contract: ObjectiveContract,
     plan_steps: list[MockAgentPlanStep],
     tool_registry: MockToolRegistry,
+    loop_id: str | None = None,
+    task: str | None = None,
 ) -> tuple[MockAgentLoopTrace, MockAgentLoopSummary]:
     ordered_steps = sorted(plan_steps, key=lambda step: step.step_index)
-    loop_id = f"{contract.contract_id}_loop"
-    task = "Execute proposed agent plan under HELIX pre-execution authorization."
+    resolved_loop_id = loop_id or f"{contract.contract_id}_loop"
+    resolved_task = (
+        task or "Execute proposed agent plan under HELIX pre-execution authorization."
+    )
     tool_calls = [_tool_call_from_step(step) for step in ordered_steps if _has_tool_call(step)]
     receipt_trace = MockAgentTrace(
-        trace_id=loop_id,
-        task=task,
+        trace_id=resolved_loop_id,
+        task=resolved_task,
         self_report="",
         tool_calls=tool_calls,
     )
@@ -267,8 +271,8 @@ def run_mock_agent_loop(
         execution_results.append(result)
 
     trace = MockAgentLoopTrace(
-        loop_id=loop_id,
-        task=task,
+        loop_id=resolved_loop_id,
+        task=resolved_task,
         contract_id=contract.contract_id,
         plan_steps=ordered_steps,
         execution_results=execution_results,
@@ -298,7 +302,7 @@ def run_mock_agent_loop(
     }
     forbidden_decisions = {"BLOCK", "ESCALATE_FOR_APPROVAL"}
     summary = MockAgentLoopSummary(
-        loop_id=loop_id,
+        loop_id=resolved_loop_id,
         step_count=len(ordered_steps),
         attempted_tool_calls=len(receipts),
         executed_tool_calls=sum(result.executed for result in execution_results),

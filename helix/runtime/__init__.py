@@ -20,6 +20,14 @@ from helix.runtime.mock_agent_loop import (
     validate_mock_agent_loop_trace,
     write_mock_agent_loop_outputs,
 )
+from helix.runtime.trajectory_runtime_bridge import (
+    TrajectoryRuntimeBridgeRecord,
+    TrajectoryRuntimeBridgeSummary,
+    TrajectoryRuntimeDecisionProvenance,
+    build_v9_trajectory_bridge_contract,
+    convert_trajectory_step_to_plan_step,
+    run_trajectory_runtime_bridge,
+)
 
 __all__ = [
     "MockAgentLoopSummary",
@@ -32,11 +40,17 @@ __all__ = [
     "ObjectiveContract",
     "RuntimeAuthorizationReceipt",
     "RuntimeGateDecision",
+    "TrajectoryRuntimeBridgeRecord",
+    "TrajectoryRuntimeBridgeSummary",
+    "TrajectoryRuntimeDecisionProvenance",
     "build_default_v9_mock_loop_scenario",
+    "build_v9_trajectory_bridge_contract",
     "build_v9_loop_negative_controls",
+    "convert_trajectory_step_to_plan_step",
     "evaluate_tool_call_against_contract",
     "run_mock_agent_loop",
     "run_mock_agent_trace",
+    "run_trajectory_runtime_bridge",
     "validate_mock_agent_loop_trace",
     "validate_runtime_authorization_receipt",
     "write_mock_agent_loop_outputs",
