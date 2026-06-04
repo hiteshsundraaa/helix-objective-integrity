@@ -5,7 +5,7 @@ import math
 import random
 import re
 from pathlib import Path
-from statistics import pvariance
+from statistics import pstdev, pvariance
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -55,6 +55,12 @@ class BenchmarkIntegrityConfig(BaseModel):
     threshold_flip_soft_threshold: float
     shuffled_delta_minimum: float
     leakage_rate_maximum: float
+    random_baseline_trials: int = 500
+    random_baseline_seed: int = 42
+    benchmark_family_overlap_thresholds: dict[str, float] = Field(default_factory=dict)
+    benchmark_family_overlap_threshold_justifications: dict[str, str] = Field(
+        default_factory=dict
+    )
     hard_conditions: list[str]
     soft_conditions: list[str]
     notes: str = ""
@@ -69,7 +75,16 @@ class BenchmarkIntegrityReport(BaseModel):
     token_overlap_mean: float
     token_overlap_max: float
     high_overlap_case_count: int
+    high_overlap_case_ids: list[str] = Field(default_factory=list)
+    high_overlap_cases_path: str | None = None
+    high_overlap_cases_hash: str | None = None
+    high_overlap_family_counts: dict[str, int] = Field(default_factory=dict)
+    high_overlap_diagnostic_threshold: float
     generator_independence: bool
+    benchmark_family: str
+    applied_generator_independence_threshold: float
+    generator_independence_threshold_source: str
+    generator_independence_threshold_justification: str | None
 
     threshold_primary: float
     threshold_delta: float
@@ -90,6 +105,11 @@ class BenchmarkIntegrityReport(BaseModel):
     shuffled_label_trials: int
 
     selectivity_delta_vs_random: float | None
+    mean_random_tpr_at_budget: float | None
+    random_tpr_std_at_budget: float | None
+    random_baseline_trials: int
+    random_baseline_seed: int
+    selection_budget: float
 
     integrity_passed: bool
     hard_issue_count: int
@@ -97,6 +117,11 @@ class BenchmarkIntegrityReport(BaseModel):
     integrity_issues: list[str] = Field(default_factory=list)
     integrity_warnings: list[str] = Field(default_factory=list)
     integrity_hash: str
+    high_overlap_case_diagnostics: list[dict[str, Any]] = Field(
+        default_factory=list,
+        exclude=True,
+        repr=False,
+    )
 
     def to_markdown(self) -> str:
         lines = [
@@ -121,7 +146,19 @@ class BenchmarkIntegrityReport(BaseModel):
             f"- token_overlap_mean: `{self.token_overlap_mean:.6f}`",
             f"- token_overlap_max: `{self.token_overlap_max:.6f}`",
             f"- high_overlap_case_count: `{self.high_overlap_case_count}`",
+            f"- high_overlap_case_ids: `{_format_optional(self.high_overlap_case_ids)}`",
+            f"- high_overlap_cases_path: `{_format_optional(self.high_overlap_cases_path)}`",
+            f"- high_overlap_cases_hash: `{_format_optional(self.high_overlap_cases_hash)}`",
+            f"- high_overlap_family_counts: `{_format_optional(self.high_overlap_family_counts)}`",
+            f"- high_overlap_diagnostic_threshold: "
+            f"`{self.high_overlap_diagnostic_threshold:.6f}`",
             f"- generator_independence: `{str(self.generator_independence).lower()}`",
+            f"- benchmark_family: `{self.benchmark_family or 'unspecified'}`",
+            f"- applied_generator_independence_threshold: "
+            f"`{self.applied_generator_independence_threshold:.6f}`",
+            f"- threshold_source: `{self.generator_independence_threshold_source}`",
+            f"- threshold_justification: "
+            f"`{_format_optional(self.generator_independence_threshold_justification)}`",
             "",
             "## Threshold Sensitivity",
             "",
@@ -143,6 +180,15 @@ class BenchmarkIntegrityReport(BaseModel):
             f"`{_format_optional(self.selectivity_delta_vs_shuffled)}`",
             f"- beats_shuffled_labels: `{_format_optional(self.beats_shuffled_labels)}`",
             f"- shuffled_label_trials: `{self.shuffled_label_trials}`",
+            f"- selection_budget: `{self.selection_budget:.6f}`",
+            f"- mean_random_tpr_at_budget: "
+            f"`{_format_optional(self.mean_random_tpr_at_budget)}`",
+            f"- random_tpr_std_at_budget: "
+            f"`{_format_optional(self.random_tpr_std_at_budget)}`",
+            f"- selectivity_delta_vs_random: "
+            f"`{_format_optional(self.selectivity_delta_vs_random)}`",
+            f"- random_baseline_trials: `{self.random_baseline_trials}`",
+            f"- random_baseline_seed: `{self.random_baseline_seed}`",
             "",
             "## Leakage / Circularity",
             "",
@@ -161,6 +207,25 @@ class BenchmarkIntegrityReport(BaseModel):
             lines.extend(f"- warning: `{warning}`" for warning in self.integrity_warnings)
         else:
             lines.append("- No soft integrity warnings detected.")
+        if self.high_overlap_family_counts:
+            lines.extend(
+                [
+                    "",
+                    "High-overlap cases are grouped by available family metadata:",
+                ]
+            )
+            lines.extend(
+                f"- `{family}`: `{count}`"
+                for family, count in sorted(self.high_overlap_family_counts.items())
+            )
+        else:
+            lines.extend(
+                [
+                    "",
+                    "High-overlap family clustering is unavailable because no qualifying "
+                    "cases or family metadata were present.",
+                ]
+            )
         lines.extend(
             [
                 "",
@@ -185,6 +250,10 @@ def load_integrity_config(path: str | Path) -> BenchmarkIntegrityConfig:
     return BenchmarkIntegrityConfig.model_validate(
         json.loads(Path(path).read_text(encoding="utf-8"))
     )
+
+
+def load_integrity_reference_hashes(path: str | Path) -> dict[str, Any]:
+    return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
 def score_entropy(scores: list[float], n_bins: int) -> float:
@@ -266,6 +335,53 @@ def compute_generator_independence(
             mean_overlap <= mean_overlap_threshold
             and max_overlap <= fail_overlap_threshold
         ),
+    }
+
+
+def internal_matched_random_baseline(
+    cases: list[dict[str, Any]],
+    scores: list[float],
+    *,
+    budget: float,
+    n_trials: int,
+    seed: int,
+    label_field: str = "label",
+) -> dict[str, float | int | None]:
+    if len(cases) != len(scores) or not cases or n_trials <= 0:
+        return {
+            "mean_random_tpr": None,
+            "random_tpr_std": None,
+            "n_trials": n_trials,
+            "budget": budget,
+            "seed": seed,
+        }
+    positive_indices = {
+        index
+        for index, case in enumerate(cases)
+        if _is_positive_label(case.get(label_field))
+    }
+    if not positive_indices:
+        return {
+            "mean_random_tpr": None,
+            "random_tpr_std": None,
+            "n_trials": n_trials,
+            "budget": budget,
+            "seed": seed,
+        }
+    selection_count = max(1, round(len(cases) * budget))
+    selection_count = min(len(cases), selection_count)
+    rng = random.Random(seed)
+    tprs: list[float] = []
+    indices = list(range(len(cases)))
+    for _ in range(n_trials):
+        selected = set(rng.sample(indices, selection_count))
+        tprs.append(len(selected & positive_indices) / len(positive_indices))
+    return {
+        "mean_random_tpr": sum(tprs) / len(tprs),
+        "random_tpr_std": pstdev(tprs),
+        "n_trials": n_trials,
+        "budget": budget,
+        "seed": seed,
     }
 
 
@@ -404,6 +520,10 @@ def run_benchmark_integrity_audit(
     generic_text_fields: list[str],
     contract_text_fields: list[str],
     label_field: str = "label",
+    benchmark_family: str = "",
+    budget: float = 0.20,
+    random_baseline_trials: int | None = None,
+    random_baseline_seed: int | None = None,
 ) -> BenchmarkIntegrityReport:
     if len(cases) != len(scores):
         raise ValueError(
@@ -431,13 +551,24 @@ def run_benchmark_integrity_audit(
         warnings.append("missing_label_field")
 
     collapse = score_collapse_check(normalized_scores, config)
+    applied_overlap_threshold, threshold_source, threshold_justification = (
+        _generator_independence_threshold(config, benchmark_family)
+    )
     independence = compute_generator_independence(
         cases,
         generic_text_fields=generic_text_fields,
         contract_text_fields=contract_text_fields,
         high_overlap_threshold=config.token_overlap_warning_threshold,
         fail_overlap_threshold=config.token_overlap_fail_threshold,
-        mean_overlap_threshold=config.generator_independence_mean_overlap_threshold,
+        mean_overlap_threshold=applied_overlap_threshold,
+    )
+    overlap_diagnostics = _high_overlap_diagnostics(
+        cases,
+        generic_text_fields=generic_text_fields,
+        contract_text_fields=contract_text_fields,
+        threshold=config.token_overlap_warning_threshold,
+        benchmark_family=benchmark_family,
+        label_field=label_field,
     )
     sensitivity = threshold_sensitivity(
         cases,
@@ -449,12 +580,6 @@ def run_benchmark_integrity_audit(
         cases,
         generic_text_fields=generic_text_fields,
         contract_text_fields=contract_text_fields,
-    )
-    budget = (
-        sum(score >= config.threshold_primary for score in normalized_scores)
-        / len(normalized_scores)
-        if normalized_scores
-        else 0.0
     )
     shuffled = shuffled_label_selectivity_test(
         labeled_cases,
@@ -471,7 +596,33 @@ def run_benchmark_integrity_audit(
     )
     if shuffled["true_tpr_at_budget"] is None:
         warnings.append("shuffled_label_test_unavailable")
-    warnings.append("selectivity_delta_vs_random_unavailable")
+    random_trials = (
+        random_baseline_trials
+        if random_baseline_trials is not None
+        else config.random_baseline_trials
+    )
+    random_seed = (
+        random_baseline_seed
+        if random_baseline_seed is not None
+        else config.random_baseline_seed
+    )
+    random_baseline = internal_matched_random_baseline(
+        labeled_cases,
+        normalized_scores,
+        budget=budget,
+        n_trials=random_trials,
+        seed=random_seed,
+    )
+    true_tpr = shuffled["true_tpr_at_budget"]
+    mean_random_tpr = random_baseline["mean_random_tpr"]
+    selectivity_delta_vs_random = (
+        true_tpr - mean_random_tpr
+        if isinstance(true_tpr, (int, float))
+        and isinstance(mean_random_tpr, (int, float))
+        else None
+    )
+    if selectivity_delta_vs_random is None:
+        warnings.append("selectivity_delta_vs_random_unavailable")
 
     hard_issues: list[str] = []
     if (
@@ -519,7 +670,23 @@ def run_benchmark_integrity_audit(
         "token_overlap_mean": independence["token_overlap_mean"],
         "token_overlap_max": independence["token_overlap_max"],
         "high_overlap_case_count": independence["high_overlap_case_count"],
+        "high_overlap_case_ids": [
+            row["case_id"]
+            for row in overlap_diagnostics[:20]
+        ],
+        "high_overlap_cases_path": None,
+        "high_overlap_cases_hash": (
+            stable_json_hash(overlap_diagnostics)
+            if overlap_diagnostics
+            else None
+        ),
+        "high_overlap_family_counts": _family_counts(overlap_diagnostics),
+        "high_overlap_diagnostic_threshold": config.token_overlap_warning_threshold,
         "generator_independence": independence["generator_independence"],
+        "benchmark_family": benchmark_family,
+        "applied_generator_independence_threshold": applied_overlap_threshold,
+        "generator_independence_threshold_source": threshold_source,
+        "generator_independence_threshold_justification": threshold_justification,
         "threshold_primary": config.threshold_primary,
         "threshold_delta": config.threshold_delta,
         "threshold_lower": sensitivity["lower_threshold"],
@@ -535,35 +702,142 @@ def run_benchmark_integrity_audit(
         "selectivity_delta_vs_shuffled": shuffled_delta,
         "beats_shuffled_labels": beats_shuffled,
         "shuffled_label_trials": config.shuffled_label_trials,
-        "selectivity_delta_vs_random": None,
+        "selectivity_delta_vs_random": selectivity_delta_vs_random,
+        "mean_random_tpr_at_budget": mean_random_tpr,
+        "random_tpr_std_at_budget": random_baseline["random_tpr_std"],
+        "random_baseline_trials": random_trials,
+        "random_baseline_seed": random_seed,
+        "selection_budget": budget,
         "integrity_passed": not hard_issues,
         "hard_issue_count": len(hard_issues),
         "soft_issue_count": len(warnings),
         "integrity_issues": hard_issues,
         "integrity_warnings": warnings,
     }
-    return BenchmarkIntegrityReport.model_validate(
+    report = BenchmarkIntegrityReport.model_validate(
         {
             **payload,
             "integrity_hash": stable_json_hash(payload),
+            "high_overlap_case_diagnostics": overlap_diagnostics,
         }
     )
+    return report
 
 
 def write_integrity_audit_outputs(
     report: BenchmarkIntegrityReport,
     out_dir: str | Path,
+    *,
+    write_high_overlap_cases: bool = True,
 ) -> tuple[Path, Path]:
     target = Path(out_dir)
     target.mkdir(parents=True, exist_ok=True)
     json_path = target / "integrity_report.json"
     markdown_path = target / "integrity_report.md"
+    diagnostics_path = target / "high_overlap_cases.jsonl"
+    if write_high_overlap_cases and report.high_overlap_case_diagnostics:
+        diagnostics_path.write_text(
+            "\n".join(
+                json.dumps(row, sort_keys=True)
+                for row in report.high_overlap_case_diagnostics
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        report.high_overlap_cases_path = diagnostics_path.name
+    else:
+        report.high_overlap_cases_path = None
+        if diagnostics_path.exists():
+            diagnostics_path.unlink()
+    report.integrity_hash = _integrity_report_hash(report)
     json_path.write_text(
         json.dumps(report.model_dump(mode="json"), indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     markdown_path.write_text(report.to_markdown() + "\n", encoding="utf-8")
     return json_path, markdown_path
+
+
+def _generator_independence_threshold(
+    config: BenchmarkIntegrityConfig,
+    benchmark_family: str,
+) -> tuple[float, str, str | None]:
+    if (
+        benchmark_family
+        and benchmark_family in config.benchmark_family_overlap_thresholds
+    ):
+        return (
+            config.benchmark_family_overlap_thresholds[benchmark_family],
+            "family_override",
+            config.benchmark_family_overlap_threshold_justifications.get(
+                benchmark_family
+            ),
+        )
+    return (
+        config.generator_independence_mean_overlap_threshold,
+        "global_default",
+        None,
+    )
+
+
+def _high_overlap_diagnostics(
+    cases: list[dict[str, Any]],
+    *,
+    generic_text_fields: list[str],
+    contract_text_fields: list[str],
+    threshold: float,
+    benchmark_family: str,
+    label_field: str,
+) -> list[dict[str, Any]]:
+    diagnostics: list[dict[str, Any]] = []
+    for index, case in enumerate(cases):
+        generic_text = _join_fields(case, generic_text_fields)
+        contract_text = _join_fields(case, contract_text_fields)
+        generic_tokens = tokenize_for_overlap(generic_text)
+        contract_tokens = tokenize_for_overlap(contract_text)
+        overlap = jaccard_overlap(generic_tokens, contract_tokens)
+        if generic_tokens and contract_tokens and overlap >= threshold:
+            diagnostics.append(
+                {
+                    "case_id": _case_identifier(case, index),
+                    "label": case.get(label_field),
+                    "token_overlap": overlap,
+                    "generic_text_excerpt": generic_text[:240],
+                    "contract_text_excerpt": contract_text[:240],
+                    "overlapping_tokens": sorted(generic_tokens & contract_tokens),
+                    "benchmark_family": benchmark_family
+                    or case.get("benchmark_family"),
+                    "family": case.get("family"),
+                    "paraphrase_family": case.get("paraphrase_family"),
+                    "noise_family": case.get("noise_family"),
+                }
+            )
+    return sorted(
+        diagnostics,
+        key=lambda row: (-float(row["token_overlap"]), str(row["case_id"])),
+    )
+
+
+def _family_counts(diagnostics: list[dict[str, Any]]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for row in diagnostics:
+        family = (
+            row.get("paraphrase_family")
+            or row.get("noise_family")
+            or row.get("family")
+            or row.get("benchmark_family")
+        )
+        if family:
+            counts[str(family)] = counts.get(str(family), 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def _integrity_report_hash(report: BenchmarkIntegrityReport) -> str:
+    payload = report.model_dump(
+        mode="json",
+        exclude={"integrity_hash", "high_overlap_case_diagnostics"},
+    )
+    return stable_json_hash(payload)
 
 
 def _max_score_bin_fraction(scores: list[float], n_bins: int) -> float:
@@ -605,7 +879,7 @@ def _is_positive_label(label: Any) -> bool:
 
 def _budget_count(budget: float | int, case_count: int) -> int:
     if isinstance(budget, float) and budget <= 1.0:
-        return min(case_count, max(0, math.ceil(budget * case_count)))
+        return min(case_count, max(1 if case_count else 0, round(budget * case_count)))
     return min(case_count, max(0, int(budget)))
 
 

@@ -1,0 +1,19 @@
+{
+  "schema_version": "integrity_reference_hashes_v1",
+  "references": [
+    {
+      "name": "v6_paraphrase_google_flash_initial_audit",
+      "integrity_hash": "sha256:29d27b09f72d7d4a5cbc52e7114e00bc24ddb6802df62bd3a850fb493e85b1a7",
+      "integrity_passed": false,
+      "hard_issues": [
+        "score_collapse_detected",
+        "generator_independence_failed"
+      ],
+      "soft_warnings": [
+        "high_overlap_cases_detected",
+        "selectivity_delta_vs_random_unavailable"
+      ],
+      "notes": "Initial integrity audit of v6 paraphrase Google Flash replay. Failure is preserved as baseline evidence of saturated binary scoring and borderline overlap."
+    }
+  ]
+}

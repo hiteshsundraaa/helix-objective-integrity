@@ -6,7 +6,9 @@ from helix.benchmark.integrity_audit import (
     BenchmarkIntegrityConfig,
     compute_generator_independence,
     detect_contract_leakage,
+    internal_matched_random_baseline,
     jaccard_overlap,
+    load_integrity_reference_hashes,
     run_benchmark_integrity_audit,
     score_collapse_check,
     score_entropy,
@@ -35,6 +37,15 @@ def _config(**updates) -> BenchmarkIntegrityConfig:
         "threshold_flip_soft_threshold": 0.20,
         "shuffled_delta_minimum": 0.05,
         "leakage_rate_maximum": 0.10,
+        "random_baseline_trials": 100,
+        "random_baseline_seed": 42,
+        "benchmark_family_overlap_thresholds": {
+            "default": 0.15,
+            "paraphrase": 0.20,
+        },
+        "benchmark_family_overlap_threshold_justifications": {
+            "paraphrase": "Explicit test override.",
+        },
         "hard_conditions": [
             "beats_shuffled_labels",
             "generator_independence",
@@ -156,6 +167,30 @@ def test_shuffled_label_test_is_deterministic_and_detects_signal() -> None:
     assert first["selectivity_delta_vs_shuffled"] > 0.3
 
 
+def test_internal_random_baseline_is_deterministic_and_available() -> None:
+    cases = _cases()
+    scores = [0.95, 0.90, 0.10, 0.05]
+
+    first = internal_matched_random_baseline(
+        cases,
+        scores,
+        budget=0.5,
+        n_trials=250,
+        seed=42,
+    )
+    second = internal_matched_random_baseline(
+        cases,
+        scores,
+        budget=0.5,
+        n_trials=250,
+        seed=42,
+    )
+
+    assert first == second
+    assert first["mean_random_tpr"] is not None
+    assert first["random_tpr_std"] is not None
+
+
 def test_threshold_sensitivity_detects_high_flip_rate() -> None:
     sensitivity = threshold_sensitivity(
         _cases(),
@@ -190,6 +225,30 @@ def test_hard_failures_block_integrity_but_soft_warning_alone_does_not() -> None
     assert "score_collapse_detected" in hard_failure.integrity_issues
     assert soft_only.integrity_passed
     assert "result_sensitive_to_threshold" in soft_only.integrity_warnings
+
+
+def test_family_override_requires_explicit_benchmark_family() -> None:
+    common = {
+        "cases": _cases(),
+        "scores": [0.95, 0.90, 0.10, 0.05],
+        "config": _config(hard_conditions=[]),
+        "generic_text_fields": ["generic_context"],
+        "contract_text_fields": ["contract_rule_summary"],
+    }
+
+    global_report = run_benchmark_integrity_audit(**common)
+    family_report = run_benchmark_integrity_audit(
+        **common,
+        benchmark_family="paraphrase",
+    )
+
+    assert global_report.applied_generator_independence_threshold == 0.15
+    assert global_report.generator_independence_threshold_source == "global_default"
+    assert family_report.applied_generator_independence_threshold == 0.20
+    assert family_report.generator_independence_threshold_source == "family_override"
+    assert family_report.generator_independence_threshold_justification == (
+        "Explicit test override."
+    )
 
 
 def test_missing_optional_fields_warn_without_crashing() -> None:
@@ -230,3 +289,78 @@ def test_report_outputs_and_integrity_hash_are_stable(tmp_path: Path) -> None:
     payload = json.loads(json_path.read_text(encoding="utf-8"))
     preimage = {key: value for key, value in payload.items() if key != "integrity_hash"}
     assert payload["integrity_hash"] == stable_json_hash(preimage)
+    assert first.selectivity_delta_vs_random is not None
+    assert "selectivity_delta_vs_random_unavailable" not in first.integrity_warnings
+
+
+def test_high_overlap_cases_jsonl_is_written(tmp_path: Path) -> None:
+    cases = _cases()
+    cases[0]["generic_context"] = cases[0]["contract_rule_summary"]
+    report = run_benchmark_integrity_audit(
+        cases=cases,
+        scores=[0.95, 0.90, 0.10, 0.05],
+        config=_config(hard_conditions=[]),
+        generic_text_fields=["generic_context"],
+        contract_text_fields=["contract_rule_summary"],
+    )
+
+    write_integrity_audit_outputs(report, tmp_path)
+    rows = [
+        json.loads(line)
+        for line in (tmp_path / "high_overlap_cases.jsonl")
+        .read_text(encoding="utf-8")
+        .splitlines()
+    ]
+
+    assert report.high_overlap_cases_path == "high_overlap_cases.jsonl"
+    assert report.high_overlap_cases_hash is not None
+    assert rows[0]["case_id"] == "case_1"
+    assert rows[0]["token_overlap"] == 1.0
+    assert rows[0]["overlapping_tokens"]
+
+
+def test_reference_hash_registry_is_documentary_only(tmp_path: Path) -> None:
+    registry_path = tmp_path / "integrity_reference_hashes.json"
+    registry_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "integrity_reference_hashes_v1",
+                "references": [
+                    {
+                        "name": "failed_reference",
+                        "integrity_hash": "sha256:historical",
+                        "integrity_passed": False,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    registry = load_integrity_reference_hashes(registry_path)
+    report = run_benchmark_integrity_audit(
+        cases=_cases(),
+        scores=[0.95, 0.90, 0.10, 0.05],
+        config=_config(hard_conditions=[]),
+        generic_text_fields=["generic_context"],
+        contract_text_fields=["contract_rule_summary"],
+    )
+
+    assert registry["references"][0]["integrity_hash"] == "sha256:historical"
+    assert report.integrity_passed
+
+
+def test_repository_config_preserves_global_default_and_historical_reference() -> None:
+    config = json.loads(
+        Path("configs/benchmark_integrity_v1.json").read_text(encoding="utf-8")
+    )
+    registry = load_integrity_reference_hashes(
+        "configs/integrity_reference_hashes.json"
+    )
+
+    assert config["generator_independence_mean_overlap_threshold"] == 0.15
+    assert config["benchmark_family_overlap_thresholds"]["paraphrase"] == 0.20
+    assert registry["references"][0]["integrity_hash"] == (
+        "sha256:29d27b09f72d7d4a5cbc52e7114e00bc24ddb6802df62bd3a850fb493e85b1a7"
+    )
+    assert not registry["references"][0]["integrity_passed"]

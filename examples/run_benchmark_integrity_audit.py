@@ -25,6 +25,15 @@ def main() -> None:
     parser.add_argument("--score-field", default="gated_score")
     parser.add_argument("--config", default="configs/benchmark_integrity_v1.json")
     parser.add_argument("--out-dir", default="outputs/benchmark_integrity/default")
+    parser.add_argument("--benchmark-family", default="")
+    parser.add_argument("--budget", type=float, default=0.20)
+    parser.add_argument("--random-baseline-trials", type=int)
+    parser.add_argument(
+        "--no-write-high-overlap-cases",
+        action="store_false",
+        dest="write_high_overlap_cases",
+    )
+    parser.set_defaults(write_high_overlap_cases=True)
     parser.add_argument(
         "--generic-fields",
         default="generic_context,generic_memory,generic_rationale,tool,action_domain",
@@ -51,16 +60,34 @@ def main() -> None:
         generic_text_fields=_field_list(args.generic_fields),
         contract_text_fields=_field_list(args.contract_fields),
         label_field=args.label_field,
+        benchmark_family=args.benchmark_family,
+        budget=args.budget,
+        random_baseline_trials=args.random_baseline_trials,
     )
-    json_path, markdown_path = write_integrity_audit_outputs(report, args.out_dir)
+    json_path, markdown_path = write_integrity_audit_outputs(
+        report,
+        args.out_dir,
+        write_high_overlap_cases=args.write_high_overlap_cases,
+    )
 
     print(f"Integrity passed: {report.integrity_passed}")
     print(f"Score entropy: {report.score_entropy:.6f}")
     print(f"Threshold sensitivity delta: {report.threshold_sensitivity_delta:.6f}")
     print(f"Selectivity delta vs shuffled: {report.selectivity_delta_vs_shuffled}")
+    print(f"Selectivity delta vs random: {report.selectivity_delta_vs_random}")
     print(f"Leakage rate: {report.leakage_rate:.6f}")
+    print(f"Token overlap mean: {report.token_overlap_mean:.6f}")
+    print(
+        "Applied generator-independence threshold: "
+        f"{report.applied_generator_independence_threshold:.6f}"
+    )
+    print(
+        "Generator-independence threshold source: "
+        f"{report.generator_independence_threshold_source}"
+    )
     print(f"Hard issues: {report.integrity_issues}")
     print(f"Soft warnings: {report.integrity_warnings}")
+    print(f"High-overlap cases: {report.high_overlap_cases_path}")
     print(f"JSON report: {json_path}")
     print(f"Markdown report: {markdown_path}")
 
