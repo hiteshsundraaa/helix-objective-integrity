@@ -1,6 +1,12 @@
 import json
 from pathlib import Path
 
+import pytest
+
+from examples.run_v5_integrity_audit import (
+    load_v5_audit_inputs,
+    run_v5_integrity_audit,
+)
 from helix.benchmark.benchmark_receipts import stable_json_hash
 from helix.benchmark.integrity_audit import (
     BenchmarkIntegrityConfig,
@@ -364,3 +370,75 @@ def test_repository_config_preserves_global_default_and_historical_reference() -
         "sha256:29d27b09f72d7d4a5cbc52e7114e00bc24ddb6802df62bd3a850fb493e85b1a7"
     )
     assert not registry["references"][0]["integrity_passed"]
+    v5_reference = next(
+        reference
+        for reference in registry["references"]
+        if reference["name"] == "v5_split_view_acceptance_initial_audit"
+    )
+    assert v5_reference["integrity_hash"] == (
+        "sha256:ca3d5e922693a0d7d79dee2d72d3e64f2c4bdbeb887ebd112ee0dcc7b1e15ab9"
+    )
+    assert v5_reference["hard_issues"] == [
+        "score_collapse_detected",
+        "generator_independence_failed",
+    ]
+
+
+def test_v5_audit_runner_uses_gated_scores_and_reports_saturation(
+    tmp_path: Path,
+) -> None:
+    cases_path = tmp_path / "cases.jsonl"
+    receipts_path = tmp_path / "receipts.jsonl"
+    cases_path.write_text(
+        "\n".join(json.dumps(case) for case in _cases()) + "\n",
+        encoding="utf-8",
+    )
+    receipts_path.write_text(
+        "\n".join(
+            json.dumps(
+                {
+                    "sample_id": case["case_id"],
+                    "gated_score": score,
+                }
+            )
+            for case, score in zip(
+                _cases(),
+                [1.0, 1.0, 0.0, 0.0],
+                strict=True,
+            )
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    report, inputs, json_path, markdown_path = run_v5_integrity_audit(
+        cases_path=cases_path,
+        receipts_path=receipts_path,
+        config_path="configs/benchmark_integrity_v1.json",
+        out_dir=tmp_path / "out",
+    )
+
+    assert inputs.score_field == "gated_score"
+    assert inputs.unique_score_values == (0.0, 1.0)
+    assert inputs.binary_or_saturated_scores
+    assert report.score_collapse_detected
+    assert json_path.exists()
+    assert markdown_path.exists()
+    markdown = markdown_path.read_text(encoding="utf-8")
+    assert "binary_or_saturated_scores: `true`" in markdown
+    assert "does not replace saturated scores" in markdown
+
+
+def test_v5_audit_runner_fails_clearly_when_scores_are_missing(
+    tmp_path: Path,
+) -> None:
+    cases_path = tmp_path / "cases.jsonl"
+    receipts_path = tmp_path / "receipts.jsonl"
+    cases_path.write_text(json.dumps(_cases()[0]) + "\n", encoding="utf-8")
+    receipts_path.write_text(
+        json.dumps({"sample_id": _cases()[0]["case_id"]}) + "\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="Score field 'gated_score' missing"):
+        load_v5_audit_inputs(cases_path, receipts_path)

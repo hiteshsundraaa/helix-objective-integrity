@@ -81,7 +81,14 @@ def test_default_rollup_preserves_v6_failed_integrity_audit(tmp_path: Path) -> N
             },
         ),
         "v5_manifest": _write_json(tmp_path / "v5_manifest.json", {"manifest_hash": "x"}),
-        "v5_hostile_baselines": _write_json(tmp_path / "hostile.json", {"status": "complete"}),
+        "v5_hostile_baselines": _write_json(
+            tmp_path / "hostile.json",
+            {"selectivity_delta_vs_baselines": {"matched_friction_random": 0.5}},
+        ),
+        "v5_integrity": _write_json(
+            tmp_path / "v5_integrity.json",
+            _integrity(False),
+        ),
         "v6_paraphrase": _write_json(
             tmp_path / "paraphrase.json",
             {"status": "complete", "main_tpr": 1.0, "main_fpr": 0.0},
@@ -118,9 +125,17 @@ def test_default_rollup_preserves_v6_failed_integrity_audit(tmp_path: Path) -> N
         for record in summary.records
         if record.protocol_name == "v6_paraphrase_google_flash"
     )
+    v5 = next(
+        record
+        for record in summary.records
+        if record.protocol_name == "v5_split_view_acceptance"
+    )
 
     assert summary.protocol_count == 5
     assert summary.max_assigned_level < 5
+    assert v5.evidence_level == 3
+    assert v5.integrity_audit_status == "failed"
+    assert v5.integrity_hard_issues == ["score_collapse_detected"]
     assert v6.evidence_level == 3
     assert v6.integrity_hard_issues == ["score_collapse_detected"]
     assert v6.integrity_metrics["selectivity_delta_vs_random"] == 0.5

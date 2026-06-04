@@ -14,6 +14,19 @@
         "selectivity_delta_vs_random_unavailable"
       ],
       "notes": "Initial integrity audit of v6 paraphrase Google Flash replay. Failure is preserved as baseline evidence of saturated binary scoring and borderline overlap."
+    },
+    {
+      "name": "v5_split_view_acceptance_initial_audit",
+      "integrity_hash": "sha256:ca3d5e922693a0d7d79dee2d72d3e64f2c4bdbeb887ebd112ee0dcc7b1e15ab9",
+      "integrity_passed": false,
+      "hard_issues": [
+        "score_collapse_detected",
+        "generator_independence_failed"
+      ],
+      "soft_warnings": [
+        "high_overlap_cases_detected"
+      ],
+      "notes": "Initial integrity audit of v5 split-view acceptance using receipt-linked gated_score values. The 200 scores are saturated at 0.0/1.0, and the mixed-family suite exceeds the preregistered global generator-independence mean-overlap threshold."
     }
   ]
 }

@@ -20,6 +20,9 @@ DEFAULT_EVIDENCE_LEVEL_ARTIFACTS = {
     "v5_acceptance": "outputs/v5_acceptance/v5_acceptance_summary.json",
     "v5_manifest": "outputs/v5_acceptance/paired_split_view_analysis/benchmark_run_manifest.json",
     "v5_hostile_baselines": "outputs/hostile_baselines/v5/hostile_baseline_summary.json",
+    "v5_integrity": (
+        "outputs/benchmark_integrity/v5_split_view_acceptance/integrity_report.json"
+    ),
     "v6_paraphrase": "outputs/paraphrase_analysis/v6_google_flash/paraphrase_summary.json",
     "v6_multi_provider": (
         "outputs/multi_provider_replay/v6_paraphrase_with_negative_control/"
@@ -217,6 +220,7 @@ def collect_benchmark_evidence_levels(
     }
     v5 = _read_optional_json(paths.get("v5_acceptance"))
     hostile = _read_optional_json(paths.get("v5_hostile_baselines"))
+    v5_integrity = _read_optional_json(paths.get("v5_integrity"))
     paraphrase = _read_optional_json(paths.get("v6_paraphrase"))
     multi_provider = _read_optional_json(paths.get("v6_multi_provider"))
     integrity = _read_optional_json(paths.get("v6_paraphrase_integrity"))
@@ -240,9 +244,13 @@ def collect_benchmark_evidence_levels(
                 and _exists(paths.get("v5_manifest"))
             ),
             hostile_or_degraded_controls_passed=_hostile_baselines_passed(hostile),
-            integrity_report=None,
+            integrity_report=v5_integrity,
             artifact_paths=_existing_path_strings(
-                paths, "v5_acceptance", "v5_manifest", "v5_hostile_baselines"
+                paths,
+                "v5_acceptance",
+                "v5_manifest",
+                "v5_hostile_baselines",
+                "v5_integrity",
             ),
         ),
         assign_evidence_level(
