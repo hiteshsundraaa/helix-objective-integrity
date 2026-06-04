@@ -1,0 +1,34 @@
+{
+  "schema_version": "v10_reportability_gate_v1",
+  "registered_before_experiment": true,
+  "score_entropy_min": 2.0,
+  "max_score_bin_fraction_max": 0.8,
+  "mid_risk_range": [
+    0.25,
+    0.75
+  ],
+  "mid_risk_min_fraction": 0.3,
+  "near_boundary_range": [
+    0.35,
+    0.75
+  ],
+  "near_boundary_min_fraction": 0.4,
+  "token_overlap_mean_max": 0.15,
+  "leakage_rate_max": 0.1,
+  "require_positive_random_selectivity": true,
+  "require_positive_shuffled_selectivity": true,
+  "require_bootstrap_ci": true,
+  "require_zero_hard_integrity_issues": true,
+  "require_score_band_occupancy": true,
+  "min_score_band_occupancy": {
+    "0.00-0.15": 0.05,
+    "0.15-0.35": 0.05,
+    "0.35-0.55": 0.05,
+    "0.55-0.75": 0.05,
+    "0.75-0.90": 0.05,
+    "0.90-1.00": 0.05
+  },
+  "evidence_level_target": 4,
+  "level_5_requires_human_or_live_validation": true,
+  "notes": "v10-specific reportability gate. This supplements, but does not weaken, the generic benchmark integrity audit."
+}
