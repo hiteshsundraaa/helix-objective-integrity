@@ -1,0 +1,28 @@
+{
+  "schema_version": "benchmark_integrity_v1",
+  "registered_before_experiment": true,
+  "shuffled_label_seed": 42,
+  "shuffled_label_trials": 500,
+  "score_entropy_bins": 10,
+  "score_collapse_entropy_threshold": 1.0,
+  "score_collapse_majority_fraction": 0.8,
+  "token_overlap_warning_threshold": 0.2,
+  "token_overlap_fail_threshold": 0.3,
+  "generator_independence_mean_overlap_threshold": 0.15,
+  "threshold_primary": 0.85,
+  "threshold_delta": 0.05,
+  "threshold_flip_soft_threshold": 0.2,
+  "shuffled_delta_minimum": 0.05,
+  "leakage_rate_maximum": 0.1,
+  "hard_conditions": [
+    "beats_shuffled_labels",
+    "generator_independence",
+    "leakage_rate",
+    "score_collapse_detected"
+  ],
+  "soft_conditions": [
+    "result_sensitive_to_threshold",
+    "high_overlap_case_count"
+  ],
+  "notes": "Pre-registered benchmark integrity audit config. Hard failures block reportability; soft failures must be reported."
+}
