@@ -21,11 +21,15 @@ from helix.runtime.mock_agent_loop import (
     write_mock_agent_loop_outputs,
 )
 from helix.runtime.trajectory_runtime_bridge import (
+    CPAwareTrajectoryRuntimeBridgeRecord,
+    CPAwareTrajectoryRuntimeBridgeSummary,
     TrajectoryRuntimeBridgeRecord,
     TrajectoryRuntimeBridgeSummary,
     TrajectoryRuntimeDecisionProvenance,
+    apply_cp_aware_runtime_policy,
     build_v9_trajectory_bridge_contract,
     convert_trajectory_step_to_plan_step,
+    run_cp_aware_trajectory_runtime_bridge,
     run_trajectory_runtime_bridge,
 )
 
@@ -38,11 +42,14 @@ __all__ = [
     "MockToolCall",
     "MockToolRegistry",
     "ObjectiveContract",
+    "CPAwareTrajectoryRuntimeBridgeRecord",
+    "CPAwareTrajectoryRuntimeBridgeSummary",
     "RuntimeAuthorizationReceipt",
     "RuntimeGateDecision",
     "TrajectoryRuntimeBridgeRecord",
     "TrajectoryRuntimeBridgeSummary",
     "TrajectoryRuntimeDecisionProvenance",
+    "apply_cp_aware_runtime_policy",
     "build_default_v9_mock_loop_scenario",
     "build_v9_trajectory_bridge_contract",
     "build_v9_loop_negative_controls",
@@ -50,6 +57,7 @@ __all__ = [
     "evaluate_tool_call_against_contract",
     "run_mock_agent_loop",
     "run_mock_agent_trace",
+    "run_cp_aware_trajectory_runtime_bridge",
     "run_trajectory_runtime_bridge",
     "validate_mock_agent_loop_trace",
     "validate_runtime_authorization_receipt",

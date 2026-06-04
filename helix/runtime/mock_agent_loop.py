@@ -13,6 +13,7 @@ from helix.runtime.mock_agent_harness import (
     MockToolCall,
     ObjectiveContract,
     RuntimeAuthorizationReceipt,
+    RuntimeGateDecision,
     build_runtime_authorization_receipt,
     canonical_contract_hash,
     evaluate_tool_call_against_contract,
@@ -30,6 +31,10 @@ ExecutionStatus = Literal[
 ]
 
 ToolHandler = Callable[[dict[str, str]], tuple[str, bool]]
+RuntimeDecisionEvaluator = Callable[
+    [ObjectiveContract, MockToolCall],
+    RuntimeGateDecision,
+]
 
 
 class MockAgentPlanStep(BaseModel):
@@ -203,6 +208,7 @@ def run_mock_agent_loop(
     tool_registry: MockToolRegistry,
     loop_id: str | None = None,
     task: str | None = None,
+    decision_evaluator: RuntimeDecisionEvaluator | None = None,
 ) -> tuple[MockAgentLoopTrace, MockAgentLoopSummary]:
     ordered_steps = sorted(plan_steps, key=lambda step: step.step_index)
     resolved_loop_id = loop_id or f"{contract.contract_id}_loop"
@@ -229,7 +235,10 @@ def run_mock_agent_loop(
             continue
 
         tool_call = _tool_call_from_step(step)
-        decision = evaluate_tool_call_against_contract(contract, tool_call)
+        decision = (decision_evaluator or evaluate_tool_call_against_contract)(
+            contract,
+            tool_call,
+        )
         gate_decision_order, receipt_emission_order, execution_order = _event_orders(
             step,
             decision.decision in {"ALLOW", "WARN"},
@@ -292,14 +301,6 @@ def run_mock_agent_loop(
         ):
             prevented_execution_count += 1
     latencies = [receipt.latency_ms for receipt in receipts]
-    blocked_actions = {
-        receipt.action for receipt in receipts if receipt.decision == "BLOCK"
-    }
-    escalated_actions = {
-        receipt.action
-        for receipt in receipts
-        if receipt.decision == "ESCALATE_FOR_APPROVAL"
-    }
     forbidden_decisions = {"BLOCK", "ESCALATE_FOR_APPROVAL"}
     summary = MockAgentLoopSummary(
         loop_id=resolved_loop_id,
@@ -328,12 +329,14 @@ def run_mock_agent_loop(
         mean_gate_latency_ms=sum(latencies) / len(latencies) if latencies else 0.0,
         max_gate_latency_ms=max(latencies) if latencies else 0.0,
         blocked_tool_invocation_count=sum(
-            tool_registry.invocation_count_by_action.get(action, 0)
-            for action in blocked_actions
+            receipt.call_id in tool_registry.invoked_step_ids
+            for receipt in receipts
+            if receipt.decision == "BLOCK"
         ),
         escalated_tool_invocation_count=sum(
-            tool_registry.invocation_count_by_action.get(action, 0)
-            for action in escalated_actions
+            receipt.call_id in tool_registry.invoked_step_ids
+            for receipt in receipts
+            if receipt.decision == "ESCALATE_FOR_APPROVAL"
         ),
         forbidden_side_effect_count=sum(
             result.side_effect_applied
@@ -561,29 +564,13 @@ def validate_mock_agent_loop_trace(
         for receipt in receipts
         if receipt.decision == "ESCALATE_FOR_APPROVAL"
     }
-    blocked_actions = {
-        receipt.action for receipt in receipts if receipt.decision == "BLOCK"
-    }
-    escalated_actions = {
-        receipt.action
-        for receipt in receipts
-        if receipt.decision == "ESCALATE_FOR_APPROVAL"
-    }
-    blocked_invocations = sum(
-        summary.tool_invocation_counts.get(action, 0) for action in blocked_actions
-    )
-    escalated_invocations = sum(
-        summary.tool_invocation_counts.get(action, 0) for action in escalated_actions
-    )
     if (
-        blocked_invocations
-        or summary.blocked_tool_invocation_count
+        summary.blocked_tool_invocation_count
         or blocked_ids.intersection(summary.invoked_step_ids)
     ):
         issues.add("blocked_tool_function_invoked")
     if (
-        escalated_invocations
-        or summary.escalated_tool_invocation_count
+        summary.escalated_tool_invocation_count
         or escalated_ids.intersection(summary.invoked_step_ids)
     ):
         issues.add("escalated_tool_function_invoked")
