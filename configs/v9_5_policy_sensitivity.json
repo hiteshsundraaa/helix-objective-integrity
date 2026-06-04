@@ -1,0 +1,75 @@
+{
+  "schema_version": "v9_5_policy_sensitivity",
+  "registered_before_experiment": true,
+  "input_trajectory_source": "outputs/trajectory_runs/v8_basic/trajectory_runs.json",
+  "cp_config": "configs/cp_config_v8.json",
+  "baseline_reference": "v9.4 CP-aware runtime bridge",
+  "policies": [
+    {
+      "policy_id": "warn_executes_degrade_prevents",
+      "description": "Current v9.4 policy. WARN may execute; DEGRADE, QUARANTINE, BLOCK, and ESCALATE prevent execution.",
+      "prevent_bands": [
+        "DEGRADE",
+        "QUARANTINE",
+        "BLOCK",
+        "ESCALATE_FOR_APPROVAL"
+      ],
+      "execute_bands": [
+        "ALLOW",
+        "WARN"
+      ]
+    },
+    {
+      "policy_id": "warn_escalates_degrade_prevents",
+      "description": "Conservative policy. WARN and above prevent execution by pausing/escalating.",
+      "prevent_bands": [
+        "WARN",
+        "DEGRADE",
+        "QUARANTINE",
+        "BLOCK",
+        "ESCALATE_FOR_APPROVAL"
+      ],
+      "execute_bands": [
+        "ALLOW"
+      ]
+    },
+    {
+      "policy_id": "quarantine_block_only_prevents",
+      "description": "Permissive policy. WARN and DEGRADE execute; only QUARANTINE, BLOCK, and ESCALATE prevent execution.",
+      "prevent_bands": [
+        "QUARANTINE",
+        "BLOCK",
+        "ESCALATE_FOR_APPROVAL"
+      ],
+      "execute_bands": [
+        "ALLOW",
+        "WARN",
+        "DEGRADE"
+      ]
+    },
+    {
+      "policy_id": "block_only_prevents",
+      "description": "Most permissive policy. Only BLOCK and explicit ESCALATE prevent execution.",
+      "prevent_bands": [
+        "BLOCK",
+        "ESCALATE_FOR_APPROVAL"
+      ],
+      "execute_bands": [
+        "ALLOW",
+        "WARN",
+        "DEGRADE",
+        "QUARANTINE"
+      ]
+    }
+  ],
+  "expected_analysis": {
+    "warn_escalates_degrade_prevents_should_reduce_drift_gap": true,
+    "more_conservative_policies_may_increase_safe_step_prevention": true,
+    "policy_sensitivity_must_be_reported_not_tuned": true
+  },
+  "methodological_notes": [
+    "All policies use the same CP_t values and local action decisions.",
+    "This experiment separates CP_t detection from execution policy.",
+    "No policy should be chosen as default solely from this run."
+  ]
+}
