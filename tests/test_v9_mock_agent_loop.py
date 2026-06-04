@@ -5,6 +5,7 @@ from helix.runtime.mock_agent_harness import stable_json_hash
 from helix.runtime.mock_agent_loop import (
     build_default_v9_mock_loop_scenario,
     run_mock_agent_loop,
+    validate_mock_agent_loop_trace,
     write_mock_agent_loop_outputs,
 )
 
@@ -43,7 +44,7 @@ def test_allowed_calls_execute_and_blocked_or_escalated_calls_do_not() -> None:
 
 
 def test_default_loop_summary_proves_pre_execution_enforcement() -> None:
-    _, _, _, summary = _run_default()
+    contract, _, trace, summary = _run_default()
 
     assert summary.attempted_tool_calls == 6
     assert summary.blocked_tool_calls == 2
@@ -54,6 +55,10 @@ def test_default_loop_summary_proves_pre_execution_enforcement() -> None:
     assert summary.receipt_count == summary.attempted_tool_calls
     assert summary.invalid_receipt_count == 0
     assert summary.self_report_used_for_decision_count == 0
+    assert summary.blocked_tool_invocation_count == 0
+    assert summary.escalated_tool_invocation_count == 0
+    assert summary.forbidden_side_effect_count == 0
+    assert validate_mock_agent_loop_trace(trace, summary, contract=contract) == []
 
 
 def test_self_report_text_is_preserved_in_trace_but_not_used() -> None:
@@ -98,6 +103,11 @@ def test_output_files_manifest_and_report_are_written(tmp_path: Path) -> None:
     assert manifest_json["manifest_hash"] == manifest.manifest_hash
     assert manifest_json["schema_version"] == "v9.1_mock_agent_loop"
     assert manifest_json["receipt_count"] == 6
+    assert manifest_json["prevention_mechanism"] == "pre_dispatch_interrupt"
+    assert manifest_json["prevention_guarantee"] == "tool_function_never_invoked"
+    assert manifest_json["rollback_supported"] is False
+    assert manifest_json["gate_latency_note"] == "deterministic_mock_only"
+    assert manifest_json["llm_gate_latency_estimate_ms"] == "not_measured"
     manifest_preimage = {
         key: value
         for key, value in manifest_json.items()

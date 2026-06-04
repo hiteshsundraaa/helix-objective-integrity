@@ -73,6 +73,9 @@ class RuntimeAuthorizationReceipt(BaseModel):
     latency_ms: float
     tool_call_hash: str
     receipt_hash: str
+    gate_decision_order: int | None = None
+    receipt_emission_order: int | None = None
+    execution_order: int | None = None
 
 
 class RuntimeHarnessSummary(BaseModel):

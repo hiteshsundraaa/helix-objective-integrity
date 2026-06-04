@@ -15,7 +15,9 @@ from helix.runtime.mock_agent_loop import (
     MockToolExecutionResult,
     MockToolRegistry,
     build_default_v9_mock_loop_scenario,
+    build_v9_loop_negative_controls,
     run_mock_agent_loop,
+    validate_mock_agent_loop_trace,
     write_mock_agent_loop_outputs,
 )
 
@@ -31,9 +33,11 @@ __all__ = [
     "RuntimeAuthorizationReceipt",
     "RuntimeGateDecision",
     "build_default_v9_mock_loop_scenario",
+    "build_v9_loop_negative_controls",
     "evaluate_tool_call_against_contract",
     "run_mock_agent_loop",
     "run_mock_agent_trace",
+    "validate_mock_agent_loop_trace",
     "validate_runtime_authorization_receipt",
     "write_mock_agent_loop_outputs",
 ]
