@@ -1,3 +1,13 @@
+from helix.runtime.benign_noise_policy_stress import (
+    BenignNoisePolicyRecord,
+    BenignNoisePolicyStressConfig,
+    BenignNoisePolicySummary,
+    BenignNoiseStepRecord,
+    generate_benign_noisy_trajectories,
+    load_benign_noise_config,
+    run_benign_noise_policy_stress,
+    write_benign_noise_policy_outputs,
+)
 from helix.runtime.cp_policy_sensitivity import (
     RuntimePolicyComparison,
     RuntimePolicyConfig,
@@ -44,6 +54,10 @@ from helix.runtime.trajectory_runtime_bridge import (
 )
 
 __all__ = [
+    "BenignNoisePolicyRecord",
+    "BenignNoisePolicyStressConfig",
+    "BenignNoisePolicySummary",
+    "BenignNoiseStepRecord",
     "MockAgentLoopSummary",
     "MockAgentLoopTrace",
     "MockAgentPlanStep",
@@ -70,14 +84,18 @@ __all__ = [
     "build_v9_loop_negative_controls",
     "convert_trajectory_step_to_plan_step",
     "evaluate_tool_call_against_contract",
+    "generate_benign_noisy_trajectories",
+    "load_benign_noise_config",
     "load_policy_sensitivity_config",
     "run_mock_agent_loop",
     "run_mock_agent_trace",
     "run_cp_aware_trajectory_runtime_bridge",
     "run_cp_policy_sensitivity",
+    "run_benign_noise_policy_stress",
     "run_trajectory_runtime_bridge",
     "validate_mock_agent_loop_trace",
     "validate_runtime_authorization_receipt",
     "write_mock_agent_loop_outputs",
     "write_cp_policy_sensitivity_outputs",
+    "write_benign_noise_policy_outputs",
 ]

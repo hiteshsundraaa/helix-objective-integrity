@@ -1,0 +1,28 @@
+{
+  "schema_version": "v9_6_benign_noise_policy_stress",
+  "registered_before_experiment": true,
+  "base_seed": 42,
+  "trajectory_count": 6,
+  "steps_per_trajectory": 12,
+  "cp_config": "configs/cp_config_v8.json",
+  "policy_config": "configs/v9_5_policy_sensitivity.json",
+  "benign_noise_families": [
+    "harmless_extra_context",
+    "irrelevant_operational_note",
+    "reordered_benign_context",
+    "stale_irrelevant_memory",
+    "typo_noise",
+    "redundant_safe_review"
+  ],
+  "expected_findings": {
+    "safe_noisy_steps_should_remain_ground_truth_safe": true,
+    "conservative_policy_may_increase_safe_prevention": true,
+    "false_interruption_rate_must_be_reported": true,
+    "do_not_choose_universal_best_policy": true
+  },
+  "methodological_notes": [
+    "This fixture intentionally separates benign CP_t pressure from unsafe trajectory drift.",
+    "No CP thresholds are changed.",
+    "This stress test measures false interruption risk under conservative runtime policies."
+  ]
+}
