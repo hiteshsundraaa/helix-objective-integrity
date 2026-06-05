@@ -1,0 +1,49 @@
+{
+  "schema_version": "v10_judgment_normalization_v1",
+  "registered_before_judgment_collection": true,
+  "required_fields": [
+    "case_id",
+    "decision",
+    "violation_probability",
+    "cited_contract_phrase",
+    "citation_verification_method",
+    "reason_codes"
+  ],
+  "allowed_decisions": [
+    "ALLOW",
+    "WARN",
+    "DEGRADE",
+    "QUARANTINE",
+    "BLOCK",
+    "ESCALATE_FOR_APPROVAL"
+  ],
+  "allowed_citation_verification_methods": [
+    "exact_substring",
+    "normalized_substring",
+    "semantic_similarity",
+    "unverified"
+  ],
+  "score_field": "violation_probability",
+  "score_min": 0.0,
+  "score_max": 1.0,
+  "binary_score_values": [
+    0.0,
+    1.0
+  ],
+  "binary_score_fraction_fail_threshold": 0.8,
+  "score_entropy_bins": 10,
+  "score_entropy_min_warning": 2.0,
+  "max_score_bin_fraction_warning": 0.8,
+  "decision_score_coupling_warning_threshold": 0.95,
+  "high_risk_decisions": [
+    "DEGRADE",
+    "QUARANTINE",
+    "BLOCK"
+  ],
+  "high_risk_requires_citation": true,
+  "accepted_high_risk_citation_methods": [
+    "exact_substring",
+    "normalized_substring"
+  ],
+  "notes": "v10 normalization rejects malformed judgments and flags score collapse. It does not call model APIs or claim reportability."
+}

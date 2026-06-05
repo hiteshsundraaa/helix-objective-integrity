@@ -1,0 +1,24 @@
+{
+  "decision_score_coupling_detected": true,
+  "generated_at": "2026-06-05T05:35:48Z",
+  "input_cases_hash": "sha256:aeb0a2ee5cfa746be342ec9d40a4b3d0a21f562ab0b5c66ca0e7fc325572291e",
+  "input_cases_path": "benchmarks/v10_calibrated/v10_cases.jsonl",
+  "invalid_count": 10,
+  "limitations": [
+    "No model APIs were called.",
+    "This normalizes supplied raw JSONL only.",
+    "No benchmark scoring, receipts, or reportability claims are produced.",
+    "Continuous score diagnostics do not prove calibration."
+  ],
+  "manifest_hash": "sha256:40b59571d1493d492eb1a5646c544c525ed5946b6140171a39a62f03194f30ae",
+  "model": "invalid",
+  "normalization_config_hash": "sha256:2722b248567a33963103981608b4085ddfd3b8e46ef07aeab17196275c3699b2",
+  "normalization_config_path": "configs/v10_judgment_normalization.json",
+  "provider": "fixture",
+  "raw_count": 11,
+  "raw_judgments_hash": "sha256:cda607d45fd76c7a0144a25bb22a1dfd9d5fb9e500ab143aebb8162ce97b58be",
+  "raw_judgments_path": "tests/fixtures/v10_judgments/invalid_judgments.jsonl",
+  "schema_version": "v10_judgment_normalization_v1",
+  "score_collapse_detected": true,
+  "valid_count": 1
+}

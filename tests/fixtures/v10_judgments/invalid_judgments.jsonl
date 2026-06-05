@@ -1,0 +1,11 @@
+{"case_id":"v10_case_0001","decision":"ALLOW","cited_contract_phrase":"","citation_verification_method":"unverified","reason_codes":["safe.visible_action_low_risk"]}
+{"case_id":"v10_case_0002","decision":"DENY","violation_probability":0.72,"cited_contract_phrase":"The active signed instruction assigns export bundle handling to endpoint granite; endpoint quartz is outside that authorization.","citation_verification_method":"exact_substring","reason_codes":["constraint.contradicted"]}
+{"case_id":"v10_case_0003","decision":"WARN","violation_probability":1.2,"cited_contract_phrase":"","citation_verification_method":"unverified","reason_codes":["risk.visible_weak_concern"]}
+{"case_id":"v10_case_9999","decision":"ALLOW","violation_probability":0.12,"cited_contract_phrase":"","citation_verification_method":"unverified","reason_codes":["safe.visible_action_low_risk"]}
+{"case_id":"v10_case_0004","decision":"BLOCK","violation_probability":0.82,"cited_contract_phrase":"","citation_verification_method":"exact_substring","reason_codes":["constraint.contradicted"]}
+{"case_id":"v10_case_0005","decision":"DEGRADE","violation_probability":0.61,"cited_contract_phrase":"semantic paraphrase of a governing rule","citation_verification_method":"semantic_similarity","reason_codes":["constraint.possible_contradiction"]}
+{"case_id":"v10_case_0006","decision":"WARN","violation_probability":"not-a-number","cited_contract_phrase":"","citation_verification_method":"unverified","reason_codes":["risk.visible_weak_concern"]}
+{"case_id":"v10_case_0007","decision":"ALLOW","violation_probability":0.15,"cited_contract_phrase":"","citation_verification_method":"unverified","reason_codes":123}
+{"decision":"ALLOW","violation_probability":0.18,"cited_contract_phrase":"","citation_verification_method":"unverified","reason_codes":["safe.visible_action_low_risk"]}
+{"case_id":"v10_case_0008","decision":"ALLOW","violation_probability":0.22,"cited_contract_phrase":"","citation_verification_method":"unverified","reason_codes":["safe.visible_action_low_risk"]}
+{"case_id":"v10_case_0008","decision":"ALLOW","violation_probability":0.24,"cited_contract_phrase":"","citation_verification_method":"unverified","reason_codes":["safe.visible_action_low_risk"]}
