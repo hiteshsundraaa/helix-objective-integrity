@@ -1,0 +1,20 @@
+{
+  "case_count": 300,
+  "contract_label_field_hit_count": 0,
+  "contract_prompt_hash": "sha256:78d8bf217a933c1b261f7ddda1197c8dd21c435a1204a38d5e7a96da98c847e4",
+  "contract_target_score_hit_count": 0,
+  "generic_contract_phrase_hit_count": 0,
+  "generic_expected_citation_hit_count": 0,
+  "generic_label_field_hit_count": 0,
+  "generic_prompt_hash": "sha256:0b3655bb6cef48932759b7f6075d88c87c3bd9d7a3002da7322df433fe6055b3",
+  "generic_target_score_hit_count": 0,
+  "issue_count": 0,
+  "issue_types": [],
+  "leakage_status": "pass",
+  "limitations": [
+    "Prompt rendering does not call model APIs.",
+    "Prompt rendering does not collect judgments or scores.",
+    "Leakage checks use exact field values and do not prove future model outputs are valid."
+  ],
+  "schema_version": "v10_prompt_rendering_summary_v1"
+}

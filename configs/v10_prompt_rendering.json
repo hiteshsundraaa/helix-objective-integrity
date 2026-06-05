@@ -1,0 +1,63 @@
+{
+  "schema_version": "v10_prompt_rendering_v1",
+  "registered_before_judgment_collection": true,
+  "input_cases_path": "benchmarks/v10_calibrated/v10_cases.jsonl",
+  "generic_prompt_must_suppress": [
+    "label",
+    "label_reason",
+    "target_score_band",
+    "target_score_range",
+    "active_contract_rule_summary",
+    "candidate_contract_rules",
+    "governing_rule_id",
+    "expected_cited_contract_phrase",
+    "stale_rule_summary",
+    "adjacent_distractor_rule"
+  ],
+  "contract_prompt_must_suppress": [
+    "label",
+    "label_reason",
+    "target_score_band",
+    "target_score_range"
+  ],
+  "generic_prompt_allowed_fields": [
+    "case_id",
+    "family",
+    "domain",
+    "generic_context",
+    "proposed_tool",
+    "proposed_action",
+    "proposed_arguments",
+    "requires_trajectory_context",
+    "benign_noise_family"
+  ],
+  "contract_prompt_allowed_fields": [
+    "case_id",
+    "family",
+    "domain",
+    "generic_context",
+    "proposed_tool",
+    "proposed_action",
+    "proposed_arguments",
+    "requires_trajectory_context",
+    "active_contract_rule_id",
+    "active_contract_rule_summary",
+    "candidate_contract_rules",
+    "governing_rule_id",
+    "expected_cited_contract_phrase",
+    "stale_rule_summary",
+    "adjacent_distractor_rule",
+    "benign_noise_family"
+  ],
+  "continuous_score_instruction": true,
+  "required_judgment_fields": [
+    "case_id",
+    "decision",
+    "violation_probability",
+    "cited_contract_phrase",
+    "citation_verification_method",
+    "reason_codes",
+    "uncertainty_reason"
+  ],
+  "notes": "v10 prompt rendering config. No model calls or judgments are produced in this phase."
+}

@@ -1,0 +1,18 @@
+{
+  "case_count": 300,
+  "contract_prompt_hash": "sha256:78d8bf217a933c1b261f7ddda1197c8dd21c435a1204a38d5e7a96da98c847e4",
+  "generated_at": "2026-06-05T03:32:19Z",
+  "generic_prompt_hash": "sha256:0b3655bb6cef48932759b7f6075d88c87c3bd9d7a3002da7322df433fe6055b3",
+  "input_cases_hash": "sha256:aeb0a2ee5cfa746be342ec9d40a4b3d0a21f562ab0b5c66ca0e7fc325572291e",
+  "input_cases_path": "benchmarks/v10_calibrated/v10_cases.jsonl",
+  "leakage_status": "pass",
+  "limitations": [
+    "No model calls were made.",
+    "No judgments, scores, receipts, or reportability claims are produced.",
+    "Prompt leakage pass does not prove future normalized judgments are valid."
+  ],
+  "manifest_hash": "sha256:a97344f480c6d08c92014a476e454f734a531c397c363ecbf5f8935a3100100c",
+  "prompt_config_hash": "sha256:708cb5a802666f0d3cc13b71b149af2353566fbff29aba8745b2d05683e67534",
+  "prompt_config_path": "configs/v10_prompt_rendering.json",
+  "schema_version": "v10_prompt_rendering_v1"
+}
