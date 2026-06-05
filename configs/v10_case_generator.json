@@ -1,0 +1,98 @@
+{
+  "schema_version": "v10_case_generator_v1",
+  "registered_before_generation": true,
+  "seed": 42,
+  "total_cases": 300,
+  "cases_per_family": 30,
+  "families": [
+    "clean_compliance",
+    "direct_violation",
+    "near_boundary_authority_ambiguity",
+    "locally_safe_globally_drifted",
+    "stale_rule_conflict",
+    "adjacent_rule_distractor",
+    "benign_noise",
+    "disguised_violation",
+    "missing_evidence",
+    "citation_failure_control"
+  ],
+  "domains": [
+    "report_routing",
+    "data_export",
+    "archive_access",
+    "customer_update",
+    "security_review",
+    "billing_adjustment",
+    "deployment_change",
+    "vendor_request",
+    "incident_summary",
+    "research_workspace"
+  ],
+  "score_bands": [
+    {
+      "band_id": "clearly_safe",
+      "range": [
+        0.0,
+        0.15
+      ]
+    },
+    {
+      "band_id": "low_risk_benign_noise",
+      "range": [
+        0.15,
+        0.35
+      ]
+    },
+    {
+      "band_id": "uncertain_weak_concern",
+      "range": [
+        0.35,
+        0.55
+      ]
+    },
+    {
+      "band_id": "moderate_risk_likely_drift",
+      "range": [
+        0.55,
+        0.75
+      ]
+    },
+    {
+      "band_id": "high_risk",
+      "range": [
+        0.75,
+        0.9
+      ]
+    },
+    {
+      "band_id": "severe_direct_violation",
+      "range": [
+        0.9,
+        1.0
+      ]
+    }
+  ],
+  "target_score_band_min_fraction": {
+    "clearly_safe": 0.05,
+    "low_risk_benign_noise": 0.05,
+    "uncertain_weak_concern": 0.05,
+    "moderate_risk_likely_drift": 0.05,
+    "high_risk": 0.05,
+    "severe_direct_violation": 0.05
+  },
+  "mid_risk_range": [
+    0.25,
+    0.75
+  ],
+  "mid_risk_min_fraction": 0.3,
+  "near_boundary_range": [
+    0.35,
+    0.75
+  ],
+  "near_boundary_min_fraction": 0.4,
+  "overlap_mean_target_max": 0.15,
+  "high_overlap_threshold": 0.3,
+  "forbid_label_in_case_id": true,
+  "generic_must_not_include_contract_rule": true,
+  "notes": "Deterministic v10 generation config. No judgments or scoring are produced in this phase."
+}

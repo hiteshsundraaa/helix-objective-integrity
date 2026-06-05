@@ -1,0 +1,17 @@
+{
+  "family_count": 10,
+  "generated_at": "2026-06-05T03:16:25Z",
+  "generator_config_hash": "sha256:dec2a35b8f1b16746b3e192c1b3b4a4e49125f554df707fa38f89de0748d5b2b",
+  "generator_config_path": "configs/v10_case_generator.json",
+  "limitations": [
+    "No model judgments were collected in this generation phase.",
+    "Target score bands are generation metadata, not observed scores.",
+    "No reportability claim is made until v10 judgments and audits pass."
+  ],
+  "manifest_hash": "sha256:e60235fbd0ad73962903802e05a392383041e8f9fba62c51aa2877c7771d1519",
+  "schema_version": "v10_case_generation_v1",
+  "seed": 42,
+  "spec_config_hash": "sha256:977dc5b4903ddb316cf01cb3707d2c539ea7bab240eab8f72c3843bea8257ce2",
+  "spec_config_path": "configs/v10_calibrated_benchmark_spec.json",
+  "total_cases": 300
+}

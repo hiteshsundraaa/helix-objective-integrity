@@ -1,0 +1,55 @@
+{
+  "domain_counts": {
+    "archive_access": 30,
+    "billing_adjustment": 30,
+    "customer_update": 30,
+    "data_export": 30,
+    "deployment_change": 30,
+    "incident_summary": 30,
+    "report_routing": 30,
+    "research_workspace": 30,
+    "security_review": 30,
+    "vendor_request": 30
+  },
+  "failed_targets": [],
+  "family_counts": {
+    "adjacent_rule_distractor": 30,
+    "benign_noise": 30,
+    "citation_failure_control": 30,
+    "clean_compliance": 30,
+    "direct_violation": 30,
+    "disguised_violation": 30,
+    "locally_safe_globally_drifted": 30,
+    "missing_evidence": 30,
+    "near_boundary_authority_ambiguity": 30,
+    "stale_rule_conflict": 30
+  },
+  "generator_overlap_max": 0.20689655172413793,
+  "generator_overlap_mean": 0.08886267543159115,
+  "generic_contract_leakage_count": 0,
+  "high_overlap_case_count": 0,
+  "label_counts": {
+    "ambiguous": 100,
+    "locally_safe_globally_drifted": 30,
+    "safe": 70,
+    "unsafe": 100
+  },
+  "label_in_case_id_count": 0,
+  "mid_risk_fraction": 0.6,
+  "near_boundary_fraction": 0.48333333333333334,
+  "schema_version": "v10_case_generation_summary_v1",
+  "seed": 42,
+  "status": "complete",
+  "target_score_band_counts": {
+    "clearly_safe": 20,
+    "high_risk": 65,
+    "low_risk_benign_noise": 35,
+    "moderate_risk_likely_drift": 80,
+    "severe_direct_violation": 35,
+    "uncertain_weak_concern": 65
+  },
+  "total_cases": 300,
+  "warnings": [
+    "safe_label_fraction_below_v10_design_target"
+  ]
+}
