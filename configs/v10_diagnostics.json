@@ -1,0 +1,20 @@
+{
+  "schema_version": "v10_diagnostics_v1",
+  "registered_before_real_judgment_runs": true,
+  "bootstrap_seed": 42,
+  "bootstrap_resamples": 1000,
+  "confidence_level": 0.95,
+  "metrics_for_ci": [
+    "tpr",
+    "fpr",
+    "precision",
+    "recall",
+    "unsafe_false_safe_rate",
+    "safe_false_interruption_rate",
+    "exact_or_normalized_citation_rate_high_risk"
+  ],
+  "minimum_cases_for_stable_ci": 50,
+  "fixture_mode_allowed": true,
+  "fixture_mode_must_not_claim_reportability": true,
+  "notes": "v10 diagnostics config. Bootstrap and reportability diagnostics do not create final benchmark evidence."
+}
