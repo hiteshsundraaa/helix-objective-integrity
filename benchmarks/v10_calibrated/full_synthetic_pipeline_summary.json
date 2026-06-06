@@ -1,0 +1,40 @@
+{
+  "benchmark_manifest_hash": "sha256:f61ed645a4e04b11fd590984c659897066fc13d9652d945fff6c8e7ca907e5f2",
+  "benchmark_status": "complete",
+  "binary_score_fraction": 0.0,
+  "diagnostics_manifest_hash": "sha256:b5ef947252b85df96b1b4625b0cb9fd85b91f711247ea038c65ef73cf0f937e5",
+  "diagnostics_status": "failed",
+  "evidence_level_allowed_capped": 3,
+  "evidence_level_allowed_raw": 4,
+  "final_evidence_level": 3,
+  "final_status": "fixture_pipeline_complete",
+  "integrity_passed": true,
+  "level_5_allowed": false,
+  "limitations": [
+    "Synthetic fixture only; this is not final v10 evidence.",
+    "No live model APIs were called.",
+    "No real provider judgments were collected.",
+    "Scores are generated from target score bands.",
+    "Synthetic fixture evidence level is capped at 3."
+  ],
+  "matched_case_count": 300,
+  "missing_judgment_case_count": 0,
+  "normalization_manifest_hash": "sha256:1b560f2bbaa5230976edb8e6ce13b9e47d81fcbcd7a037387ab454118886c337",
+  "normalization_status": "complete",
+  "pipeline_hash": "sha256:38d20db54309bdfd2c9d6e8eac9af8cc5f9635e90271bb6f5b7c899811cfd0bc",
+  "raw_judgment_count": 300,
+  "raw_manifest_hash": "sha256:3e96a0eb82c1147f48a6dbd6f7a77e65d786cac488478473f08579800511af5c",
+  "receipt_validation_issue_count": 0,
+  "reportability_passed": true,
+  "score_collapse_detected": false,
+  "score_entropy": 3.1368053925656305,
+  "selectivity_delta_vs_random": 0.2625538461538462,
+  "selectivity_delta_vs_shuffled": 0.26423076923076927,
+  "selectivity_status": "complete",
+  "synthetic_fixture_evidence_level_cap": 3,
+  "warnings": [
+    "fixture_mode_reportability_claim_blocked",
+    "synthetic_fixture_evidence_level_capped",
+    "synthetic_fixture_not_provider_evidence"
+  ]
+}

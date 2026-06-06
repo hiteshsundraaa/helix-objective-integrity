@@ -1,0 +1,205 @@
+{
+  "ambiguous_count": 100,
+  "benchmark_hash": "sha256:c0610bc2f2c25931ae82997273c0a3c4e13593542dec6cd85a9edddd3c1ff5a2",
+  "binary_score_fraction": 0.0,
+  "block_threshold": 0.85,
+  "case_count": 300,
+  "decision_counts": {
+    "ALLOW": 20,
+    "BLOCK": 35,
+    "DEGRADE": 80,
+    "ESCALATE_FOR_APPROVAL": 65,
+    "QUARANTINE": 65,
+    "WARN": 35
+  },
+  "domain_metrics": {
+    "archive_access": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.6,
+      "mean_violation_probability": 0.6065632,
+      "tpr": 0.9230769230769231
+    },
+    "billing_adjustment": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.5666666666666667,
+      "mean_violation_probability": 0.5926784666666667,
+      "tpr": 0.8461538461538461
+    },
+    "customer_update": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.6,
+      "mean_violation_probability": 0.5902231666666666,
+      "tpr": 0.8461538461538461
+    },
+    "data_export": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.6333333333333333,
+      "mean_violation_probability": 0.6033197,
+      "tpr": 0.9230769230769231
+    },
+    "deployment_change": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.5666666666666667,
+      "mean_violation_probability": 0.5895045666666667,
+      "tpr": 0.8461538461538461
+    },
+    "incident_summary": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.6,
+      "mean_violation_probability": 0.6004816000000001,
+      "tpr": 0.9230769230769231
+    },
+    "report_routing": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.6333333333333333,
+      "mean_violation_probability": 0.5859469333333334,
+      "tpr": 0.9230769230769231
+    },
+    "research_workspace": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.6,
+      "mean_violation_probability": 0.5861291333333333,
+      "tpr": 0.9230769230769231
+    },
+    "security_review": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.6,
+      "mean_violation_probability": 0.6039327,
+      "tpr": 0.8461538461538461
+    },
+    "vendor_request": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.6,
+      "mean_violation_probability": 0.5835349,
+      "tpr": 0.8461538461538461
+    }
+  },
+  "exact_or_normalized_citation_rate_high_risk": 1.0,
+  "extra_judgment_case_count": 0,
+  "failed_targets": [],
+  "false_negative_count": 15,
+  "false_positive_count": 0,
+  "family_metrics": {
+    "adjacent_rule_distractor": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.5,
+      "mean_violation_probability": 0.5270156,
+      "tpr": 1.0
+    },
+    "benign_noise": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.0,
+      "mean_violation_probability": 0.3547787333333333,
+      "tpr": null
+    },
+    "citation_failure_control": {
+      "count": 30,
+      "fpr": null,
+      "high_risk_rate": 1.0,
+      "mean_violation_probability": 0.7322204333333333,
+      "tpr": 1.0
+    },
+    "clean_compliance": {
+      "count": 30,
+      "fpr": 0.0,
+      "high_risk_rate": 0.0,
+      "mean_violation_probability": 0.1540263,
+      "tpr": null
+    },
+    "direct_violation": {
+      "count": 30,
+      "fpr": null,
+      "high_risk_rate": 1.0,
+      "mean_violation_probability": 0.886713,
+      "tpr": 1.0
+    },
+    "disguised_violation": {
+      "count": 30,
+      "fpr": null,
+      "high_risk_rate": 1.0,
+      "mean_violation_probability": 0.8905356666666666,
+      "tpr": 1.0
+    },
+    "locally_safe_globally_drifted": {
+      "count": 30,
+      "fpr": null,
+      "high_risk_rate": 0.5,
+      "mean_violation_probability": 0.5540456,
+      "tpr": 0.5
+    },
+    "missing_evidence": {
+      "count": 30,
+      "fpr": null,
+      "high_risk_rate": 0.5,
+      "mean_violation_probability": 0.5553700333333332,
+      "tpr": null
+    },
+    "near_boundary_authority_ambiguity": {
+      "count": 30,
+      "fpr": null,
+      "high_risk_rate": 0.5,
+      "mean_violation_probability": 0.5508657333333333,
+      "tpr": null
+    },
+    "stale_rule_conflict": {
+      "count": 30,
+      "fpr": null,
+      "high_risk_rate": 1.0,
+      "mean_violation_probability": 0.7367432666666667,
+      "tpr": 1.0
+    }
+  },
+  "fpr": 0.0,
+  "high_risk_count": 180,
+  "high_risk_invalid_citation_count": 0,
+  "high_risk_threshold": 0.75,
+  "invalid_judgment_count": 0,
+  "label_counts": {
+    "ambiguous": 100,
+    "locally_safe_globally_drifted": 30,
+    "safe": 70,
+    "unsafe": 100
+  },
+  "matched_case_count": 300,
+  "max_score_bin_fraction": 0.17333333333333334,
+  "missing_judgment_case_count": 0,
+  "normalized_judgment_count": 300,
+  "precision": 1.0,
+  "recall": 0.8846153846153846,
+  "receipt_count": 300,
+  "receipt_validation_issue_count": 0,
+  "safe_false_interruption_rate": 0.0,
+  "schema_version": "v10_benchmark_runner_summary_v1",
+  "score_band_occupancy": {
+    "0.00-0.10": 18,
+    "0.10-0.20": 6,
+    "0.20-0.30": 27,
+    "0.30-0.40": 12,
+    "0.40-0.50": 42,
+    "0.50-0.60": 29,
+    "0.60-0.70": 49,
+    "0.70-0.80": 30,
+    "0.80-0.90": 52,
+    "0.90-1.00": 35
+  },
+  "score_entropy": 3.1368053925656305,
+  "status": "complete",
+  "tpr": 0.8846153846153846,
+  "true_negative_count": 70,
+  "true_positive_count": 115,
+  "unsafe_false_safe_rate": 0.11538461538461539,
+  "valid_judgment_count": 300,
+  "warnings": []
+}

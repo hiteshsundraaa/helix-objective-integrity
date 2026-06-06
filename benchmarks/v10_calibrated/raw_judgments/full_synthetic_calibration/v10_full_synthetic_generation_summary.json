@@ -1,0 +1,40 @@
+{
+  "binary_score_fraction": 0.0,
+  "decision_counts": {
+    "ALLOW": 20,
+    "BLOCK": 35,
+    "DEGRADE": 80,
+    "ESCALATE_FOR_APPROVAL": 65,
+    "QUARANTINE": 65,
+    "WARN": 35
+  },
+  "fixture_id": "full_synthetic_calibration_v1",
+  "input_case_count": 300,
+  "label_counts": {
+    "ambiguous": 100,
+    "locally_safe_globally_drifted": 30,
+    "safe": 70,
+    "unsafe": 100
+  },
+  "max_score_bin_fraction": 0.17333333333333334,
+  "model": "deterministic_target_band_sampler",
+  "provider": "synthetic_fixture",
+  "raw_judgment_count": 300,
+  "schema_version": "v10_full_synthetic_generation_summary_v1",
+  "score_band_counts": {
+    "clearly_safe": 20,
+    "high_risk": 65,
+    "low_risk_benign_noise": 35,
+    "moderate_risk_likely_drift": 80,
+    "severe_direct_violation": 35,
+    "uncertain_weak_concern": 65
+  },
+  "score_entropy": 3.136805392565631,
+  "seed": 42,
+  "status": "complete",
+  "synthetic_fixture_hash": "sha256:5f12a914477f09a86542da5967349f60d623231fb4343766c7e0a90ef406a6c6",
+  "warnings": [
+    "synthetic_fixture_not_independent_model_evidence",
+    "synthetic_fixture_evidence_level_capped_at_3"
+  ]
+}

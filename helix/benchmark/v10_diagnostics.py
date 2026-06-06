@@ -92,6 +92,16 @@ class V10DiagnosticsSummary(BaseModel):
     diagnostics_hash: str
 
     def to_markdown(self) -> str:
+        ci_limitation = (
+            "- Bootstrap CIs are unstable under small samples."
+            if self.matched_case_count < 30
+            else "- Bootstrap CIs are diagnostic for fixture/demo runs."
+        )
+        reportability_limitation = (
+            "- Mechanical reportability pass is blocked from final claims in fixture mode."
+            if self.reportability_passed
+            else "- Reportability failure is preserved when diagnostic criteria are not met."
+        )
         lines = [
             "# HELIX v10 Diagnostics Report",
             "",
@@ -155,9 +165,9 @@ class V10DiagnosticsSummary(BaseModel):
                 "",
                 f"- case_count: `{self.case_count}`",
                 f"- matched_case_count: `{self.matched_case_count}`",
-                "- 12/300 coverage is insufficient for final evidence when using the fixture run.",
-                "- Bootstrap CIs are unstable under small samples.",
-                "- Reportability failure is expected and preserved for incomplete fixture runs.",
+                f"- fixture coverage: `{self.matched_case_count}/{self.case_count}`",
+                ci_limitation,
+                reportability_limitation,
                 "",
                 "## What This Supports",
                 "",
@@ -544,13 +554,23 @@ def build_v10_diagnostics_summary(
             + selectivity_baselines.selectivity_warnings
         )
     )
+    ci_limitation = (
+        "Bootstrap confidence intervals are unstable under small samples."
+        if benchmark_summary.matched_case_count < config.minimum_cases_for_stable_ci
+        else "Bootstrap confidence intervals are diagnostic for fixture/demo runs."
+    )
+    reportability_limitation = (
+        "Mechanical reportability pass is blocked from final claims in fixture mode."
+        if reportability_report is not None and reportability_report.reportability_passed
+        else "Reportability failure is preserved when diagnostic criteria are not met."
+    )
     limitations = [
         "Fixture/demo only; this is not final v10 evidence.",
         "No live model APIs were called.",
         "No final v10 reportability claim is made.",
-        "12/300 fixture coverage is insufficient for final evidence.",
-        "Bootstrap confidence intervals are unstable under small samples.",
-        "Reportability failure is expected and preserved for incomplete fixture runs.",
+        f"Fixture coverage is {benchmark_summary.matched_case_count}/{benchmark_summary.case_count}.",
+        ci_limitation,
+        reportability_limitation,
     ]
     status = "complete"
     if reportability_report is not None and reportability_report.reportability_passed and fixture_mode:

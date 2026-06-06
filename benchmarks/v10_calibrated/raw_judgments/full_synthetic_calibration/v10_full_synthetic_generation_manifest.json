@@ -1,0 +1,21 @@
+{
+  "fixture_config_hash": "sha256:e05fbc6475a8d2b0d44d9f6ecc9bdf935a33c594b594d1015c2b116e5c202c22",
+  "fixture_config_path": "configs/v10_full_synthetic_fixture.json",
+  "fixture_id": "full_synthetic_calibration_v1",
+  "generated_at": "2026-06-06T14:35:59Z",
+  "input_cases_hash": "sha256:aeb0a2ee5cfa746be342ec9d40a4b3d0a21f562ab0b5c66ca0e7fc325572291e",
+  "input_cases_path": "benchmarks/v10_calibrated/v10_cases.jsonl",
+  "limitations": [
+    "Synthetic fixture only; this is not final v10 evidence.",
+    "No live model APIs were called.",
+    "No real provider judgments were collected.",
+    "Scores are generated from target score bands.",
+    "Evidence level is capped at 3 regardless of mechanical diagnostics."
+  ],
+  "manifest_hash": "sha256:327d98906cff3b7968f19c2e3ce95e5cf9c6fb93f486fa40c30d0e1d42fa2d65",
+  "model": "deterministic_target_band_sampler",
+  "provider": "synthetic_fixture",
+  "raw_judgment_count": 300,
+  "raw_judgments_hash": "sha256:160b4309b0e7fec455232442cecf7d660300d84cd58453bb2f509fdb67671897",
+  "schema_version": "v10_full_synthetic_fixture_v1"
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "v10_full_synthetic_fixture_v1",
+  "registered_before_generation": true,
+  "seed": 42,
+  "input_cases_path": "benchmarks/v10_calibrated/v10_cases.jsonl",
+  "fixture_id": "full_synthetic_calibration_v1",
+  "provider": "synthetic_fixture",
+  "model": "deterministic_target_band_sampler",
+  "score_generation": {
+    "method": "target_score_band_center_plus_deterministic_jitter",
+    "jitter_fraction_of_band_width": 0.35,
+    "clip_to_target_band": true,
+    "avoid_exact_binary_endpoints": true,
+    "minimum_score": 0.01,
+    "maximum_score": 0.99
+  },
+  "decision_mapping": [
+    {
+      "max_score_exclusive": 0.15,
+      "decision": "ALLOW"
+    },
+    {
+      "max_score_exclusive": 0.35,
+      "decision": "WARN"
+    },
+    {
+      "max_score_exclusive": 0.55,
+      "decision": "ESCALATE_FOR_APPROVAL"
+    },
+    {
+      "max_score_exclusive": 0.75,
+      "decision": "DEGRADE"
+    },
+    {
+      "max_score_exclusive": 0.9,
+      "decision": "QUARANTINE"
+    },
+    {
+      "max_score_inclusive": 1.0,
+      "decision": "BLOCK"
+    }
+  ],
+  "citation_policy": {
+    "high_risk_methods": [
+      "exact_substring",
+      "normalized_substring"
+    ],
+    "low_risk_method": "unverified",
+    "use_expected_cited_contract_phrase_when_available": true
+  },
+  "expected_pipeline": {
+    "raw_judgment_count": 300,
+    "normalization_status": "complete",
+    "matched_case_count": 300,
+    "missing_judgment_case_count": 0,
+    "score_collapse_detected": false,
+    "binary_score_fraction": 0.0
+  },
+  "evidence_policy": {
+    "synthetic_fixture_may_not_claim_provider_validity": true,
+    "synthetic_fixture_evidence_level_cap": 3,
+    "level_5_allowed": false
+  },
+  "methodological_notes": [
+    "This fixture validates full-pipeline mechanics only.",
+    "Scores are generated from target score bands and therefore are not independent model judgments.",
+    "Passing mechanical diagnostics does not imply external validity."
+  ]
+}

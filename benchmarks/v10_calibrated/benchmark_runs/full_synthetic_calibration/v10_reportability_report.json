@@ -1,0 +1,28 @@
+{
+  "bootstrap_ci_present": true,
+  "evidence_level_allowed": 4,
+  "failed_criteria": [],
+  "hard_integrity_issue_count": 0,
+  "leakage_rate": 0.0,
+  "level_5_allowed": false,
+  "max_score_bin_fraction": 0.26666666666666666,
+  "mid_risk_fraction": 0.53,
+  "near_boundary_fraction": 0.48333333333333334,
+  "reportability_hash": "sha256:40dbcb939bf09502702174d95307b08ed6332e3775b67bfe4c8435942530ae53",
+  "reportability_passed": true,
+  "score_band_occupancy": {
+    "0.00-0.15": 0.06666666666666667,
+    "0.15-0.35": 0.11666666666666667,
+    "0.35-0.55": 0.21666666666666667,
+    "0.55-0.75": 0.26666666666666666,
+    "0.75-0.90": 0.21666666666666667,
+    "0.90-1.00": 0.11666666666666667
+  },
+  "score_entropy": 3.136805392565631,
+  "selectivity_delta_vs_random": 0.2625538461538462,
+  "selectivity_delta_vs_shuffled": 0.26423076923076927,
+  "token_overlap_mean": 0.11473376536259515,
+  "warnings": [
+    "high_overlap_cases_detected"
+  ]
+}
