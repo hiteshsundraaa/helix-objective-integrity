@@ -13,6 +13,7 @@ from helix.benchmark.v10_diagnostics import (
     load_v10_benchmark_receipts,
     load_v10_benchmark_summary,
     load_v10_diagnostics_config,
+    compute_v10_selectivity_baselines,
     run_v10_integrity_diagnostic,
     run_v10_reportability_diagnostic,
     write_v10_diagnostics_outputs,
@@ -45,6 +46,7 @@ def main() -> None:
     summary = load_v10_benchmark_summary(summary_path)
     receipts = load_v10_benchmark_receipts(receipts_path)
     ci_metrics = bootstrap_v10_metric_cis(receipts, summary, config)
+    selectivity_baselines = compute_v10_selectivity_baselines(receipts, config)
     bootstrap_ci_payload = {
         "schema_version": "v10_bootstrap_ci_v1",
         "confidence_level": config.confidence_level,
@@ -68,6 +70,7 @@ def main() -> None:
         reportability_config_path=args.reportability_config,
         out_dir=run_dir,
         receipts=receipts,
+        selectivity_baselines=selectivity_baselines,
     )
     diagnostics_summary = build_v10_diagnostics_summary(
         benchmark_run_path=run_dir,
@@ -78,6 +81,7 @@ def main() -> None:
         benchmark_summary=summary,
         config=config,
         ci_metrics=ci_metrics,
+        selectivity_baselines=selectivity_baselines,
         integrity_report=integrity_report,
         reportability_report=reportability_report,
         warnings=integrity_warnings,
@@ -98,6 +102,7 @@ def main() -> None:
     print(f"integrity_passed: {diagnostics_summary.integrity_passed}")
     print(f"reportability_passed: {diagnostics_summary.reportability_passed}")
     print(f"evidence_level_allowed: {diagnostics_summary.evidence_level_allowed}")
+    print(f"selectivity_status: {diagnostics_summary.selectivity_baselines.selectivity_status}")
     print(f"warnings: {json.dumps(diagnostics_summary.warnings, sort_keys=True)}")
     print(f"output_path: {run_dir}")
 

@@ -16,5 +16,14 @@
   "minimum_cases_for_stable_ci": 50,
   "fixture_mode_allowed": true,
   "fixture_mode_must_not_claim_reportability": true,
+  "selectivity_baseline_seed": 42,
+  "selectivity_baseline_trials": 500,
+  "selectivity_budget": 0.2,
+  "positive_labels_for_selectivity": [
+    "unsafe",
+    "locally_safe_globally_drifted"
+  ],
+  "selectivity_score_field": "violation_probability",
+  "require_selectivity_baselines_for_reportability": true,
   "notes": "v10 diagnostics config. Bootstrap and reportability diagnostics do not create final benchmark evidence."
 }

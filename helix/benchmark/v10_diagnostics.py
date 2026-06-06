@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 import json
+import math
 import random
 from pathlib import Path
+from statistics import pstdev
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -33,6 +35,12 @@ class V10DiagnosticsConfig(BaseModel):
     minimum_cases_for_stable_ci: int
     fixture_mode_allowed: bool
     fixture_mode_must_not_claim_reportability: bool
+    selectivity_baseline_seed: int
+    selectivity_baseline_trials: int
+    selectivity_budget: float
+    positive_labels_for_selectivity: list[str]
+    selectivity_score_field: str
+    require_selectivity_baselines_for_reportability: bool
     notes: str = ""
 
 
@@ -47,6 +55,22 @@ class V10BootstrapMetricCI(BaseModel):
     warning: str | None = None
 
 
+class V10SelectivityBaselineSummary(BaseModel):
+    true_tpr_at_budget: float | None
+    mean_random_tpr_at_budget: float | None
+    random_tpr_std_at_budget: float | None
+    selectivity_delta_vs_random: float | None
+    mean_shuffled_tpr_at_budget: float | None
+    shuffled_tpr_std_at_budget: float | None
+    selectivity_delta_vs_shuffled: float | None
+    selectivity_baseline_trials: int
+    selectivity_budget: float
+    selectivity_positive_label_count: int
+    selectivity_selected_count: int
+    selectivity_status: str
+    selectivity_warnings: list[str] = Field(default_factory=list)
+
+
 class V10DiagnosticsSummary(BaseModel):
     schema_version: str
     benchmark_run_path: str
@@ -58,6 +82,7 @@ class V10DiagnosticsSummary(BaseModel):
     matched_case_count: int
     bootstrap_resamples: int
     ci_metrics: dict[str, V10BootstrapMetricCI]
+    selectivity_baselines: V10SelectivityBaselineSummary
     integrity_passed: bool | None
     reportability_passed: bool | None
     evidence_level_allowed: int | None
@@ -96,6 +121,24 @@ class V10DiagnosticsSummary(BaseModel):
             )
         lines.extend(
             [
+                "",
+                "## Selectivity Baselines",
+                "",
+                "Selectivity baselines are computed over matched benchmark receipts. "
+                "For fixture runs, selectivity estimates are diagnostic only and may be unstable. "
+                "If no positive labels are present, selectivity is unavailable and reportability must fail.",
+                "",
+                f"- budget: `{self.selectivity_baselines.selectivity_budget:.6f}`",
+                f"- selected count: `{self.selectivity_baselines.selectivity_selected_count}`",
+                f"- positive label count: `{self.selectivity_baselines.selectivity_positive_label_count}`",
+                f"- true TPR at budget: `{_fmt(self.selectivity_baselines.true_tpr_at_budget)}`",
+                f"- mean random TPR: `{_fmt(self.selectivity_baselines.mean_random_tpr_at_budget)}`",
+                f"- selectivity delta vs random: `{_fmt(self.selectivity_baselines.selectivity_delta_vs_random)}`",
+                f"- mean shuffled TPR: `{_fmt(self.selectivity_baselines.mean_shuffled_tpr_at_budget)}`",
+                f"- selectivity delta vs shuffled: `{_fmt(self.selectivity_baselines.selectivity_delta_vs_shuffled)}`",
+                f"- trials: `{self.selectivity_baselines.selectivity_baseline_trials}`",
+                f"- status: `{self.selectivity_baselines.selectivity_status}`",
+                f"- warnings: `{self.selectivity_baselines.selectivity_warnings}`",
                 "",
                 "## Integrity Audit Diagnostic",
                 "",
@@ -214,6 +257,156 @@ def bootstrap_v10_metric_cis(
     return metrics
 
 
+def compute_true_tpr_at_budget_from_receipts(
+    receipts: list[V10BenchmarkReceipt],
+    *,
+    budget: float,
+    positive_labels: list[str],
+    score_field: str = "violation_probability",
+) -> float | None:
+    if not receipts:
+        return None
+    positive_set = set(positive_labels)
+    positive_count = sum(receipt.label in positive_set for receipt in receipts)
+    if positive_count == 0:
+        return None
+    selected = _top_budget_receipts(receipts, budget=budget, score_field=score_field)
+    selected_positive_count = sum(receipt.label in positive_set for receipt in selected)
+    return selected_positive_count / positive_count
+
+
+def compute_internal_matched_random_selectivity(
+    receipts: list[V10BenchmarkReceipt],
+    *,
+    budget: float,
+    positive_labels: list[str],
+    n_trials: int,
+    seed: int,
+) -> dict[str, Any]:
+    base = _selectivity_base(receipts, budget, positive_labels)
+    if base["selectivity_status"] != "complete":
+        return {
+            **base,
+            "mean_random_tpr_at_budget": None,
+            "random_tpr_std_at_budget": None,
+            "selectivity_delta_vs_random": None,
+            "selectivity_baseline_trials": n_trials,
+        }
+    rng = random.Random(seed)
+    indices = list(range(len(receipts)))
+    positive_set = set(positive_labels)
+    tprs: list[float] = []
+    for _ in range(n_trials):
+        selected_indices = set(rng.sample(indices, base["selectivity_selected_count"]))
+        selected_positive_count = sum(
+            index in selected_indices and receipts[index].label in positive_set
+            for index in indices
+        )
+        tprs.append(selected_positive_count / base["selectivity_positive_label_count"])
+    mean_random = sum(tprs) / len(tprs) if tprs else None
+    return {
+        **base,
+        "mean_random_tpr_at_budget": mean_random,
+        "random_tpr_std_at_budget": pstdev(tprs) if len(tprs) > 1 else 0.0,
+        "selectivity_delta_vs_random": (
+            base["true_tpr_at_budget"] - mean_random
+            if mean_random is not None and base["true_tpr_at_budget"] is not None
+            else None
+        ),
+        "selectivity_baseline_trials": n_trials,
+    }
+
+
+def compute_shuffled_label_selectivity(
+    receipts: list[V10BenchmarkReceipt],
+    *,
+    budget: float,
+    positive_labels: list[str],
+    n_trials: int,
+    seed: int,
+) -> dict[str, Any]:
+    base = _selectivity_base(receipts, budget, positive_labels)
+    if base["selectivity_status"] != "complete":
+        return {
+            **base,
+            "mean_shuffled_tpr_at_budget": None,
+            "shuffled_tpr_std_at_budget": None,
+            "selectivity_delta_vs_shuffled": None,
+            "selectivity_baseline_trials": n_trials,
+        }
+    rng = random.Random(seed)
+    labels = [receipt.label for receipt in receipts]
+    ranked_indices = [
+        receipts.index(receipt)
+        for receipt in _top_budget_receipts(receipts, budget=budget)
+    ]
+    positive_set = set(positive_labels)
+    tprs: list[float] = []
+    for _ in range(n_trials):
+        shuffled_labels = list(labels)
+        rng.shuffle(shuffled_labels)
+        positive_count = sum(label in positive_set for label in shuffled_labels)
+        if positive_count == 0:
+            continue
+        selected_positive_count = sum(
+            shuffled_labels[index] in positive_set for index in ranked_indices
+        )
+        tprs.append(selected_positive_count / positive_count)
+    mean_shuffled = sum(tprs) / len(tprs) if tprs else None
+    return {
+        **base,
+        "mean_shuffled_tpr_at_budget": mean_shuffled,
+        "shuffled_tpr_std_at_budget": pstdev(tprs) if len(tprs) > 1 else 0.0,
+        "selectivity_delta_vs_shuffled": (
+            base["true_tpr_at_budget"] - mean_shuffled
+            if mean_shuffled is not None and base["true_tpr_at_budget"] is not None
+            else None
+        ),
+        "selectivity_baseline_trials": n_trials,
+    }
+
+
+def compute_v10_selectivity_baselines(
+    receipts: list[V10BenchmarkReceipt],
+    config: V10DiagnosticsConfig,
+) -> V10SelectivityBaselineSummary:
+    random_result = compute_internal_matched_random_selectivity(
+        receipts,
+        budget=config.selectivity_budget,
+        positive_labels=config.positive_labels_for_selectivity,
+        n_trials=config.selectivity_baseline_trials,
+        seed=config.selectivity_baseline_seed,
+    )
+    shuffled_result = compute_shuffled_label_selectivity(
+        receipts,
+        budget=config.selectivity_budget,
+        positive_labels=config.positive_labels_for_selectivity,
+        n_trials=config.selectivity_baseline_trials,
+        seed=config.selectivity_baseline_seed,
+    )
+    payload = {
+        "true_tpr_at_budget": random_result["true_tpr_at_budget"],
+        "mean_random_tpr_at_budget": random_result["mean_random_tpr_at_budget"],
+        "random_tpr_std_at_budget": random_result["random_tpr_std_at_budget"],
+        "selectivity_delta_vs_random": random_result["selectivity_delta_vs_random"],
+        "mean_shuffled_tpr_at_budget": shuffled_result["mean_shuffled_tpr_at_budget"],
+        "shuffled_tpr_std_at_budget": shuffled_result["shuffled_tpr_std_at_budget"],
+        "selectivity_delta_vs_shuffled": shuffled_result["selectivity_delta_vs_shuffled"],
+        "selectivity_baseline_trials": config.selectivity_baseline_trials,
+        "selectivity_budget": config.selectivity_budget,
+        "selectivity_positive_label_count": random_result["selectivity_positive_label_count"],
+        "selectivity_selected_count": random_result["selectivity_selected_count"],
+        "selectivity_status": random_result["selectivity_status"],
+        "selectivity_warnings": sorted(
+            set(
+                random_result["selectivity_warnings"]
+                + shuffled_result["selectivity_warnings"]
+            )
+        ),
+    }
+    return V10SelectivityBaselineSummary.model_validate(payload)
+
+
 def run_v10_integrity_diagnostic(
     *,
     cases_path: str | Path,
@@ -288,6 +481,7 @@ def run_v10_reportability_diagnostic(
     reportability_config_path: str | Path,
     out_dir: str | Path,
     receipts: list[V10BenchmarkReceipt] | None = None,
+    selectivity_baselines: V10SelectivityBaselineSummary | None = None,
 ) -> tuple[V10ReportabilityReport, Path, Path]:
     integrity_payload = (
         integrity_report.model_dump(mode="json")
@@ -298,6 +492,15 @@ def run_v10_reportability_diagnostic(
             "integrity_warnings": ["missing_integrity_report"],
         }
     )
+    if selectivity_baselines is not None:
+        integrity_payload = {
+            **integrity_payload,
+            "true_tpr_at_budget": selectivity_baselines.true_tpr_at_budget,
+            "mean_random_tpr_at_budget": selectivity_baselines.mean_random_tpr_at_budget,
+            "selectivity_delta_vs_random": selectivity_baselines.selectivity_delta_vs_random,
+            "mean_shuffled_tpr_at_budget": selectivity_baselines.mean_shuffled_tpr_at_budget,
+            "selectivity_delta_vs_shuffled": selectivity_baselines.selectivity_delta_vs_shuffled,
+        }
     report = evaluate_v10_reportability(
         integrity_report=integrity_payload,
         benchmark_summary=_reportability_benchmark_summary_payload(
@@ -329,12 +532,17 @@ def build_v10_diagnostics_summary(
     benchmark_summary: V10BenchmarkSummary,
     config: V10DiagnosticsConfig,
     ci_metrics: dict[str, V10BootstrapMetricCI],
+    selectivity_baselines: V10SelectivityBaselineSummary,
     integrity_report: BenchmarkIntegrityReport | None,
     reportability_report: V10ReportabilityReport | None,
     warnings: list[str],
 ) -> V10DiagnosticsSummary:
     all_warnings = sorted(
-        set(warnings + [metric.warning for metric in ci_metrics.values() if metric.warning])
+        set(
+            warnings
+            + [metric.warning for metric in ci_metrics.values() if metric.warning]
+            + selectivity_baselines.selectivity_warnings
+        )
     )
     limitations = [
         "Fixture/demo only; this is not final v10 evidence.",
@@ -364,6 +572,7 @@ def build_v10_diagnostics_summary(
             name: metric.model_dump(mode="json")
             for name, metric in sorted(ci_metrics.items())
         },
+        "selectivity_baselines": selectivity_baselines.model_dump(mode="json"),
         "integrity_passed": integrity_report.integrity_passed if integrity_report else None,
         "reportability_passed": reportability_report.reportability_passed if reportability_report else None,
         "evidence_level_allowed": reportability_report.evidence_level_allowed if reportability_report else None,
@@ -439,6 +648,68 @@ def _receipt_metric(rows: list[dict[str, Any]], metric_name: str) -> float | Non
         valid = sum(bool(row.get("high_risk_citation_valid")) for row in high_risk)
         return _divide_or_none(valid, len(high_risk))
     return None
+
+
+def _selectivity_base(
+    receipts: list[V10BenchmarkReceipt],
+    budget: float,
+    positive_labels: list[str],
+) -> dict[str, Any]:
+    selected_count = _selected_count(len(receipts), budget)
+    positive_set = set(positive_labels)
+    positive_count = sum(receipt.label in positive_set for receipt in receipts)
+    if not receipts:
+        return {
+            "true_tpr_at_budget": None,
+            "selectivity_budget": budget,
+            "selectivity_positive_label_count": 0,
+            "selectivity_selected_count": 0,
+            "selectivity_status": "unavailable_no_receipts",
+            "selectivity_warnings": ["selectivity_unavailable_no_receipts"],
+        }
+    if positive_count == 0:
+        return {
+            "true_tpr_at_budget": None,
+            "selectivity_budget": budget,
+            "selectivity_positive_label_count": 0,
+            "selectivity_selected_count": selected_count,
+            "selectivity_status": "unavailable_no_positive_labels",
+            "selectivity_warnings": ["selectivity_unavailable_no_positive_labels"],
+        }
+    return {
+        "true_tpr_at_budget": compute_true_tpr_at_budget_from_receipts(
+            receipts,
+            budget=budget,
+            positive_labels=positive_labels,
+        ),
+        "selectivity_budget": budget,
+        "selectivity_positive_label_count": positive_count,
+        "selectivity_selected_count": selected_count,
+        "selectivity_status": "complete",
+        "selectivity_warnings": [],
+    }
+
+
+def _top_budget_receipts(
+    receipts: list[V10BenchmarkReceipt],
+    *,
+    budget: float,
+    score_field: str = "violation_probability",
+) -> list[V10BenchmarkReceipt]:
+    selected_count = _selected_count(len(receipts), budget)
+    return sorted(
+        receipts,
+        key=lambda receipt: (
+            -float(getattr(receipt, score_field)),
+            receipt.case_id,
+        ),
+    )[:selected_count]
+
+
+def _selected_count(count: int, budget: float) -> int:
+    if count <= 0:
+        return 0
+    return max(1, min(count, math.ceil(count * budget)))
 
 
 def _divide_or_none(numerator: int | float, denominator: int | float) -> float | None:

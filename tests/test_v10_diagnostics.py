@@ -10,6 +10,9 @@ from helix.benchmark.v10_benchmark_runner import (
 from helix.benchmark.v10_diagnostics import (
     bootstrap_v10_metric_cis,
     build_v10_diagnostics_summary,
+    compute_internal_matched_random_selectivity,
+    compute_shuffled_label_selectivity,
+    compute_v10_selectivity_baselines,
     load_v10_benchmark_receipts,
     load_v10_benchmark_summary,
     load_v10_diagnostics_config,
@@ -33,6 +36,7 @@ INTEGRITY_CONFIG_PATH = Path("configs/benchmark_integrity_v1.json")
 REPORTABILITY_CONFIG_PATH = Path("configs/v10_reportability_gate.json")
 CASES_PATH = Path("benchmarks/v10_calibrated/v10_cases.jsonl")
 RAW_FIXTURE_PATH = Path("tests/fixtures/v10_judgments/valid_continuous_judgments.jsonl")
+BALANCED_FIXTURE_PATH = Path("tests/fixtures/v10_judgments/balanced_continuous_judgments.jsonl")
 
 
 def test_v10_diagnostics_config_loads() -> None:
@@ -69,6 +73,76 @@ def test_zero_denominator_resamples_are_handled() -> None:
     assert "zero_valid_resamples" in (cis["tpr"].warning or "")
 
 
+def test_matched_random_selectivity_is_deterministic() -> None:
+    _, receipts = _benchmark_fixture(BALANCED_FIXTURE_PATH)
+    config = load_v10_diagnostics_config(DIAGNOSTICS_CONFIG_PATH)
+
+    first = compute_internal_matched_random_selectivity(
+        receipts,
+        budget=config.selectivity_budget,
+        positive_labels=config.positive_labels_for_selectivity,
+        n_trials=config.selectivity_baseline_trials,
+        seed=config.selectivity_baseline_seed,
+    )
+    second = compute_internal_matched_random_selectivity(
+        receipts,
+        budget=config.selectivity_budget,
+        positive_labels=config.positive_labels_for_selectivity,
+        n_trials=config.selectivity_baseline_trials,
+        seed=config.selectivity_baseline_seed,
+    )
+
+    assert first == second
+    assert first["selectivity_delta_vs_random"] is not None
+
+
+def test_shuffled_label_selectivity_is_deterministic() -> None:
+    _, receipts = _benchmark_fixture(BALANCED_FIXTURE_PATH)
+    config = load_v10_diagnostics_config(DIAGNOSTICS_CONFIG_PATH)
+
+    first = compute_shuffled_label_selectivity(
+        receipts,
+        budget=config.selectivity_budget,
+        positive_labels=config.positive_labels_for_selectivity,
+        n_trials=config.selectivity_baseline_trials,
+        seed=config.selectivity_baseline_seed,
+    )
+    second = compute_shuffled_label_selectivity(
+        receipts,
+        budget=config.selectivity_budget,
+        positive_labels=config.positive_labels_for_selectivity,
+        n_trials=config.selectivity_baseline_trials,
+        seed=config.selectivity_baseline_seed,
+    )
+
+    assert first == second
+    assert first["selectivity_delta_vs_shuffled"] is not None
+
+
+def test_zero_positive_fixture_returns_unavailable_selectivity() -> None:
+    _, receipts = _benchmark_fixture(RAW_FIXTURE_PATH)
+    config = load_v10_diagnostics_config(DIAGNOSTICS_CONFIG_PATH)
+
+    selectivity = compute_v10_selectivity_baselines(receipts, config)
+
+    assert selectivity.selectivity_status == "unavailable_no_positive_labels"
+    assert selectivity.selectivity_delta_vs_random is None
+    assert selectivity.selectivity_delta_vs_shuffled is None
+    assert "selectivity_unavailable_no_positive_labels" in selectivity.selectivity_warnings
+
+
+def test_balanced_fixture_returns_non_null_selectivity_deltas() -> None:
+    _, receipts = _benchmark_fixture(BALANCED_FIXTURE_PATH)
+    config = load_v10_diagnostics_config(DIAGNOSTICS_CONFIG_PATH)
+
+    selectivity = compute_v10_selectivity_baselines(receipts, config)
+
+    assert selectivity.selectivity_status == "complete"
+    assert selectivity.selectivity_positive_label_count == 6
+    assert selectivity.selectivity_delta_vs_random is not None
+    assert selectivity.selectivity_delta_vs_shuffled is not None
+
+
 def test_integrity_diagnostic_writes_report(tmp_path: Path) -> None:
     _, receipts = _benchmark_fixture()
 
@@ -88,9 +162,10 @@ def test_integrity_diagnostic_writes_report(tmp_path: Path) -> None:
 
 
 def test_reportability_diagnostic_fails_for_incomplete_fixture(tmp_path: Path) -> None:
-    summary, receipts = _benchmark_fixture()
+    summary, receipts = _benchmark_fixture(BALANCED_FIXTURE_PATH)
     config = load_v10_diagnostics_config(DIAGNOSTICS_CONFIG_PATH)
     ci = bootstrap_v10_metric_cis(receipts, summary, config)
+    selectivity = compute_v10_selectivity_baselines(receipts, config)
     integrity_report, _, _, _ = run_v10_integrity_diagnostic(
         cases_path=CASES_PATH,
         receipts=receipts,
@@ -108,18 +183,22 @@ def test_reportability_diagnostic_fails_for_incomplete_fixture(tmp_path: Path) -
         reportability_config_path=REPORTABILITY_CONFIG_PATH,
         out_dir=tmp_path,
         receipts=receipts,
+        selectivity_baselines=selectivity,
     )
 
     assert json_path.exists()
     assert markdown_path.exists()
     assert not reportability.reportability_passed
     assert reportability.evidence_level_allowed <= 3
+    assert "missing_selectivity_delta_vs_random" not in reportability.failed_criteria
+    assert "missing_selectivity_delta_vs_shuffled" not in reportability.failed_criteria
 
 
 def test_diagnostics_outputs_manifest_report_and_fixture_limitations(tmp_path: Path) -> None:
     benchmark_dir, summary, receipts = _write_benchmark_fixture(tmp_path)
     config = load_v10_diagnostics_config(DIAGNOSTICS_CONFIG_PATH)
     ci = bootstrap_v10_metric_cis(receipts, summary, config)
+    selectivity = compute_v10_selectivity_baselines(receipts, config)
     bootstrap_payload = {
         "schema_version": "v10_bootstrap_ci_v1",
         "confidence_level": config.confidence_level,
@@ -139,6 +218,7 @@ def test_diagnostics_outputs_manifest_report_and_fixture_limitations(tmp_path: P
         reportability_config_path=REPORTABILITY_CONFIG_PATH,
         out_dir=benchmark_dir,
         receipts=receipts,
+        selectivity_baselines=selectivity,
     )
     diagnostics_summary = build_v10_diagnostics_summary(
         benchmark_run_path=benchmark_dir,
@@ -149,6 +229,7 @@ def test_diagnostics_outputs_manifest_report_and_fixture_limitations(tmp_path: P
         benchmark_summary=summary,
         config=config,
         ci_metrics=ci,
+        selectivity_baselines=selectivity,
         integrity_report=integrity_report,
         reportability_report=reportability,
         warnings=warnings,
@@ -171,9 +252,11 @@ def test_diagnostics_outputs_manifest_report_and_fixture_limitations(tmp_path: P
     assert manifest["manifest_hash"].startswith("sha256:")
     report = paths[3].read_text(encoding="utf-8")
     assert "What This Does Not Yet Prove" in report
+    assert "Selectivity Baselines" in report
     assert "No live model APIs" in report
     assert "no final v10 reportability claim" in report.lower()
     assert diagnostics_summary.diagnostics_status == "needs_work"
+    assert diagnostics_summary.selectivity_baselines.selectivity_status == "unavailable_no_positive_labels"
     assert "small_sample_ci_unstable" in diagnostics_summary.warnings
 
 
@@ -187,9 +270,9 @@ def test_loading_diagnostics_benchmark_artifacts_round_trip(tmp_path: Path) -> N
     assert len(receipts) == 12
 
 
-def _benchmark_fixture():
+def _benchmark_fixture(raw_fixture_path: Path = RAW_FIXTURE_PATH):
     cases = load_v10_cases(CASES_PATH)
-    normalized, normalization_summary = _normalization_fixture()
+    normalized, normalization_summary = _normalization_fixture(raw_fixture_path)
     benchmark_config = load_v10_benchmark_config(BENCHMARK_CONFIG_PATH)
     receipts = build_v10_benchmark_receipts(
         cases,
@@ -209,9 +292,9 @@ def _benchmark_fixture():
     return summary, receipts
 
 
-def _normalization_fixture():
+def _normalization_fixture(raw_fixture_path: Path = RAW_FIXTURE_PATH):
     return normalize_v10_judgments(
-        load_raw_judgments(RAW_FIXTURE_PATH),
+        load_raw_judgments(raw_fixture_path),
         load_v10_cases(CASES_PATH),
         load_v10_normalization_config(NORMALIZATION_CONFIG_PATH),
         provider="fixture",
@@ -219,15 +302,15 @@ def _normalization_fixture():
     )
 
 
-def _write_benchmark_fixture(tmp_path: Path):
+def _write_benchmark_fixture(tmp_path: Path, raw_fixture_path: Path = RAW_FIXTURE_PATH):
     cases = load_v10_cases(CASES_PATH)
-    normalized, normalization_summary = _normalization_fixture()
+    normalized, normalization_summary = _normalization_fixture(raw_fixture_path)
     normalization_paths = write_v10_normalization_outputs(
         normalized_judgments=normalized,
         summary=normalization_summary,
         config_path=NORMALIZATION_CONFIG_PATH,
         input_cases_path=CASES_PATH,
-        raw_judgments_path=RAW_FIXTURE_PATH,
+        raw_judgments_path=raw_fixture_path,
         provider="fixture",
         model="valid-continuous",
         out_dir=tmp_path / "normalization",
