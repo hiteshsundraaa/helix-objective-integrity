@@ -1,0 +1,34 @@
+{
+  "config_hashes": {
+    "benchmark_config": "sha256:c498ef3a2ce1ac738d0da74ffb9489c56c2fa983ddc61be39fc9c5077502ba7e",
+    "cases": "sha256:aeb0a2ee5cfa746be342ec9d40a4b3d0a21f562ab0b5c66ca0e7fc325572291e",
+    "diagnostics_config": "sha256:a6db35c2d420316d072b97e96ec8fefac994c8ba62c3dbda184f4fe0f61303cb",
+    "normalization_config": "sha256:2722b248567a33963103981608b4085ddfd3b8e46ef07aeab17196275c3699b2",
+    "provider_protocol_config": "sha256:2ecc27515e375e44be371c64016113cb4a36822a89b6a1b718fd88c36dee1284",
+    "reportability_config": "sha256:db4220ef01c3cd3d7a950f09a6f9c0e8257e13d3fb6b47fadfe46230692c8507"
+  },
+  "generated_at": "2026-06-07T15:46:56Z",
+  "limitations": [
+    "Planning artifact only.",
+    "No provider API calls were made.",
+    "No provider judgments were collected.",
+    "Level 5 is not allowed."
+  ],
+  "manifest_hash": "sha256:dd37430577c8d0442cdf4fa47bbfb17cf52ab7bc3de5d16d0e6932525d7f8391",
+  "no_api_calls_made": true,
+  "plan_hash": "sha256:8dca4041902c53ac3108bd255c9a912ee2eb16c811c206fdd7337a22c7e7cc8d",
+  "prompt_hashes": {
+    "contract_prompt": "sha256:78d8bf217a933c1b261f7ddda1197c8dd21c435a1204a38d5e7a96da98c847e4",
+    "generic_prompt": "sha256:0b3655bb6cef48932759b7f6075d88c87c3bd9d7a3002da7322df433fe6055b3",
+    "prompt_rendering_manifest": "sha256:5f9972724e30d9bef442cafe6fc2a35011f8fcf3ca3670c7267ed08766a72714"
+  },
+  "provider_protocol_config_hash": "sha256:2ecc27515e375e44be371c64016113cb4a36822a89b6a1b718fd88c36dee1284",
+  "provider_protocol_config_path": "configs/v10_provider_judgment_protocol.json",
+  "provider_run_plan_hash": "sha256:c60ce7ee364057d65128ac379ee4ceba7181e3bf3803a0b208d0b6eee6899208",
+  "provider_run_plan_path": "benchmarks/v10_calibrated/provider_run_plans/pilot_v1/provider_run_plan.json",
+  "provider_run_planning_report_hash": "sha256:2133f1e4a43b1cdc1a7128be6ebf77d87c93a9a5079f2ef773445b4bc2ac6f8a",
+  "provider_run_planning_report_path": "benchmarks/v10_calibrated/provider_run_plans/pilot_v1/provider_run_planning_report.md",
+  "sampled_case_ids_hash": "sha256:d5fe5bf7a74e7ecd0b04db45a36395ea86fb22c0ffdb2d832193bd55326720db",
+  "sampled_case_ids_path": "benchmarks/v10_calibrated/provider_run_plans/pilot_v1/sampled_case_ids.json",
+  "schema_version": "v10_provider_run_planning_manifest_v1"
+}
