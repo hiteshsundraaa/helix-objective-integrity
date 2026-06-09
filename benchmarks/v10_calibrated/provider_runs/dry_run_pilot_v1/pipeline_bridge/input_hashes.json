@@ -1,0 +1,10 @@
+{
+  "input_parsed_raw_judgments_hash": "sha256:8c2301736440273aa37916adb343b8b1c5d94497c12869230c6e43b7dc929b92",
+  "input_parsed_raw_judgments_path": "benchmarks/v10_calibrated/provider_runs/dry_run_pilot_v1/pipeline_bridge/parsed_raw_judgments.jsonl",
+  "input_provider_manifest_hash": "sha256:fc096126060dbb3eb2e4925ac71ddb4877d7bfe641374b7b5730ba318147604e",
+  "input_provider_manifest_path": "benchmarks/v10_calibrated/provider_runs/dry_run_pilot_v1/provider_run_manifest.json",
+  "input_provider_summary_hash": "sha256:699c5362ad5990a5061d962dcc875cc5c20932408d3be67a92711ee59280f1e7",
+  "input_provider_summary_path": "benchmarks/v10_calibrated/provider_runs/dry_run_pilot_v1/provider_dry_run_summary.json",
+  "provider_run_dir": "benchmarks/v10_calibrated/provider_runs/dry_run_pilot_v1",
+  "schema_version": "v10_provider_dry_run_bridge_input_hashes_v1"
+}

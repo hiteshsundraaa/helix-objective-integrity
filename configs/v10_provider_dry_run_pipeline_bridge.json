@@ -1,0 +1,23 @@
+{
+  "schema_version": "v10_provider_dry_run_pipeline_bridge_v1",
+  "dry_run_bridge": true,
+  "default_provider_run_dir": "benchmarks/v10_calibrated/provider_runs/dry_run_pilot_v1",
+  "parsed_raw_judgments_filename": "parsed_raw_judgments.jsonl",
+  "cases_path": "benchmarks/v10_calibrated/v10_cases.jsonl",
+  "normalization_config_path": "configs/v10_judgment_normalization.json",
+  "benchmark_config_path": "configs/v10_benchmark_runner.json",
+  "diagnostics_config_path": "configs/v10_diagnostics.json",
+  "reportability_config_path": "configs/v10_reportability_gate.json",
+  "integrity_config_path": "configs/benchmark_integrity_v1.json",
+  "output_subdir": "pipeline_bridge",
+  "allow_network_calls": false,
+  "allow_provider_sdk_imports": false,
+  "allow_api_keys": false,
+  "evidence_policy": {
+    "dry_run_is_provider_evidence": false,
+    "dry_run_bridge_evidence_level_cap": 2,
+    "level_4_allowed": false,
+    "level_5_allowed": false
+  },
+  "notes": "Routes dry-run parsed judgments through existing v10 pipeline. No provider evidence."
+}

@@ -1,0 +1,23 @@
+{
+  "benchmark_manifest_hash": "sha256:c6eba3a25e2f393f793928fbc04c755b3d6ad359c99a2a6a202a0ffe372f5ac7",
+  "benchmark_manifest_path": "benchmarks/v10_calibrated/provider_runs/dry_run_pilot_v1/pipeline_bridge/benchmark_run/v10_benchmark_manifest.json",
+  "benchmark_receipts_hash": "sha256:e3d32a8baf36ef49041a74d149f9e09d61e64e95717b93a89f1e8b579e4749df",
+  "benchmark_receipts_path": "benchmarks/v10_calibrated/provider_runs/dry_run_pilot_v1/pipeline_bridge/benchmark_run/v10_benchmark_receipts.jsonl",
+  "benchmark_summary_hash": "sha256:d49b8504d1473d2a6b4b4c929e6a109ac3fa8e6a11baa7709d37b2917fe7aeb1",
+  "benchmark_summary_path": "benchmarks/v10_calibrated/provider_runs/dry_run_pilot_v1/pipeline_bridge/benchmark_run/v10_benchmark_summary.json",
+  "bootstrap_ci_hash": "sha256:2dc3e94731d5f21219a4793aa3683cc0357ec88fe7c996b2dfee99f269aae1e0",
+  "diagnostics_config_hash": "sha256:a6db35c2d420316d072b97e96ec8fefac994c8ba62c3dbda184f4fe0f61303cb",
+  "diagnostics_config_path": "configs/v10_diagnostics.json",
+  "fixture_mode": true,
+  "generated_at": "2026-06-09T05:58:26Z",
+  "integrity_report_hash": "sha256:a0d4a9d3b2255fc498f6f291851f0716334525d1d71685b7eb350f24ec43ed6e",
+  "limitations": [
+    "Fixture/demo only; this is not final v10 evidence.",
+    "No live model APIs were called.",
+    "No final v10 reportability claim is made.",
+    "Bootstrap CIs are unstable under small samples."
+  ],
+  "manifest_hash": "sha256:5e793d3dec1919ab5cabe418229a14729b57795e6c952c67dbe30a7093f058d1",
+  "reportability_report_hash": null,
+  "schema_version": "v10_diagnostics_v1"
+}

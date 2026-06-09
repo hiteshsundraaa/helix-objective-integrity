@@ -1,0 +1,39 @@
+{
+  "binary_score_fraction": 0.0,
+  "decision_score_coupling_detected": true,
+  "decision_score_coupling_rate": 1.0,
+  "duplicate_case_id_count": 0,
+  "failed_targets": [],
+  "high_risk_invalid_citation_method_count": 0,
+  "high_risk_missing_citation_count": 0,
+  "invalid_count": 0,
+  "invalid_decision_count": 0,
+  "invalid_score_count": 0,
+  "max_score_bin_fraction": 0.23333333333333334,
+  "missing_case_id_count": 0,
+  "missing_required_field_count": 0,
+  "normalization_hash": "sha256:02dc8238da6beba56261f4016779b62c7ae84e99b28a137d936e41dcbcf3fc58",
+  "normalized_count": 30,
+  "raw_count": 30,
+  "score_band_occupancy": {
+    "0.00-0.10": 0,
+    "0.10-0.20": 0,
+    "0.20-0.30": 6,
+    "0.30-0.40": 0,
+    "0.40-0.50": 6,
+    "0.50-0.60": 0,
+    "0.60-0.70": 7,
+    "0.70-0.80": 0,
+    "0.80-0.90": 7,
+    "0.90-1.00": 4
+  },
+  "score_collapse_detected": false,
+  "score_entropy": 2.2961399650265077,
+  "score_out_of_range_count": 0,
+  "status": "needs_work",
+  "unknown_case_id_count": 0,
+  "valid_count": 30,
+  "warnings": [
+    "decision_score_coupling_detected"
+  ]
+}

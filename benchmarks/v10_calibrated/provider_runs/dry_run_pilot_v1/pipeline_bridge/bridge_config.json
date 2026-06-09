@@ -1,0 +1,23 @@
+{
+  "allow_api_keys": false,
+  "allow_network_calls": false,
+  "allow_provider_sdk_imports": false,
+  "benchmark_config_path": "configs/v10_benchmark_runner.json",
+  "cases_path": "benchmarks/v10_calibrated/v10_cases.jsonl",
+  "default_provider_run_dir": "benchmarks/v10_calibrated/provider_runs/dry_run_pilot_v1",
+  "diagnostics_config_path": "configs/v10_diagnostics.json",
+  "dry_run_bridge": true,
+  "evidence_policy": {
+    "dry_run_bridge_evidence_level_cap": 2,
+    "dry_run_is_provider_evidence": false,
+    "level_4_allowed": false,
+    "level_5_allowed": false
+  },
+  "integrity_config_path": "configs/benchmark_integrity_v1.json",
+  "normalization_config_path": "configs/v10_judgment_normalization.json",
+  "notes": "Routes dry-run parsed judgments through existing v10 pipeline. No provider evidence.",
+  "output_subdir": "pipeline_bridge",
+  "parsed_raw_judgments_filename": "parsed_raw_judgments.jsonl",
+  "reportability_config_path": "configs/v10_reportability_gate.json",
+  "schema_version": "v10_provider_dry_run_pipeline_bridge_v1"
+}

@@ -3,7 +3,7 @@
   "case_ids_hash": "sha256:e6f2feb7acb843b55249bcd2bb0541ff6d97d09203ba3444261726eee26ee67e",
   "dry_run_config_hash": "sha256:4d9702ce792c347a0fde73ecb6c14de72089b6adc8b8e442cc35132e28147c4a",
   "dry_run_config_path": "configs/v10_provider_dry_run_executor.json",
-  "generated_at": "2026-06-09T05:46:32Z",
+  "generated_at": "2026-06-09T05:58:14Z",
   "limitations": [
     "Dry-run scaffold only.",
     "No provider API calls were made.",
@@ -12,7 +12,7 @@
     "Dry-run evidence is capped at Level 2.",
     "Level 5 is false."
   ],
-  "manifest_hash": "sha256:d3ea251753898c4cff08ebc4d26e8c1c71c475bbd90e414c493e5b73a6902b41",
+  "manifest_hash": "sha256:06d571542dc50e20d867bb6a4838082793ac27e8fe111599b7e698c5c7927992",
   "network_calls_attempted": 0,
   "no_api_calls_made": true,
   "parsed_raw_judgments_hash": "sha256:8c2301736440273aa37916adb343b8b1c5d94497c12869230c6e43b7dc929b92",
