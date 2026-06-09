@@ -1,0 +1,21 @@
+{
+  "batch_id": "batch_001",
+  "case_ids": [
+    "v10_case_0017",
+    "v10_case_0025",
+    "v10_case_0026",
+    "v10_case_0035",
+    "v10_case_0046",
+    "v10_case_0047",
+    "v10_case_0061",
+    "v10_case_0071",
+    "v10_case_0090",
+    "v10_case_0104"
+  ],
+  "dry_run": true,
+  "model": "fixture-response-generator",
+  "prompt_hash": "sha256:78d8bf217a933c1b261f7ddda1197c8dd21c435a1204a38d5e7a96da98c847e4",
+  "prompt_mode": "contract",
+  "provider": "dry_run_fixture",
+  "request_hash": "sha256:0b35fd0281125c7c373237324b851221b2ca508fe546e51bf71515e689eabb03"
+}

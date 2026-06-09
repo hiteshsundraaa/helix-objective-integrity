@@ -1,0 +1,34 @@
+{
+  "api_key_observed": false,
+  "case_ids_hash": "sha256:e6f2feb7acb843b55249bcd2bb0541ff6d97d09203ba3444261726eee26ee67e",
+  "dry_run_config_hash": "sha256:4d9702ce792c347a0fde73ecb6c14de72089b6adc8b8e442cc35132e28147c4a",
+  "dry_run_config_path": "configs/v10_provider_dry_run_executor.json",
+  "generated_at": "2026-06-09T05:46:32Z",
+  "limitations": [
+    "Dry-run scaffold only.",
+    "No provider API calls were made.",
+    "No provider SDK clients were used.",
+    "No real provider judgments were collected.",
+    "Dry-run evidence is capped at Level 2.",
+    "Level 5 is false."
+  ],
+  "manifest_hash": "sha256:d3ea251753898c4cff08ebc4d26e8c1c71c475bbd90e414c493e5b73a6902b41",
+  "network_calls_attempted": 0,
+  "no_api_calls_made": true,
+  "parsed_raw_judgments_hash": "sha256:8c2301736440273aa37916adb343b8b1c5d94497c12869230c6e43b7dc929b92",
+  "prompt_hashes": {
+    "contract_prompt": "sha256:78d8bf217a933c1b261f7ddda1197c8dd21c435a1204a38d5e7a96da98c847e4",
+    "generic_prompt": "sha256:0b3655bb6cef48932759b7f6075d88c87c3bd9d7a3002da7322df433fe6055b3",
+    "prompt_rendering_manifest": "sha256:5f9972724e30d9bef442cafe6fc2a35011f8fcf3ca3670c7267ed08766a72714"
+  },
+  "provider_plan_hash": "sha256:c60ce7ee364057d65128ac379ee4ceba7181e3bf3803a0b208d0b6eee6899208",
+  "provider_plan_path": "benchmarks/v10_calibrated/provider_run_plans/pilot_v1/provider_run_plan.json",
+  "provider_sdk_imported": false,
+  "raw_response_hashes": {
+    "batch_001": "sha256:7be91033a71683dbcbe3af4400ff1d7027cfb1af70a56b9a40b680d629a120e5",
+    "batch_002": "sha256:6d0079ee66b4486219df87ab03cffa9bd1448042ddad9ef8de70ba62b670a084",
+    "batch_003": "sha256:ee2827f57642f8adf08bb108e73abbb96ff231ad87ab8ed9fc3958e66d1a945a"
+  },
+  "run_id": "dry_run_pilot_v1",
+  "schema_version": "v10_provider_dry_run_v1"
+}

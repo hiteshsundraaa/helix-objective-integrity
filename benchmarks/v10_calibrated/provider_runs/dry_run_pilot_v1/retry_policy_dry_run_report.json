@@ -1,0 +1,28 @@
+{
+  "dry_run_test_cases": [
+    "transport_failure",
+    "provider_timeout",
+    "truncated_invalid_json",
+    "empty_case_level_output"
+  ],
+  "missing_allowed_test_cases": [],
+  "no_real_retries_performed": true,
+  "retry_policy_allowed_reasons": [
+    "empty_case_level_output",
+    "provider_timeout",
+    "transport_failure",
+    "truncated_invalid_json"
+  ],
+  "retry_policy_disallowed_reasons": [
+    "bad_metrics",
+    "high_fpr",
+    "low_tpr",
+    "poor_citation_rate",
+    "reportability_failure",
+    "score_collapse"
+  ],
+  "retry_policy_hash": "sha256:32f4a1f79b2f6123f4b33666f8fba1bd04c8e93e4573543f3a5865efef679596",
+  "schema_version": "v10_provider_retry_policy_dry_run_v1",
+  "status": "complete",
+  "warnings": []
+}
