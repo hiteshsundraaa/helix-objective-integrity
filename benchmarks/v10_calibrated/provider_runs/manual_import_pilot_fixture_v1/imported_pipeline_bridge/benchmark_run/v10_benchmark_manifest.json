@@ -1,0 +1,26 @@
+{
+  "benchmark_config_hash": "sha256:c498ef3a2ce1ac738d0da74ffb9489c56c2fa983ddc61be39fc9c5077502ba7e",
+  "benchmark_config_path": "configs/v10_benchmark_runner.json",
+  "benchmark_hash": "sha256:2cde89423cb588d6bd8c2fc069a16feb5e831dee2e4951f514bf1de350e2c5d6",
+  "case_count": 30,
+  "generated_at": "2026-06-09T07:02:32Z",
+  "input_cases_hash": "sha256:8a36232b12e4f31a5712651b98e7026eb7373c004abf893692ea77b9fc3a86f6",
+  "input_cases_path": "benchmarks/v10_calibrated/provider_runs/manual_import_pilot_fixture_v1/imported_pipeline_bridge/filtered_imported_cases.jsonl",
+  "limitations": [
+    "Fixture/demo runs do not create final v10 reportability claims.",
+    "No live model APIs were called.",
+    "Benchmark receipts are evaluation receipts, not runtime authorization receipts.",
+    "Bootstrap confidence intervals are not computed in this patch."
+  ],
+  "manifest_hash": "sha256:e70d99558f537c9afe81bec681879564058741ade29ce8c3a5fe4ee53e43920d",
+  "matched_case_count": 30,
+  "missing_judgment_case_count": 0,
+  "normalization_manifest_hash": "sha256:e7e3d0978afaa78c063da5abebb9da53a56b6f49976d6b74dea5193b5ca60a51",
+  "normalization_manifest_path": "benchmarks/v10_calibrated/provider_runs/manual_import_pilot_fixture_v1/imported_pipeline_bridge/normalized_judgments/v10_normalization_manifest.json",
+  "normalization_summary_hash": "sha256:cc6c26b7ad11a24e892b3a2671bba6f5beb75b7f63fe1d3c28db2a7b2e3867cf",
+  "normalization_summary_path": "benchmarks/v10_calibrated/provider_runs/manual_import_pilot_fixture_v1/imported_pipeline_bridge/normalized_judgments/v10_normalization_summary.json",
+  "normalized_judgments_hash": "sha256:87532faa346aa898bc65f4303fb1e7f1a9601e201fab400462ce555642f0b036",
+  "normalized_judgments_path": "benchmarks/v10_calibrated/provider_runs/manual_import_pilot_fixture_v1/imported_pipeline_bridge/normalized_judgments/v10_normalized_judgments.jsonl",
+  "receipt_count": 30,
+  "schema_version": "v10_benchmark_runner_v1"
+}

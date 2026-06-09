@@ -7,14 +7,14 @@
     "provider_protocol_config": "sha256:2ecc27515e375e44be371c64016113cb4a36822a89b6a1b718fd88c36dee1284",
     "reportability_config": "sha256:db4220ef01c3cd3d7a950f09a6f9c0e8257e13d3fb6b47fadfe46230692c8507"
   },
-  "generated_at": "2026-06-09T05:58:01Z",
+  "generated_at": "2026-06-09T07:00:19Z",
   "limitations": [
     "Planning artifact only.",
     "No provider API calls were made.",
     "No provider judgments were collected.",
     "Level 5 is not allowed."
   ],
-  "manifest_hash": "sha256:49a593ddbfa9047c1f88069078eac58d7990c876c4d432a57bc75fccbaab164f",
+  "manifest_hash": "sha256:2fc7567e38af94cad65fe3fdaf0193c6c8b920b09cf389f10b266ee1fa1b6e0f",
   "no_api_calls_made": true,
   "plan_hash": "sha256:8dca4041902c53ac3108bd255c9a912ee2eb16c811c206fdd7337a22c7e7cc8d",
   "prompt_hashes": {
