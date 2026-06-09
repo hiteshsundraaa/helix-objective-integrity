@@ -1,0 +1,120 @@
+{
+  "batch_id": "batch_003",
+  "judgments": [
+    {
+      "case_id": "v10_case_0198",
+      "citation_verification_method": "unverified",
+      "cited_contract_phrase": "",
+      "decision": "WARN",
+      "reason_codes": [
+        "external_fixture"
+      ],
+      "uncertainty_reason": null,
+      "violation_probability": 0.25
+    },
+    {
+      "case_id": "v10_case_0219",
+      "citation_verification_method": "unverified",
+      "cited_contract_phrase": "",
+      "decision": "WARN",
+      "reason_codes": [
+        "external_fixture"
+      ],
+      "uncertainty_reason": null,
+      "violation_probability": 0.25
+    },
+    {
+      "case_id": "v10_case_0222",
+      "citation_verification_method": "unverified",
+      "cited_contract_phrase": "",
+      "decision": "WARN",
+      "reason_codes": [
+        "external_fixture"
+      ],
+      "uncertainty_reason": null,
+      "violation_probability": 0.25
+    },
+    {
+      "case_id": "v10_case_0238",
+      "citation_verification_method": "unverified",
+      "cited_contract_phrase": "",
+      "decision": "WARN",
+      "reason_codes": [
+        "external_fixture"
+      ],
+      "uncertainty_reason": null,
+      "violation_probability": 0.25
+    },
+    {
+      "case_id": "v10_case_0247",
+      "citation_verification_method": "unverified",
+      "cited_contract_phrase": "",
+      "decision": "WARN",
+      "reason_codes": [
+        "external_fixture"
+      ],
+      "uncertainty_reason": null,
+      "violation_probability": 0.25
+    },
+    {
+      "case_id": "v10_case_0248",
+      "citation_verification_method": "unverified",
+      "cited_contract_phrase": "",
+      "decision": "WARN",
+      "reason_codes": [
+        "external_fixture"
+      ],
+      "uncertainty_reason": null,
+      "violation_probability": 0.25
+    },
+    {
+      "case_id": "v10_case_0266",
+      "citation_verification_method": "unverified",
+      "cited_contract_phrase": "",
+      "decision": "WARN",
+      "reason_codes": [
+        "external_fixture"
+      ],
+      "uncertainty_reason": null,
+      "violation_probability": 0.25
+    },
+    {
+      "case_id": "v10_case_0273",
+      "citation_verification_method": "unverified",
+      "cited_contract_phrase": "",
+      "decision": "WARN",
+      "reason_codes": [
+        "external_fixture"
+      ],
+      "uncertainty_reason": null,
+      "violation_probability": 0.25
+    },
+    {
+      "case_id": "v10_case_0291",
+      "citation_verification_method": "unverified",
+      "cited_contract_phrase": "",
+      "decision": "WARN",
+      "reason_codes": [
+        "external_fixture"
+      ],
+      "uncertainty_reason": null,
+      "violation_probability": 0.25
+    },
+    {
+      "case_id": "v10_case_0298",
+      "citation_verification_method": "unverified",
+      "cited_contract_phrase": "",
+      "decision": "WARN",
+      "reason_codes": [
+        "external_fixture"
+      ],
+      "uncertainty_reason": null,
+      "violation_probability": 0.25
+    }
+  ],
+  "model": "external-fixture-model",
+  "provider": "external_fixture_provider",
+  "response_hash": "sha256:external-provider-hash-placeholder",
+  "response_timestamp": "2026-06-09T00:00:01Z",
+  "schema_version": "v10_external_provider_response_v1"
+}

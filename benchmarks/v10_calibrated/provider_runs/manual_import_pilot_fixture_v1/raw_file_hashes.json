@@ -1,0 +1,20 @@
+{
+  "batches": {
+    "batch_001": {
+      "raw_response_hash": "sha256:f065e73801c58a061f17c9a22f6a322930f8275cedcf48c6a2874e564baecab3",
+      "raw_text_hash": "sha256:64e407cdaba6391c821da9eff4af64b086a8c64ca1fc5d7b67396a392ac6becb",
+      "request_manifest_hash": "sha256:7bfd6c59d100dedd9f6209f2b96a9f575a8c5fe19a696a0a0c4a52b8afa62eaf"
+    },
+    "batch_002": {
+      "raw_response_hash": "sha256:9eefea2caf9dff3cf35410f826633137da6549948ee3fc4c432b3b2c0bc7581d",
+      "raw_text_hash": "sha256:46d9888b1834405a3ae80dd986337e0ccd532e3b3b2ae873688f7f6997ab5066",
+      "request_manifest_hash": "sha256:1d73850f1bfe5abde8ce5637bd21400279cb1499987d9ff695ae84f222c5ac1a"
+    },
+    "batch_003": {
+      "raw_response_hash": "sha256:39f89332fa447adbb1535e274a0719eb73db687577d73682acee02d57b113ee2",
+      "raw_text_hash": "sha256:149e7fecf87746f106080351cd055e357f11ee2c8215896fc7b7aff983907bea",
+      "request_manifest_hash": "sha256:e6c821d3f29276c6f1e51c524886f02e23ff4b78eae78abd3ab67c9e9ae9784b"
+    }
+  },
+  "schema_version": "v10_provider_raw_import_raw_file_hashes_v1"
+}

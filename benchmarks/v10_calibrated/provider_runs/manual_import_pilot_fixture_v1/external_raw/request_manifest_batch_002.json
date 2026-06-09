@@ -1,0 +1,30 @@
+{
+  "batch_id": "batch_002",
+  "case_ids": [
+    "v10_case_0106",
+    "v10_case_0111",
+    "v10_case_0124",
+    "v10_case_0141",
+    "v10_case_0142",
+    "v10_case_0157",
+    "v10_case_0170",
+    "v10_case_0176",
+    "v10_case_0185",
+    "v10_case_0186"
+  ],
+  "model": "external-fixture-model",
+  "model_version": "fixture-001",
+  "prompt_hash": "sha256:78d8bf217a933c1b261f7ddda1197c8dd21c435a1204a38d5e7a96da98c847e4",
+  "prompt_mode": "contract",
+  "provider": "external_fixture_provider",
+  "request_timestamp": "2026-06-09T00:00:00Z",
+  "response_timestamp": "2026-06-09T00:00:01Z",
+  "retry_attempt": 0,
+  "retry_reason": null,
+  "schema_version": "v10_external_provider_request_manifest_v1",
+  "settings": {
+    "max_output_tokens": 8192,
+    "temperature": 0,
+    "top_p": 1
+  }
+}
