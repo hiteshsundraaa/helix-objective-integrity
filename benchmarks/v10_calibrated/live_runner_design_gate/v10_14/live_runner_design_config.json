@@ -1,0 +1,91 @@
+{
+  "config": {
+    "allowed_providers": {
+      "anthropic": {
+        "allowed_models": [
+          "claude-sonnet-4-6"
+        ],
+        "max_retries": 3,
+        "rate_limit_rpm": 50
+      },
+      "google": {
+        "allowed_models": [
+          "gemini-flash-2.0",
+          "gemini-pro-2.0"
+        ],
+        "max_retries": 3,
+        "rate_limit_rpm": 60
+      },
+      "openai": {
+        "allowed_models": [
+          "gpt-4o",
+          "gpt-4o-mini"
+        ],
+        "max_retries": 3,
+        "rate_limit_rpm": 60
+      }
+    },
+    "api_keys_allowed_in_repo": false,
+    "design_gate_only": true,
+    "execution_modes": [
+      "dry_run",
+      "manual_import",
+      "live"
+    ],
+    "live_calls_allowed_in_this_version": false,
+    "mode_parameter_default_allowed": false,
+    "mode_parameter_required": true,
+    "output_path_policy": {
+      "ambiguous_execution_mode_behavior": "fail_loudly",
+      "dry_run_root": "benchmarks/v10_calibrated/provider_runs/dry_run",
+      "execution_mode_manifest_field_required": true,
+      "live_path_template": "{live_root}/{provider}/{model}/{run_id}",
+      "live_root": "benchmarks/v10_calibrated/provider_runs/live",
+      "manual_import_root": "benchmarks/v10_calibrated/provider_runs/manual_import"
+    },
+    "provider_sdks_allowed_in_this_version": false,
+    "retry_policy": {
+      "base_delay_seconds": 1.0,
+      "failure_budget_per_run": 0.05,
+      "jitter": "full",
+      "max_retries": 3,
+      "non_retryable_status_codes": [
+        400,
+        401,
+        403
+      ],
+      "retryable_status_codes": [
+        429,
+        500,
+        502,
+        503
+      ]
+    },
+    "schema_version": "v10_live_provider_runner_design_gate_v1",
+    "secrets_policy": {
+      "api_key_presence_is_authorization": false,
+      "direct_environment_reads_allowed_in_runner": false,
+      "dual_signal_live_authorization_required": true,
+      "required_authorization_env_value": "true",
+      "required_authorization_env_var": "HELIX_LIVE_EXECUTION_AUTHORIZED",
+      "required_live_flag": "--live",
+      "secrets_provider_required": true
+    },
+    "test_policy": {
+      "live_execution_blocker_required": true,
+      "live_test_marker": "live",
+      "live_tests_directory": "tests/live",
+      "run_live_tests_in_default_ci": false
+    },
+    "three_agent_consistency_target": {
+      "consistency_receipt_required": true,
+      "enabled_as_future_target": true,
+      "majority_vote_truth_claim_allowed": false,
+      "minimum_independent_agent_systems": 3
+    },
+    "unknown_model_behavior": "fail_loudly"
+  },
+  "generated_at": "2026-06-09T07:27:30Z",
+  "schema_version": "v10_live_runner_design_gate_config_snapshot_v1",
+  "validation_issues": []
+}

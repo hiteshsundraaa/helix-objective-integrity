@@ -1,0 +1,29 @@
+{
+  "constraints_codified": [
+    "explicit_mode_parameter_no_default",
+    "execution_method_level_live_guard",
+    "secrets_provider_injection",
+    "dual_signal_live_authorization",
+    "dry_run_live_path_separation",
+    "execution_mode_manifest_field",
+    "bridge_rejects_ambiguous_execution_mode",
+    "allowed_model_list_validation",
+    "retry_policy_with_failure_budget",
+    "live_execution_blocker_in_tests",
+    "no_live_tests_in_default_ci",
+    "three_agent_consistency_target_declared"
+  ],
+  "design_gate_hash": "sha256:23d9fba8e99028c4dacbc16e8ed0eeaeec9bb65202301c4dd9c24dbf424f35be",
+  "live_calls_in_this_version": false,
+  "provider_sdks_used": false,
+  "receipt_id": "v10.14:live_runner_design_gate",
+  "receipt_type": "live_runner_design_gate",
+  "secrets_included": false,
+  "three_agent_consistency_target": {
+    "consistency_receipt_required": true,
+    "enabled_as_future_target": true,
+    "majority_vote_truth_claim_allowed": false,
+    "minimum_independent_agent_systems": 3
+  },
+  "version": "v10.14"
+}

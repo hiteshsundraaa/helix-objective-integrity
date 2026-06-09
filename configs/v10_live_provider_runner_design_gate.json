@@ -1,0 +1,86 @@
+{
+  "schema_version": "v10_live_provider_runner_design_gate_v1",
+  "design_gate_only": true,
+  "live_calls_allowed_in_this_version": false,
+  "provider_sdks_allowed_in_this_version": false,
+  "api_keys_allowed_in_repo": false,
+  "execution_modes": [
+    "dry_run",
+    "manual_import",
+    "live"
+  ],
+  "mode_parameter_required": true,
+  "mode_parameter_default_allowed": false,
+  "secrets_policy": {
+    "direct_environment_reads_allowed_in_runner": false,
+    "secrets_provider_required": true,
+    "dual_signal_live_authorization_required": true,
+    "required_live_flag": "--live",
+    "required_authorization_env_var": "HELIX_LIVE_EXECUTION_AUTHORIZED",
+    "required_authorization_env_value": "true",
+    "api_key_presence_is_authorization": false
+  },
+  "output_path_policy": {
+    "dry_run_root": "benchmarks/v10_calibrated/provider_runs/dry_run",
+    "manual_import_root": "benchmarks/v10_calibrated/provider_runs/manual_import",
+    "live_root": "benchmarks/v10_calibrated/provider_runs/live",
+    "live_path_template": "{live_root}/{provider}/{model}/{run_id}",
+    "execution_mode_manifest_field_required": true,
+    "ambiguous_execution_mode_behavior": "fail_loudly"
+  },
+  "allowed_providers": {
+    "google": {
+      "allowed_models": [
+        "gemini-flash-2.0",
+        "gemini-pro-2.0"
+      ],
+      "rate_limit_rpm": 60,
+      "max_retries": 3
+    },
+    "anthropic": {
+      "allowed_models": [
+        "claude-sonnet-4-6"
+      ],
+      "rate_limit_rpm": 50,
+      "max_retries": 3
+    },
+    "openai": {
+      "allowed_models": [
+        "gpt-4o",
+        "gpt-4o-mini"
+      ],
+      "rate_limit_rpm": 60,
+      "max_retries": 3
+    }
+  },
+  "unknown_model_behavior": "fail_loudly",
+  "retry_policy": {
+    "max_retries": 3,
+    "base_delay_seconds": 1.0,
+    "jitter": "full",
+    "retryable_status_codes": [
+      429,
+      500,
+      502,
+      503
+    ],
+    "non_retryable_status_codes": [
+      400,
+      401,
+      403
+    ],
+    "failure_budget_per_run": 0.05
+  },
+  "test_policy": {
+    "live_execution_blocker_required": true,
+    "live_tests_directory": "tests/live",
+    "live_test_marker": "live",
+    "run_live_tests_in_default_ci": false
+  },
+  "three_agent_consistency_target": {
+    "enabled_as_future_target": true,
+    "minimum_independent_agent_systems": 3,
+    "majority_vote_truth_claim_allowed": false,
+    "consistency_receipt_required": true
+  }
+}
