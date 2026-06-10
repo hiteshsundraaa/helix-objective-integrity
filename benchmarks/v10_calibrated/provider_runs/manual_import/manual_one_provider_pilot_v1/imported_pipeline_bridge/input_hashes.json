@@ -1,0 +1,16 @@
+{
+  "filtered_cases_hash": "sha256:8a36232b12e4f31a5712651b98e7026eb7373c004abf893692ea77b9fc3a86f6",
+  "filtered_cases_path": "benchmarks/v10_calibrated/provider_runs/manual_import/manual_one_provider_pilot_v1/imported_pipeline_bridge/filtered_imported_cases.jsonl",
+  "full_cases_hash": "sha256:aeb0a2ee5cfa746be342ec9d40a4b3d0a21f562ab0b5c66ca0e7fc325572291e",
+  "full_cases_path": "benchmarks/v10_calibrated/v10_cases.jsonl",
+  "input_parsed_raw_judgments_hash": "sha256:52eea0f309aaa66adb06f7058ad92d4fa429e61d9a9bbd260d77fe436177484c",
+  "input_parsed_raw_judgments_path": "benchmarks/v10_calibrated/provider_runs/manual_import/manual_one_provider_pilot_v1/imported_pipeline_bridge/parsed_raw_judgments.jsonl",
+  "input_provider_manifest_hash": "sha256:5335e7a738c36307afc3615c0e960dfdd77bf10babc9c5f33a1ed4489c582e91",
+  "input_provider_manifest_path": "benchmarks/v10_calibrated/provider_runs/manual_import/manual_one_provider_pilot_v1/provider_run_manifest.json",
+  "input_raw_file_hashes_hash": "sha256:159d94caa738eac2d3d47f2624f6419bd239332401184105ae5558de5e0869d7",
+  "input_raw_file_hashes_path": "benchmarks/v10_calibrated/provider_runs/manual_import/manual_one_provider_pilot_v1/raw_file_hashes.json",
+  "input_raw_import_summary_hash": "sha256:002cc91351d77c96940147ef98f9ff4634435d426af014f5f7ca828699f16f78",
+  "input_raw_import_summary_path": "benchmarks/v10_calibrated/provider_runs/manual_import/manual_one_provider_pilot_v1/raw_import_validation_summary.json",
+  "provider_run_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/manual_one_provider_pilot_v1",
+  "schema_version": "v10_imported_provider_bridge_input_hashes_v1"
+}

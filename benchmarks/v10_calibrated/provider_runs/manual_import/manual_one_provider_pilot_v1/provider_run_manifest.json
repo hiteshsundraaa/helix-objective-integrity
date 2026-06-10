@@ -1,0 +1,41 @@
+{
+  "api_key_observed": false,
+  "evidence_level_cap": 3,
+  "expected_case_ids_hash": "sha256:e6f2feb7acb843b55249bcd2bb0541ff6d97d09203ba3444261726eee26ee67e",
+  "generated_at": "2026-06-10T09:22:53Z",
+  "import_config_hash": "sha256:4044d8b8bb9406bfa2546efe46ff7e38ee1a1258d65647343a365d0a4c7aff74",
+  "import_config_path": "configs/v10_provider_raw_import_validator.json",
+  "import_dir": "benchmarks/v10_calibrated/provider_imports/manual_one_provider_pilot_v1",
+  "import_dir_hash": "sha256:2e34612d68f02d4be82cc2d54bed9cc7a91fa5a4413cb5fd5ef8f49b303bb3dc",
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "limitations": [
+    "Validator only.",
+    "No provider API calls were made.",
+    "No provider SDK clients were used.",
+    "Imported files are externally saved raw outputs.",
+    "Manual import is not locked live-run evidence.",
+    "Evidence is capped at Level 3.",
+    "Level 4 and Level 5 are false."
+  ],
+  "manifest_hash": "sha256:d5b8ed3f7dce9b9358aea91cc891162255ef0ddfd03aea908cd0c35a40edd6a8",
+  "network_calls_attempted": 0,
+  "no_api_calls_made": true,
+  "output_provider_run_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/manual_one_provider_pilot_v1",
+  "parsed_raw_judgments_hash": "sha256:52eea0f309aaa66adb06f7058ad92d4fa429e61d9a9bbd260d77fe436177484c",
+  "plan_hash": "sha256:c60ce7ee364057d65128ac379ee4ceba7181e3bf3803a0b208d0b6eee6899208",
+  "plan_path": "benchmarks/v10_calibrated/provider_run_plans/pilot_v1/provider_run_plan.json",
+  "provider_sdk_imported": false,
+  "raw_file_hashes": {
+    "batches": {
+      "batch_001": {
+        "raw_response_hash": "sha256:52eea0f309aaa66adb06f7058ad92d4fa429e61d9a9bbd260d77fe436177484c",
+        "raw_text_hash": "sha256:52eea0f309aaa66adb06f7058ad92d4fa429e61d9a9bbd260d77fe436177484c",
+        "request_manifest_hash": "sha256:6b73fb2fdb41c9ea4a5dda18c72eb108e3f77fbd822a570c067509e30cc511d5"
+      }
+    },
+    "schema_version": "v10_provider_raw_import_raw_file_hashes_v1"
+  },
+  "schema_version": "v10_provider_raw_import_v1",
+  "validation_status": "complete"
+}
