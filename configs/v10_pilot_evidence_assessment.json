@@ -1,0 +1,55 @@
+{
+  "schema_version": "v10_pilot_evidence_assessment_v1",
+  "assessment_only": true,
+  "level_4_requires_live_execution": true,
+  "level_5_allowed": false,
+  "allowed_execution_modes": [
+    "dry_run",
+    "manual_import",
+    "live"
+  ],
+  "execution_mode_caps": {
+    "dry_run": 2,
+    "manual_import": 3,
+    "live": 4
+  },
+  "level_4_criteria": {
+    "execution_mode_must_be_live": true,
+    "normalization_status_required": "complete",
+    "benchmark_status_required": "complete",
+    "diagnostics_status_allowed": [
+      "complete",
+      "passed"
+    ],
+    "integrity_passed_required": true,
+    "score_collapse_detected_required": false,
+    "generator_independence_required": true,
+    "receipt_count_must_equal_case_count": true,
+    "invalid_receipt_count_required": 0,
+    "provider_model_must_be_allowed": true,
+    "raw_output_hash_required_for_live": true,
+    "level_5_allowed": false
+  },
+  "receipt_chain": {
+    "hash_algorithm": "sha256",
+    "canonical_json": true,
+    "required_fields": [
+      "case_id",
+      "decision",
+      "violation_probability",
+      "judgment_hash",
+      "receipt_hash"
+    ],
+    "raw_output_hash_required_for_live": true,
+    "raw_output_hash_required_for_manual_import": false,
+    "raw_output_hash_required_for_dry_run": false
+  },
+  "integrity_thresholds": {
+    "minimum_score_entropy": 1.0,
+    "maximum_token_overlap_mean": 0.15,
+    "maximum_leakage_rate": 0.10,
+    "maximum_threshold_sensitivity_delta": 0.20,
+    "requires_positive_shuffled_selectivity": true
+  },
+  "notes": "Assessment gate only. Does not execute providers, import raw outputs, or create Level 4 evidence by itself."
+}
