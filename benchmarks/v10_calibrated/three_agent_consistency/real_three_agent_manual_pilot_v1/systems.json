@@ -1,0 +1,30 @@
+{
+  "consistency_run_id": "real_three_agent_manual_pilot_v1",
+  "schema_version": "v10_real_three_agent_manual_pilot_systems_v1",
+  "systems": [
+    {
+      "collection_method": "manual_copy_paste",
+      "model": "gemini-flash-2.0",
+      "notes": "real manual output path; do not edit provider output",
+      "provider": "google",
+      "raw_output_file": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_a_google_gemini-flash-2.0.jsonl",
+      "role": "system_a"
+    },
+    {
+      "collection_method": "manual_copy_paste",
+      "model": "claude-sonnet-4-6",
+      "notes": "real manual output path; do not edit provider output",
+      "provider": "anthropic",
+      "raw_output_file": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_b_anthropic_claude-sonnet-4-6.jsonl",
+      "role": "system_b"
+    },
+    {
+      "collection_method": "manual_copy_paste",
+      "model": "gpt-4o",
+      "notes": "real manual output path; do not edit provider output",
+      "provider": "openai",
+      "raw_output_file": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_c_openai_gpt-4o.jsonl",
+      "role": "system_c"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "case_count": 30,
+  "collection_instructions_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/MANUAL_COLLECTION_INSTRUCTIONS.md",
+  "consistency_run_id": "real_three_agent_manual_pilot_v1",
+  "execution_mode": "manual_import",
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "limitations": [
+    "Manual outputs must be collected outside HELIX.",
+    "No live model APIs are called by HELIX.",
+    "No provider SDK clients are imported or executed.",
+    "Manual evidence remains capped at Level 3.",
+    "Level 4 and Level 5 are false.",
+    "Consistency is not correctness.",
+    "Majority vote is not truth.",
+    "This artifact flow does not imply outputs exist."
+  ],
+  "outputs_collected_count": 0,
+  "preparation_hash": "sha256:785d5ce821d0f7059a92c5947abd9af55317c7ca90fd07724ff1c52dbdcd0954",
+  "prompt_pack_dir": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/prompt_pack",
+  "raw_output_dir": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs",
+  "ready_to_run_consistency": false,
+  "schema_version": "v10_real_three_agent_manual_pilot_preparation_v1",
+  "status": "awaiting_manual_outputs",
+  "system_count": 3,
+  "system_json_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/systems.json",
+  "systems": [
+    {
+      "collected": false,
+      "collection_method": "manual_copy_paste",
+      "model": "gemini-flash-2.0",
+      "output_hash": null,
+      "provider": "google",
+      "raw_output_filename": "system_a_google_gemini-flash-2.0.jsonl",
+      "raw_output_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_a_google_gemini-flash-2.0.jsonl",
+      "role": "system_a"
+    },
+    {
+      "collected": false,
+      "collection_method": "manual_copy_paste",
+      "model": "claude-sonnet-4-6",
+      "output_hash": null,
+      "provider": "anthropic",
+      "raw_output_filename": "system_b_anthropic_claude-sonnet-4-6.jsonl",
+      "raw_output_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_b_anthropic_claude-sonnet-4-6.jsonl",
+      "role": "system_b"
+    },
+    {
+      "collected": false,
+      "collection_method": "manual_copy_paste",
+      "model": "gpt-4o",
+      "output_hash": null,
+      "provider": "openai",
+      "raw_output_filename": "system_c_openai_gpt-4o.jsonl",
+      "raw_output_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_c_openai_gpt-4o.jsonl",
+      "role": "system_c"
+    }
+  ],
+  "warnings": [
+    "manual_provider_outputs_not_collected"
+  ]
+}
