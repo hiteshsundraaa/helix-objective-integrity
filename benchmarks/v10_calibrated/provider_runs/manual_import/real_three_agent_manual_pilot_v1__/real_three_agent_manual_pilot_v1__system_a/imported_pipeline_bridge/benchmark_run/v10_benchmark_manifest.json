@@ -1,0 +1,26 @@
+{
+  "benchmark_config_hash": "sha256:c498ef3a2ce1ac738d0da74ffb9489c56c2fa983ddc61be39fc9c5077502ba7e",
+  "benchmark_config_path": "configs/v10_benchmark_runner.json",
+  "benchmark_hash": "sha256:64769aeda7c3271f975bc434e6c2aff8406288a9b91d5d245744df8c183174a7",
+  "case_count": 30,
+  "generated_at": "2026-06-11T08:01:39Z",
+  "input_cases_hash": "sha256:8a36232b12e4f31a5712651b98e7026eb7373c004abf893692ea77b9fc3a86f6",
+  "input_cases_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/filtered_imported_cases.jsonl",
+  "limitations": [
+    "Fixture/demo runs do not create final v10 reportability claims.",
+    "No live model APIs were called.",
+    "Benchmark receipts are evaluation receipts, not runtime authorization receipts.",
+    "Bootstrap confidence intervals are not computed in this patch."
+  ],
+  "manifest_hash": "sha256:f37708a7313f9b23844e6001cf99c5a31bd8bd78524324a69b129e942899d73a",
+  "matched_case_count": 30,
+  "missing_judgment_case_count": 0,
+  "normalization_manifest_hash": "sha256:782c1054cd7540cf66299bd43f8ffc2fef68cbb8476699ffae6933a4ea2c589a",
+  "normalization_manifest_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/normalized_judgments/v10_normalization_manifest.json",
+  "normalization_summary_hash": "sha256:dc28a1ecd8f3516c72b2784d81d63da1c3888c07de5913b9a88ec536e7e9f40a",
+  "normalization_summary_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/normalized_judgments/v10_normalization_summary.json",
+  "normalized_judgments_hash": "sha256:9938a1078b0fc6c846c8ebd30349e6e61649c1543d135c1a19a901a194140253",
+  "normalized_judgments_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/normalized_judgments/v10_normalized_judgments.jsonl",
+  "receipt_count": 30,
+  "schema_version": "v10_benchmark_runner_v1"
+}

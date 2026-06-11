@@ -15,48 +15,46 @@
     "Majority vote is not truth.",
     "This artifact flow does not imply outputs exist."
   ],
-  "outputs_collected_count": 0,
-  "preparation_hash": "sha256:785d5ce821d0f7059a92c5947abd9af55317c7ca90fd07724ff1c52dbdcd0954",
+  "outputs_collected_count": 3,
+  "preparation_hash": "sha256:7a738a0287615bff285aec1f3712fbfe069b8f4c8a0947bb5542e7292ca8978a",
   "prompt_pack_dir": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/prompt_pack",
   "raw_output_dir": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs",
-  "ready_to_run_consistency": false,
+  "ready_to_run_consistency": true,
   "schema_version": "v10_real_three_agent_manual_pilot_preparation_v1",
-  "status": "awaiting_manual_outputs",
+  "status": "ready_to_run",
   "system_count": 3,
   "system_json_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/systems.json",
   "systems": [
     {
-      "collected": false,
+      "collected": true,
       "collection_method": "manual_copy_paste",
       "model": "gemini-flash-2.0",
-      "output_hash": null,
+      "output_hash": "sha256:9f5dcfb466cbe18f727958f586f2a88b9e3bdbba7da8b8287c265874a54c0d1b",
       "provider": "google",
       "raw_output_filename": "system_a_google_gemini-flash-2.0.jsonl",
       "raw_output_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_a_google_gemini-flash-2.0.jsonl",
       "role": "system_a"
     },
     {
-      "collected": false,
+      "collected": true,
       "collection_method": "manual_copy_paste",
       "model": "claude-sonnet-4-6",
-      "output_hash": null,
+      "output_hash": "sha256:6680b99a9bd3b6d207040b8356860f3fa597bf58149ed072c8bfb55a3b70acc1",
       "provider": "anthropic",
       "raw_output_filename": "system_b_anthropic_claude-sonnet-4-6.jsonl",
       "raw_output_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_b_anthropic_claude-sonnet-4-6.jsonl",
       "role": "system_b"
     },
     {
-      "collected": false,
+      "collected": true,
       "collection_method": "manual_copy_paste",
       "model": "gpt-4o",
-      "output_hash": null,
+      "output_hash": "sha256:86e9c51f88fd588ee4753b96ea435d3f197028de896bb11733340d3f98e65202",
       "provider": "openai",
       "raw_output_filename": "system_c_openai_gpt-4o.jsonl",
       "raw_output_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_c_openai_gpt-4o.jsonl",
       "role": "system_c"
     }
   ],
-  "warnings": [
-    "manual_provider_outputs_not_collected"
-  ]
+  "warnings": []
 }

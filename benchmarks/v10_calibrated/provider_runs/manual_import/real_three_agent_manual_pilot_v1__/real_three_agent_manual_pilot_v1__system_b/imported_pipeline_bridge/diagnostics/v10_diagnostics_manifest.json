@@ -1,0 +1,23 @@
+{
+  "benchmark_manifest_hash": "sha256:a77a6b8c1b29a783255ee738dce83151bdcec8725f4428358d286c88ae33fefb",
+  "benchmark_manifest_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_b/imported_pipeline_bridge/benchmark_run/v10_benchmark_manifest.json",
+  "benchmark_receipts_hash": "sha256:b24eb423254afbb0fbef80d0ec7672969ac3a1de8681c4aa89e5de97044cc9af",
+  "benchmark_receipts_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_b/imported_pipeline_bridge/benchmark_run/v10_benchmark_receipts.jsonl",
+  "benchmark_summary_hash": "sha256:fa634b26ec56159c18b409d8702737dcb2df8d25c112d8b431fa44ef06ed2ef3",
+  "benchmark_summary_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_b/imported_pipeline_bridge/benchmark_run/v10_benchmark_summary.json",
+  "bootstrap_ci_hash": "sha256:7e282e9de198c092e76a7664eb1d18c11433aae5e11183ae10c8b4eb96eabe13",
+  "diagnostics_config_hash": "sha256:a6db35c2d420316d072b97e96ec8fefac994c8ba62c3dbda184f4fe0f61303cb",
+  "diagnostics_config_path": "configs/v10_diagnostics.json",
+  "fixture_mode": true,
+  "generated_at": "2026-06-11T08:01:39Z",
+  "integrity_report_hash": "sha256:b66f69366ddffdc80b54911e8c2ea3c33f1b68270168fa021e9d19e18a6c6ed6",
+  "limitations": [
+    "Fixture/demo only; this is not final v10 evidence.",
+    "No live model APIs were called.",
+    "No final v10 reportability claim is made.",
+    "Bootstrap CIs are unstable under small samples."
+  ],
+  "manifest_hash": "sha256:ebb77db309288beba315e13f8d54304d1b5520bff56ceca439615ec1a7da7944",
+  "reportability_report_hash": null,
+  "schema_version": "v10_diagnostics_v1"
+}

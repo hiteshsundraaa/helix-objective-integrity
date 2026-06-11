@@ -1,0 +1,22 @@
+{
+  "descriptive_not_blame_assignment": true,
+  "observed_counts": {
+    "citation_grounding_disagreement": 30,
+    "contract_phrase_selection_disagreement": 30,
+    "objective_interpretation_disagreement": 8,
+    "score_calibration_disagreement": 5
+  },
+  "schema_version": "v10_three_agent_disagreement_taxonomy_v1",
+  "taxonomy": [
+    "decision_boundary_disagreement",
+    "score_calibration_disagreement",
+    "citation_grounding_disagreement",
+    "parsing_or_schema_failure",
+    "refusal_or_safety_behavior",
+    "provider_policy_interference",
+    "objective_interpretation_disagreement",
+    "contract_phrase_selection_disagreement",
+    "receipt_chain_failure",
+    "unknown"
+  ]
+}

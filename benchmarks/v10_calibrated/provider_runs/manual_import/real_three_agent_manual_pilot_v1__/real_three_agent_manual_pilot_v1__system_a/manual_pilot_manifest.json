@@ -1,0 +1,178 @@
+{
+  "bridge_paths": {
+    "benchmark_output_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/benchmark_run",
+    "bridge_config": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/bridge_config.json",
+    "bridge_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge",
+    "bridge_manifest": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/bridge_manifest.json",
+    "bridge_report": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/bridge_report.md",
+    "bridge_summary": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/bridge_summary.json",
+    "diagnostics_output_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/diagnostics",
+    "filtered_cases": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/filtered_imported_cases.jsonl",
+    "input_hashes": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/input_hashes.json",
+    "normalized_output_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/normalized_judgments",
+    "parsed_raw_judgments": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/parsed_raw_judgments.jsonl",
+    "reportability_output_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/reportability/v10_reportability_report.json"
+  },
+  "evidence_paths": {
+    "assessment": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/pilot_evidence/pilot_evidence_assessment.json",
+    "config": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/pilot_evidence/pilot_evidence_assessment_config.json",
+    "records": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/pilot_evidence/receipt_chain_records.jsonl",
+    "report": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/pilot_evidence/pilot_evidence_report.md",
+    "summary": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/pilot_evidence/receipt_chain_summary.json"
+  },
+  "generated_at": "2026-06-11T08:01:39Z",
+  "import_paths": {
+    "output_provider_run_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a",
+    "parsed_raw_judgments": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/parsed_raw_judgments.jsonl",
+    "prompt_hashes": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/prompt_hashes.json",
+    "provider_run_config": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/provider_run_config.json",
+    "provider_run_manifest": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/provider_run_manifest.json",
+    "raw_file_hashes": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/raw_file_hashes.json",
+    "raw_import_validation_issues": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/raw_import_validation_issues.json",
+    "raw_import_validation_report": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/raw_import_validation_report.md",
+    "raw_import_validation_summary": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/raw_import_validation_summary.json",
+    "sampled_case_ids": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/sampled_case_ids.json"
+  },
+  "input": {
+    "collection_method": "manual_copy_paste",
+    "model": "gemini-flash-2.0",
+    "notes": "real manual output path; do not edit provider output",
+    "output_root": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__",
+    "plan_path": "benchmarks/v10_calibrated/provider_run_plans/pilot_v1/provider_run_plan.json",
+    "provider": "google",
+    "raw_output_file": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_a_google_gemini-flash-2.0.jsonl",
+    "run_id": "real_three_agent_manual_pilot_v1__system_a"
+  },
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "limitations": [
+    "Manual import only.",
+    "No live provider APIs were called.",
+    "No provider SDK clients were used.",
+    "Manual collection is not locked live-runner provenance.",
+    "Evidence level is capped at 3."
+  ],
+  "manifest_hash": "sha256:9da8fdfa8ddc0461e2244f524b5a4b144d1a1a3cae6fe1288d01174e8ac66834",
+  "manual_pilot_config": {
+    "allowed_raw_output_formats": [
+      "json_object_with_judgments",
+      "json_array",
+      "jsonl_text"
+    ],
+    "collection_method_allowed_values": [
+      "manual_copy_paste",
+      "manual_export",
+      "external_saved_response"
+    ],
+    "default_plan_path": "benchmarks/v10_calibrated/provider_run_plans/pilot_v1/provider_run_plan.json",
+    "evidence_assessment_config_path": "configs/v10_pilot_evidence_assessment.json",
+    "evidence_level_cap": 3,
+    "execution_mode": "manual_import",
+    "imported_bridge_config_path": "configs/v10_imported_provider_pipeline_bridge.json",
+    "level_4_allowed": false,
+    "level_5_allowed": false,
+    "live_design_config_path": "configs/v10_live_provider_runner_design_gate.json",
+    "manual_pilot_only": true,
+    "notes": "Manual one-provider pilot only. Does not execute live APIs. Manual evidence remains capped at Level 3.",
+    "provider_imports_root": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/_staged_provider_imports",
+    "provider_runs_root": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__",
+    "raw_import_config_path": "configs/v10_provider_raw_import_validator.json",
+    "required_manual_metadata": [
+      "provider",
+      "model",
+      "run_id",
+      "raw_output_file",
+      "collection_method"
+    ],
+    "schema_version": "v10_manual_one_provider_pilot_v1"
+  },
+  "no_api_calls_made": true,
+  "path_hashes": {
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/bridge_config.json": "sha256:1e4dbec8a216eeb173ad2e57987322bb749ef5d207fee40fc355947fabea3bec",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/bridge_manifest.json": "sha256:071a9d2863d203f7122b2867f49628259f20f9cdd433611e603b3d706721f7c9",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/bridge_report.md": "sha256:30b0c73926375db9baf73f7fb498c8cc0a5e76e523fde29af3a500dae042879d",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/bridge_summary.json": "sha256:ad555072159d6c228adef8a8681f6b6cab05065b541eabc452853a4f00324a9a",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/filtered_imported_cases.jsonl": "sha256:8a36232b12e4f31a5712651b98e7026eb7373c004abf893692ea77b9fc3a86f6",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/input_hashes.json": "sha256:15c29a24dc1b70e770c577f9ba387551a5146fc9dd55472814aeed486a6903d6",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/parsed_raw_judgments.jsonl": "sha256:8acd141efdd3536f279fd48de1f6560e6bf2f599467fa1c433fec538755ba35f",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/imported_pipeline_bridge/reportability/v10_reportability_report.json": "sha256:cee03896a0bf4fe4c0680382ee058774464efab9b97018da0b37cfcef1e25ae4",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/parsed_raw_judgments.jsonl": "sha256:8acd141efdd3536f279fd48de1f6560e6bf2f599467fa1c433fec538755ba35f",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/pilot_evidence/pilot_evidence_assessment.json": "sha256:338fa3f61a11c0ea61b88afabb2707ee8936f1cf81cb0461857d88f5172f0456",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/pilot_evidence/pilot_evidence_assessment_config.json": "sha256:abecb4888d7374fc095d161f138301184f5dbccfb6bf55782da643604f484bc3",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/pilot_evidence/pilot_evidence_report.md": "sha256:643675b4007e7cafc5b83061f8dba636549387c530e6652aa33af217f8b15546",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/pilot_evidence/receipt_chain_records.jsonl": "sha256:1242482623191a8c59bc0ce42317e53c7d58d61adc92ae2ac8661ed9215131ec",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/pilot_evidence/receipt_chain_summary.json": "sha256:b1c17de4ffc7259e5a4cf4aba001d914431c5e1ee48928c1ee5e27ec4ba29644",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/prompt_hashes.json": "sha256:b5067efd352c2d43f41bc8f495774886caf0f724c63af92a9e7b91f00ce3b8d5",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/provider_run_config.json": "sha256:c1bc995a6a00b71b577db9a3c924df8cd4bc90f5a9fcfbddedc5ccd489a13077",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/provider_run_manifest.json": "sha256:d422b6e52162505f3e495bc5a7a2c6e5dc926963706c2033a0cad03eee1c7e90",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/raw_file_hashes.json": "sha256:78ae35ade38049fa8d2b46ce3b99180562c6a9b9d05c1d761df7cc0506c2331f",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/raw_import_validation_issues.json": "sha256:4d4ac42234ecf91884f15fb656a237bf7e3174b1d52ee923ab8d7431744fd27b",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/raw_import_validation_report.md": "sha256:5743ada150ec5ff3f17c583b51aac1306eb035735b85782ea922d375a5fd758f",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/raw_import_validation_summary.json": "sha256:3b9e2111c6479388f175e91b454127f0df6086f156f4ed06b8a6d8bb29b2e5bb",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/sampled_case_ids.json": "sha256:96e8457ea37801e71e3e2b7816596c4ba43040c1c43d0edd34a341e853f8afbc"
+  },
+  "provider_sdk_imported": false,
+  "schema_version": "v10_manual_one_provider_pilot_manifest_v1",
+  "staging": {
+    "case_count": 30,
+    "external_raw_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/_staged_provider_imports/real_three_agent_manual_pilot_v1__system_a/external_raw",
+    "import_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/_staged_provider_imports/real_three_agent_manual_pilot_v1__system_a",
+    "prompt_hash": "sha256:78d8bf217a933c1b261f7ddda1197c8dd21c435a1204a38d5e7a96da98c847e4",
+    "raw_response_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/_staged_provider_imports/real_three_agent_manual_pilot_v1__system_a/external_raw/raw_response_batch_001.json",
+    "raw_text_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/_staged_provider_imports/real_three_agent_manual_pilot_v1__system_a/external_raw/raw_text_batch_001.txt",
+    "request_manifest_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/_staged_provider_imports/real_three_agent_manual_pilot_v1__system_a/external_raw/request_manifest_batch_001.json",
+    "source_raw_output_file": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_a_google_gemini-flash-2.0.jsonl",
+    "source_raw_output_hash": "sha256:9f5dcfb466cbe18f727958f586f2a88b9e3bdbba7da8b8287c265874a54c0d1b",
+    "staged_raw_response_hash": "sha256:9f5dcfb466cbe18f727958f586f2a88b9e3bdbba7da8b8287c265874a54c0d1b"
+  },
+  "summary_without_manifest_hash": {
+    "benchmark_status": "complete",
+    "blocking_issues": [
+      "diagnostics_status_blocks_level_4",
+      "execution_mode_not_live_blocks_level_4",
+      "normalization_status_blocks_level_4"
+    ],
+    "bridge_status": "needs_work",
+    "collection_method": "manual_copy_paste",
+    "diagnostics_status": "needs_work",
+    "evidence_assessment_status": "complete",
+    "execution_mode": "manual_import",
+    "final_evidence_level": 3,
+    "import_validation_status": "complete",
+    "integrity_passed": true,
+    "invalid_receipt_count": 0,
+    "level_4_allowed": false,
+    "level_5_allowed": false,
+    "limitations": [
+      "Manual one-provider pilot only.",
+      "No live provider APIs are called.",
+      "No provider SDK clients are imported or executed.",
+      "Manual evidence remains capped at Level 3.",
+      "Level 4 and Level 5 are false.",
+      "One provider does not prove cross-provider consistency."
+    ],
+    "manifest_hash": "",
+    "mechanical_reportability_passed": false,
+    "model": "gemini-flash-2.0",
+    "non_blocking_warnings": [
+      "manual_import_lacks_locked_live_runner_provenance"
+    ],
+    "normalization_status": "needs_work",
+    "pilot_manifest_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/manual_pilot_manifest.json",
+    "pilot_report_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_a/manual_pilot_report.md",
+    "provider": "google",
+    "raw_output_file": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_a_google_gemini-flash-2.0.jsonl",
+    "raw_output_hash": "sha256:9f5dcfb466cbe18f727958f586f2a88b9e3bdbba7da8b8287c265874a54c0d1b",
+    "receipt_chain_complete": true,
+    "receipt_count": 30,
+    "run_id": "real_three_agent_manual_pilot_v1__system_a",
+    "schema_version": "v10_manual_one_provider_pilot_summary_v1",
+    "score_collapse_detected": false,
+    "status": "needs_work",
+    "warnings": [
+      "diagnostics_status:needs_work",
+      "manual_import_lacks_locked_live_runner_provenance",
+      "normalization_status:needs_work"
+    ]
+  }
+}

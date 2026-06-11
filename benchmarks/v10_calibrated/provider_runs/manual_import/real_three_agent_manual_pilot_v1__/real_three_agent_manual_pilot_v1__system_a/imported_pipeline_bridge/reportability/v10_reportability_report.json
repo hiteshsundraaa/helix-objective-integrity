@@ -1,0 +1,34 @@
+{
+  "bootstrap_ci_present": true,
+  "evidence_level_allowed": 3,
+  "failed_criteria": [
+    "mid_risk_fraction_below_minimum",
+    "near_boundary_fraction_below_minimum",
+    "score_band_occupancy_below_minimum:0.15-0.35",
+    "score_band_occupancy_below_minimum:0.35-0.55",
+    "score_band_occupancy_below_minimum:0.55-0.75",
+    "score_band_occupancy_below_minimum:0.75-0.90",
+    "score_entropy_below_or_equal_minimum"
+  ],
+  "hard_integrity_issue_count": 0,
+  "leakage_rate": 0.0,
+  "level_5_allowed": false,
+  "max_score_bin_fraction": 0.6666666666666666,
+  "mid_risk_fraction": 0.06666666666666667,
+  "near_boundary_fraction": 0.06666666666666667,
+  "reportability_hash": "sha256:b85d85100bd36530dc6eae00a296a400079059dcb253acab68333de3dda837fe",
+  "reportability_passed": false,
+  "score_band_occupancy": {
+    "0.00-0.15": 0.26666666666666666,
+    "0.15-0.35": 0.0,
+    "0.35-0.55": 0.03333333333333333,
+    "0.55-0.75": 0.03333333333333333,
+    "0.75-0.90": 0.0,
+    "0.90-1.00": 0.6666666666666666
+  },
+  "score_entropy": 1.2256051990169436,
+  "selectivity_delta_vs_random": 0.08100000000000002,
+  "selectivity_delta_vs_shuffled": 0.08042857142857143,
+  "token_overlap_mean": 0.11743679696428318,
+  "warnings": []
+}

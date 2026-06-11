@@ -3,12 +3,12 @@
 ## Executive Summary
 
 - consistency_run_id: `real_three_agent_manual_pilot_v1`
-- status: `awaiting_manual_outputs`
+- status: `ready_to_run`
 - case_count: `30`
 - system_count: `3`
-- outputs_collected_count: `0`
-- ready_to_run_consistency: `false`
-- preparation_hash: `sha256:785d5ce821d0f7059a92c5947abd9af55317c7ca90fd07724ff1c52dbdcd0954`
+- outputs_collected_count: `3`
+- ready_to_run_consistency: `true`
+- preparation_hash: `sha256:7a738a0287615bff285aec1f3712fbfe069b8f4c8a0947bb5542e7292ca8978a`
 
 This artifact prepares the manual collection flow. It does not collect provider outputs, call provider APIs, import provider SDKs, or create consistency evidence unless real manually collected outputs are supplied later.
 
@@ -21,13 +21,13 @@ This artifact prepares the manual collection flow. It does not collect provider 
 
 ## Systems
 
-- `system_a` `google` / `gemini-flash-2.0` collected `false` raw `benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_a_google_gemini-flash-2.0.jsonl` hash `None`
-- `system_b` `anthropic` / `claude-sonnet-4-6` collected `false` raw `benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_b_anthropic_claude-sonnet-4-6.jsonl` hash `None`
-- `system_c` `openai` / `gpt-4o` collected `false` raw `benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_c_openai_gpt-4o.jsonl` hash `None`
+- `system_a` `google` / `gemini-flash-2.0` collected `true` raw `benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_a_google_gemini-flash-2.0.jsonl` hash `sha256:9f5dcfb466cbe18f727958f586f2a88b9e3bdbba7da8b8287c265874a54c0d1b`
+- `system_b` `anthropic` / `claude-sonnet-4-6` collected `true` raw `benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_b_anthropic_claude-sonnet-4-6.jsonl` hash `sha256:6680b99a9bd3b6d207040b8356860f3fa597bf58149ed072c8bfb55a3b70acc1`
+- `system_c` `openai` / `gpt-4o` collected `true` raw `benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/raw_outputs/system_c_openai_gpt-4o.jsonl` hash `sha256:86e9c51f88fd588ee4753b96ea435d3f197028de896bb11733340d3f98e65202`
 
 ## Manual Output Status
 
-- Manual outputs are not collected yet. Prompt pack is ready.
+- All required manual raw output files are present by path and hash.
 
 ## What This Supports
 
@@ -52,7 +52,3 @@ This artifact prepares the manual collection flow. It does not collect provider 
 - Consistency is not correctness.
 - Majority vote is not truth.
 - This artifact flow does not imply outputs exist.
-
-## Warnings
-
-- `manual_provider_outputs_not_collected`

@@ -1,0 +1,16 @@
+{
+  "filtered_cases_hash": "sha256:8a36232b12e4f31a5712651b98e7026eb7373c004abf893692ea77b9fc3a86f6",
+  "filtered_cases_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_b/imported_pipeline_bridge/filtered_imported_cases.jsonl",
+  "full_cases_hash": "sha256:aeb0a2ee5cfa746be342ec9d40a4b3d0a21f562ab0b5c66ca0e7fc325572291e",
+  "full_cases_path": "benchmarks/v10_calibrated/v10_cases.jsonl",
+  "input_parsed_raw_judgments_hash": "sha256:f921d28e5e5b4f9765578a60284de1f430c096588873352e3bc3d936120f4788",
+  "input_parsed_raw_judgments_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_b/imported_pipeline_bridge/parsed_raw_judgments.jsonl",
+  "input_provider_manifest_hash": "sha256:6fc671aa420a25d69a25344e51118eb251039434bf891b0226a961bf608e055e",
+  "input_provider_manifest_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_b/provider_run_manifest.json",
+  "input_raw_file_hashes_hash": "sha256:8b96750dc28e2087d1cf5a86bf39eca4fab888ea244954db0ca314b74f171de3",
+  "input_raw_file_hashes_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_b/raw_file_hashes.json",
+  "input_raw_import_summary_hash": "sha256:3c45bb1ec166a6aac90b9ab32f8dfce05afc7f3559f55b6032da84874290408c",
+  "input_raw_import_summary_path": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_b/raw_import_validation_summary.json",
+  "provider_run_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/real_three_agent_manual_pilot_v1__/real_three_agent_manual_pilot_v1__system_b",
+  "schema_version": "v10_imported_provider_bridge_input_hashes_v1"
+}

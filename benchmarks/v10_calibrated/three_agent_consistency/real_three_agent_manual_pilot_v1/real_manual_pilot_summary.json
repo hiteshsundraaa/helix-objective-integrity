@@ -1,0 +1,24 @@
+{
+  "consistency_hash": "sha256:ac1b12539f0c2b76ae2fca6a21aff6fecd6379de1f54809b92a2e5f7fa518eb9",
+  "consistency_receipt_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/consistency_receipt.json",
+  "consistency_report_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/consistency_report.md",
+  "consistency_run_executed": true,
+  "consistency_run_id": "real_three_agent_manual_pilot_v1",
+  "consistency_summary_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/consistency_summary.json",
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "limitations": [
+    "Manual outputs must be collected outside HELIX.",
+    "No live model APIs are called by HELIX.",
+    "No provider SDK clients are imported or executed.",
+    "Manual evidence remains capped at Level 3.",
+    "Level 4 and Level 5 are false.",
+    "Consistency is not correctness.",
+    "Majority vote is not truth.",
+    "This artifact flow does not imply outputs exist."
+  ],
+  "preparation_hash": "sha256:7a738a0287615bff285aec1f3712fbfe069b8f4c8a0947bb5542e7292ca8978a",
+  "ready_to_run_consistency": true,
+  "schema_version": "v10_real_three_agent_manual_pilot_wrapper_v1",
+  "status": "complete"
+}

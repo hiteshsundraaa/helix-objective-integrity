@@ -1,0 +1,10 @@
+{
+  "batches": {
+    "batch_001": {
+      "raw_response_hash": "sha256:86e9c51f88fd588ee4753b96ea435d3f197028de896bb11733340d3f98e65202",
+      "raw_text_hash": "sha256:86e9c51f88fd588ee4753b96ea435d3f197028de896bb11733340d3f98e65202",
+      "request_manifest_hash": "sha256:fb62e1932d9b80fb996d8bb09ed75de03d90bbaf1e275b819ae61341d44811c4"
+    }
+  },
+  "schema_version": "v10_provider_raw_import_raw_file_hashes_v1"
+}

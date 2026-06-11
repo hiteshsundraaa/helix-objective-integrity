@@ -1,0 +1,10 @@
+{
+  "observed": [
+    "sha256:78d8bf217a933c1b261f7ddda1197c8dd21c435a1204a38d5e7a96da98c847e4"
+  ],
+  "plan": {
+    "contract_prompt": "sha256:78d8bf217a933c1b261f7ddda1197c8dd21c435a1204a38d5e7a96da98c847e4",
+    "generic_prompt": "sha256:0b3655bb6cef48932759b7f6075d88c87c3bd9d7a3002da7322df433fe6055b3",
+    "prompt_rendering_manifest": "sha256:5f9972724e30d9bef442cafe6fc2a35011f8fcf3ca3670c7267ed08766a72714"
+  }
+}
