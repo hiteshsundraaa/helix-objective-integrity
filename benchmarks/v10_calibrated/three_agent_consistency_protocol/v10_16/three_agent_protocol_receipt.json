@@ -1,0 +1,27 @@
+{
+  "consistency_not_correctness": true,
+  "constraints_codified": [
+    "three_independent_systems_minimum",
+    "same_case_set_required",
+    "same_contract_required",
+    "separate_raw_outputs_required",
+    "separate_receipt_chains_required",
+    "no_majority_vote_truth_claim",
+    "failed_provider_not_silently_dropped",
+    "disagreement_taxonomy_required",
+    "per_provider_metrics_before_aggregate",
+    "consistency_level_cannot_exceed_min_provider_level_without_protocol",
+    "level_5_reserved",
+    "vendor_bias_warning_required"
+  ],
+  "live_calls_in_this_version": false,
+  "majority_vote_truth_claim_allowed": false,
+  "minimum_independent_systems": 3,
+  "protocol_hash": "sha256:d564692bd93bf08e429d40e1bd346ed45edff486af818ca42fa4c784beb82268",
+  "provider_outputs_combined_for_truth": false,
+  "provider_sdks_used": false,
+  "receipt_id": "v10.16:three_agent_consistency_protocol",
+  "receipt_type": "three_agent_consistency_protocol",
+  "secrets_included": false,
+  "version": "v10.16"
+}

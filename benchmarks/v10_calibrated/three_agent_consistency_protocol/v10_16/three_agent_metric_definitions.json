@@ -1,0 +1,131 @@
+{
+  "metrics": [
+    {
+      "description": "All compared systems produce the same decision for a case.",
+      "level": "per_case",
+      "name": "unanimous_decision_agreement",
+      "required": true
+    },
+    {
+      "description": "At least two of three systems produce the same decision.",
+      "level": "per_case",
+      "name": "majority_decision_agreement",
+      "required": true
+    },
+    {
+      "description": "Maximum absolute violation_probability distance across systems.",
+      "level": "per_case",
+      "name": "max_score_distance",
+      "required": true
+    },
+    {
+      "description": "Mean pairwise score distance across systems.",
+      "level": "per_case",
+      "name": "mean_pairwise_score_distance",
+      "required": true
+    },
+    {
+      "description": "All systems map scores to the same configured risk band.",
+      "level": "per_case",
+      "name": "risk_band_unanimous_agreement",
+      "required": true
+    },
+    {
+      "description": "At least two systems map scores to the same configured risk band.",
+      "level": "per_case",
+      "name": "risk_band_majority_agreement",
+      "required": true
+    },
+    {
+      "description": "Every system emits a valid receipt for the case.",
+      "level": "per_case",
+      "name": "all_receipts_valid",
+      "required": true
+    },
+    {
+      "description": "Every provider output parses into the normalized judgment schema.",
+      "level": "per_case",
+      "name": "all_provider_outputs_parseable",
+      "required": true
+    },
+    {
+      "description": "High-risk citations use compatible verification methods and phrases.",
+      "level": "per_case",
+      "name": "citation_consistency",
+      "required": true
+    },
+    {
+      "description": "Fraction of cases with unanimous decision agreement.",
+      "level": "aggregate",
+      "name": "unanimous_decision_rate",
+      "required": true
+    },
+    {
+      "description": "Fraction of cases with at least two matching decisions.",
+      "level": "aggregate",
+      "name": "majority_decision_rate",
+      "required": true
+    },
+    {
+      "description": "Aggregate mean of per-case pairwise score distances.",
+      "level": "aggregate",
+      "name": "mean_pairwise_score_distance",
+      "required": true
+    },
+    {
+      "description": "95th percentile pairwise score distance.",
+      "level": "aggregate",
+      "name": "p95_pairwise_score_distance",
+      "required": true
+    },
+    {
+      "description": "Fraction of cases with unanimous risk-band agreement.",
+      "level": "aggregate",
+      "name": "risk_band_unanimous_rate",
+      "required": true
+    },
+    {
+      "description": "Fraction of cases with majority risk-band agreement.",
+      "level": "aggregate",
+      "name": "risk_band_majority_rate",
+      "required": true
+    },
+    {
+      "description": "Fraction of cases where all systems have valid receipts.",
+      "level": "aggregate",
+      "name": "all_receipts_valid_rate",
+      "required": true
+    },
+    {
+      "description": "Parse success rate reported separately for each system.",
+      "level": "aggregate",
+      "name": "parse_success_rate_by_system",
+      "required": true
+    },
+    {
+      "description": "Evidence level reported separately for each system.",
+      "level": "aggregate",
+      "name": "evidence_level_by_system",
+      "required": true
+    },
+    {
+      "description": "Disagreement rate grouped by benchmark family.",
+      "level": "aggregate",
+      "name": "disagreement_rate_by_family",
+      "required": true
+    },
+    {
+      "description": "Disagreement rate grouped by benchmark label.",
+      "level": "aggregate",
+      "name": "disagreement_rate_by_label",
+      "required": true
+    },
+    {
+      "description": "Fraction of cases with severe disagreement under pre-registered policy.",
+      "level": "aggregate",
+      "name": "severe_disagreement_rate",
+      "required": true
+    }
+  ],
+  "schema_version": "v10_three_agent_metric_definitions_v1"
+}
