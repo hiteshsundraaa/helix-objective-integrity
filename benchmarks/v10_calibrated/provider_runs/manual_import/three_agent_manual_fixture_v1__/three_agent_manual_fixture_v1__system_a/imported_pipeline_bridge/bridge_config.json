@@ -1,0 +1,24 @@
+{
+  "allow_api_keys": false,
+  "allow_network_calls": false,
+  "allow_provider_sdk_imports": false,
+  "benchmark_config_path": "configs/v10_benchmark_runner.json",
+  "cases_path": "benchmarks/v10_calibrated/v10_cases.jsonl",
+  "default_provider_run_dir": "benchmarks/v10_calibrated/provider_runs/manual_import_pilot_fixture_v1",
+  "diagnostics_config_path": "configs/v10_diagnostics.json",
+  "evidence_policy": {
+    "level_4_allowed": false,
+    "level_5_allowed": false,
+    "manual_import_bridge_evidence_level_cap": 3,
+    "manual_import_is_locked_live_provider_evidence": false
+  },
+  "integrity_config_path": "configs/benchmark_integrity_v1.json",
+  "manual_import_bridge": true,
+  "normalization_config_path": "configs/v10_judgment_normalization.json",
+  "notes": "Routes validated manual imported provider outputs through existing v10 pipeline. No live API evidence.",
+  "output_subdir": "imported_pipeline_bridge",
+  "parsed_raw_judgments_filename": "parsed_raw_judgments.jsonl",
+  "raw_import_summary_filename": "raw_import_validation_summary.json",
+  "reportability_config_path": "configs/v10_reportability_gate.json",
+  "schema_version": "v10_imported_provider_pipeline_bridge_v1"
+}

@@ -1,0 +1,16 @@
+{
+  "filtered_cases_hash": "sha256:8a36232b12e4f31a5712651b98e7026eb7373c004abf893692ea77b9fc3a86f6",
+  "filtered_cases_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_c/imported_pipeline_bridge/filtered_imported_cases.jsonl",
+  "full_cases_hash": "sha256:aeb0a2ee5cfa746be342ec9d40a4b3d0a21f562ab0b5c66ca0e7fc325572291e",
+  "full_cases_path": "benchmarks/v10_calibrated/v10_cases.jsonl",
+  "input_parsed_raw_judgments_hash": "sha256:c7bccd92a61cc4fb5af4f59d42e6fe4db339a3e92cc5e136d6dbbc34f4c9e40d",
+  "input_parsed_raw_judgments_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_c/imported_pipeline_bridge/parsed_raw_judgments.jsonl",
+  "input_provider_manifest_hash": "sha256:f4e54d1c59defd531f2f321790c0fbed68cd22d99db9ca6f345a8cd59626d59b",
+  "input_provider_manifest_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_c/provider_run_manifest.json",
+  "input_raw_file_hashes_hash": "sha256:d00a4a171113e615b4716b25562b181b8a507142f564174b53c073723b85aeef",
+  "input_raw_file_hashes_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_c/raw_file_hashes.json",
+  "input_raw_import_summary_hash": "sha256:b8590ade57a7ac6f43a4b5c70e76572d544bb8caae3b31a1759b9d06710a4357",
+  "input_raw_import_summary_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_c/raw_import_validation_summary.json",
+  "provider_run_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_c",
+  "schema_version": "v10_imported_provider_bridge_input_hashes_v1"
+}

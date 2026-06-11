@@ -1,0 +1,114 @@
+{
+  "benchmark_run_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/benchmark_run",
+  "bootstrap_ci_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/diagnostics/v10_bootstrap_ci.json",
+  "bootstrap_resamples": 1000,
+  "case_count": 30,
+  "ci_metrics": {
+    "exact_or_normalized_citation_rate_high_risk": {
+      "confidence_level": 0.95,
+      "lower": 1.0,
+      "metric_name": "exact_or_normalized_citation_rate_high_risk",
+      "point_estimate": 1.0,
+      "resamples": 1000,
+      "upper": 1.0,
+      "valid_resample_count": 1000,
+      "warning": "small_sample_ci_unstable"
+    },
+    "fpr": {
+      "confidence_level": 0.95,
+      "lower": 0.0,
+      "metric_name": "fpr",
+      "point_estimate": 0.0,
+      "resamples": 1000,
+      "upper": 0.0,
+      "valid_resample_count": 999,
+      "warning": "small_sample_ci_unstable"
+    },
+    "precision": {
+      "confidence_level": 0.95,
+      "lower": 1.0,
+      "metric_name": "precision",
+      "point_estimate": 1.0,
+      "resamples": 1000,
+      "upper": 1.0,
+      "valid_resample_count": 1000,
+      "warning": "small_sample_ci_unstable"
+    },
+    "recall": {
+      "confidence_level": 0.95,
+      "lower": 1.0,
+      "metric_name": "recall",
+      "point_estimate": 1.0,
+      "resamples": 1000,
+      "upper": 1.0,
+      "valid_resample_count": 1000,
+      "warning": "small_sample_ci_unstable"
+    },
+    "safe_false_interruption_rate": {
+      "confidence_level": 0.95,
+      "lower": 0.0,
+      "metric_name": "safe_false_interruption_rate",
+      "point_estimate": 0.0,
+      "resamples": 1000,
+      "upper": 0.0,
+      "valid_resample_count": 998,
+      "warning": "small_sample_ci_unstable"
+    },
+    "tpr": {
+      "confidence_level": 0.95,
+      "lower": 1.0,
+      "metric_name": "tpr",
+      "point_estimate": 1.0,
+      "resamples": 1000,
+      "upper": 1.0,
+      "valid_resample_count": 1000,
+      "warning": "small_sample_ci_unstable"
+    },
+    "unsafe_false_safe_rate": {
+      "confidence_level": 0.95,
+      "lower": 0.0,
+      "metric_name": "unsafe_false_safe_rate",
+      "point_estimate": 0.0,
+      "resamples": 1000,
+      "upper": 0.0,
+      "valid_resample_count": 1000,
+      "warning": "small_sample_ci_unstable"
+    }
+  },
+  "diagnostics_hash": "sha256:a74340b078faaa4658bb50fab44b861baafbd00ec7f9e48b5874f0cae91a88bf",
+  "diagnostics_status": "needs_work",
+  "evidence_level_allowed": 3,
+  "fixture_mode": true,
+  "integrity_passed": false,
+  "integrity_report_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/diagnostics/v10_integrity_report.json",
+  "limitations": [
+    "Fixture/demo only; this is not final v10 evidence.",
+    "No live model APIs were called.",
+    "No final v10 reportability claim is made.",
+    "Fixture coverage is 30/30.",
+    "Bootstrap confidence intervals are unstable under small samples.",
+    "Reportability failure is preserved when diagnostic criteria are not met."
+  ],
+  "matched_case_count": 30,
+  "reportability_passed": false,
+  "reportability_report_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/reportability/v10_reportability_report.json",
+  "schema_version": "v10_diagnostics_summary_v1",
+  "selectivity_baselines": {
+    "mean_random_tpr_at_budget": 0.20471428571428568,
+    "mean_shuffled_tpr_at_budget": 0.201,
+    "random_tpr_std_at_budget": 0.08547717203309613,
+    "selectivity_baseline_trials": 500,
+    "selectivity_budget": 0.2,
+    "selectivity_delta_vs_random": 0.22385714285714287,
+    "selectivity_delta_vs_shuffled": 0.22757142857142854,
+    "selectivity_positive_label_count": 14,
+    "selectivity_selected_count": 6,
+    "selectivity_status": "complete",
+    "selectivity_warnings": [],
+    "shuffled_tpr_std_at_budget": 0.0806669899358227,
+    "true_tpr_at_budget": 0.42857142857142855
+  },
+  "warnings": [
+    "small_sample_ci_unstable"
+  ]
+}

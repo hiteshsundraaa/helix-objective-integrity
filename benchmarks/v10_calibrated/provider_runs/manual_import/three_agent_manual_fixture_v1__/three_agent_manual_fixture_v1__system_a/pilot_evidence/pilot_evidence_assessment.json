@@ -1,0 +1,48 @@
+{
+  "assessment_hash": "sha256:8842789110a6455e2b72710a008b9bf08e75511689a53a3740ebe908fe01ef47",
+  "benchmark_status": "complete",
+  "blocking_issues": [
+    "diagnostics_status_blocks_level_4",
+    "execution_mode_not_live_blocks_level_4",
+    "integrity_failure_blocks_level_4",
+    "normalization_status_blocks_level_4",
+    "score_collapse_blocks_level_4"
+  ],
+  "case_count": 30,
+  "diagnostics_status": "needs_work",
+  "evidence_level_justification": "Evidence level is capped at 3 because manual import lacks locked live-runner provenance.",
+  "execution_mode": "manual_import",
+  "execution_mode_cap": 3,
+  "final_evidence_level": 3,
+  "generator_independence": true,
+  "integrity_passed": false,
+  "invalid_receipt_count": 0,
+  "level_4_criteria_met": false,
+  "level_4_criteria_results": {
+    "benchmark_passed": true,
+    "diagnostics_passed": false,
+    "generator_independence_clear": true,
+    "integrity_passed": false,
+    "level_5_not_claimed": true,
+    "live_execution": false,
+    "normalization_passed": false,
+    "provider_model_allowed": true,
+    "raw_output_hash_available_if_live": true,
+    "receipt_chain_complete": true,
+    "score_collapse_clear": false
+  },
+  "level_5_allowed": false,
+  "mechanical_reportability_passed": false,
+  "model": "gemini-flash-2.0",
+  "non_blocking_warnings": [
+    "manual_import_lacks_locked_live_runner_provenance"
+  ],
+  "normalization_status": "needs_work",
+  "provider": "google",
+  "provider_model_allowed": true,
+  "raw_evidence_level_allowed": 3,
+  "receipt_count": 30,
+  "run_id": "three_agent_manual_fixture_v1__system_a",
+  "schema_version": "v10_pilot_evidence_assessment_result_v1",
+  "score_collapse_detected": true
+}

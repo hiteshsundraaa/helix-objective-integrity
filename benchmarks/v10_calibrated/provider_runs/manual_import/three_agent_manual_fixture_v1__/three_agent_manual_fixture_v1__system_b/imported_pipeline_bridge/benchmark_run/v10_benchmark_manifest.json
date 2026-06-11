@@ -1,0 +1,26 @@
+{
+  "benchmark_config_hash": "sha256:c498ef3a2ce1ac738d0da74ffb9489c56c2fa983ddc61be39fc9c5077502ba7e",
+  "benchmark_config_path": "configs/v10_benchmark_runner.json",
+  "benchmark_hash": "sha256:1caf156364de7345ff4ac12d126068fe0ed7d1ccdfb2c217d00be63013f666c0",
+  "case_count": 30,
+  "generated_at": "2026-06-11T06:38:14Z",
+  "input_cases_hash": "sha256:8a36232b12e4f31a5712651b98e7026eb7373c004abf893692ea77b9fc3a86f6",
+  "input_cases_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_b/imported_pipeline_bridge/filtered_imported_cases.jsonl",
+  "limitations": [
+    "Fixture/demo runs do not create final v10 reportability claims.",
+    "No live model APIs were called.",
+    "Benchmark receipts are evaluation receipts, not runtime authorization receipts.",
+    "Bootstrap confidence intervals are not computed in this patch."
+  ],
+  "manifest_hash": "sha256:cd01d0ddac7a314cf6342c111100e1001e7b3ad9be3779054cef049c8f2aa8ff",
+  "matched_case_count": 30,
+  "missing_judgment_case_count": 0,
+  "normalization_manifest_hash": "sha256:0015868f7b15775c334e05bfd019137a720310da5b17803f6a26c8a5ae8ad52d",
+  "normalization_manifest_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_b/imported_pipeline_bridge/normalized_judgments/v10_normalization_manifest.json",
+  "normalization_summary_hash": "sha256:18f8d234205bc08063d42e9061055f0d69659250d985b10b66bb41a7394f4eb7",
+  "normalization_summary_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_b/imported_pipeline_bridge/normalized_judgments/v10_normalization_summary.json",
+  "normalized_judgments_hash": "sha256:509c08de21aed0953116959e524cf270406453b7341e6f1bcb8d39f99014154a",
+  "normalized_judgments_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_b/imported_pipeline_bridge/normalized_judgments/v10_normalized_judgments.jsonl",
+  "receipt_count": 30,
+  "schema_version": "v10_benchmark_runner_v1"
+}

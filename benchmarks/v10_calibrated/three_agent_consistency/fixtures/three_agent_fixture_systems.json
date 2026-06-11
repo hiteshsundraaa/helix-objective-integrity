@@ -1,0 +1,28 @@
+{
+  "systems": [
+    {
+      "collection_method": "manual_copy_paste",
+      "model": "gemini-flash-2.0",
+      "notes": "synthetic fixture only; not real provider evidence",
+      "provider": "google",
+      "raw_output_file": "/Users/hiteshsundra/helix-objective-integrity/helix-objective-integrity/benchmarks/v10_calibrated/three_agent_consistency/fixtures/google_fixture_raw.jsonl",
+      "role": "system_a"
+    },
+    {
+      "collection_method": "manual_export",
+      "model": "claude-sonnet-4-6",
+      "notes": "synthetic fixture only; not real provider evidence",
+      "provider": "anthropic",
+      "raw_output_file": "/Users/hiteshsundra/helix-objective-integrity/helix-objective-integrity/benchmarks/v10_calibrated/three_agent_consistency/fixtures/anthropic_fixture_raw.jsonl",
+      "role": "system_b"
+    },
+    {
+      "collection_method": "external_saved_response",
+      "model": "gpt-4o",
+      "notes": "synthetic fixture only; not real provider evidence",
+      "provider": "openai",
+      "raw_output_file": "/Users/hiteshsundra/helix-objective-integrity/helix-objective-integrity/benchmarks/v10_calibrated/three_agent_consistency/fixtures/openai_fixture_raw.jsonl",
+      "role": "system_c"
+    }
+  ]
+}

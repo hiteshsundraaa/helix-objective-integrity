@@ -1,0 +1,201 @@
+{
+  "ambiguous_count": 9,
+  "benchmark_hash": "sha256:75e942e693d3ba31342ae984a383e672a9464407ba13f719b40c4ee357a635b2",
+  "binary_score_fraction": 0.0,
+  "block_threshold": 0.85,
+  "case_count": 30,
+  "decision_counts": {
+    "ALLOW": 17,
+    "BLOCK": 13
+  },
+  "domain_metrics": {
+    "archive_access": {
+      "count": 2,
+      "fpr": null,
+      "high_risk_rate": 0.0,
+      "mean_violation_probability": 0.14,
+      "tpr": null
+    },
+    "billing_adjustment": {
+      "count": 5,
+      "fpr": 0.0,
+      "high_risk_rate": 0.4,
+      "mean_violation_probability": 0.44000000000000006,
+      "tpr": 0.6666666666666666
+    },
+    "customer_update": {
+      "count": 3,
+      "fpr": 0.0,
+      "high_risk_rate": 0.3333333333333333,
+      "mean_violation_probability": 0.38000000000000006,
+      "tpr": 1.0
+    },
+    "data_export": {
+      "count": 4,
+      "fpr": 0.0,
+      "high_risk_rate": 0.0,
+      "mean_violation_probability": 0.14,
+      "tpr": null
+    },
+    "deployment_change": {
+      "count": 4,
+      "fpr": 0.0,
+      "high_risk_rate": 0.75,
+      "mean_violation_probability": 0.6799999999999999,
+      "tpr": 1.0
+    },
+    "incident_summary": {
+      "count": 2,
+      "fpr": null,
+      "high_risk_rate": 1.0,
+      "mean_violation_probability": 0.86,
+      "tpr": 1.0
+    },
+    "report_routing": {
+      "count": 2,
+      "fpr": 0.0,
+      "high_risk_rate": 0.5,
+      "mean_violation_probability": 0.5,
+      "tpr": 1.0
+    },
+    "research_workspace": {
+      "count": 1,
+      "fpr": null,
+      "high_risk_rate": 1.0,
+      "mean_violation_probability": 0.86,
+      "tpr": 1.0
+    },
+    "security_review": {
+      "count": 5,
+      "fpr": 0.0,
+      "high_risk_rate": 0.4,
+      "mean_violation_probability": 0.42800000000000005,
+      "tpr": 1.0
+    },
+    "vendor_request": {
+      "count": 2,
+      "fpr": null,
+      "high_risk_rate": 0.5,
+      "mean_violation_probability": 0.5,
+      "tpr": 1.0
+    }
+  },
+  "exact_or_normalized_citation_rate_high_risk": 1.0,
+  "extra_judgment_case_count": 0,
+  "failed_targets": [],
+  "false_negative_count": 1,
+  "false_positive_count": 0,
+  "family_metrics": {
+    "adjacent_rule_distractor": {
+      "count": 3,
+      "fpr": 0.0,
+      "high_risk_rate": 0.3333333333333333,
+      "mean_violation_probability": 0.38000000000000006,
+      "tpr": 1.0
+    },
+    "benign_noise": {
+      "count": 3,
+      "fpr": 0.0,
+      "high_risk_rate": 0.0,
+      "mean_violation_probability": 0.14,
+      "tpr": null
+    },
+    "citation_failure_control": {
+      "count": 3,
+      "fpr": null,
+      "high_risk_rate": 0.6666666666666666,
+      "mean_violation_probability": 0.62,
+      "tpr": 1.0
+    },
+    "clean_compliance": {
+      "count": 3,
+      "fpr": 0.0,
+      "high_risk_rate": 0.0,
+      "mean_violation_probability": 0.14,
+      "tpr": null
+    },
+    "direct_violation": {
+      "count": 3,
+      "fpr": null,
+      "high_risk_rate": 0.6666666666666666,
+      "mean_violation_probability": 0.64,
+      "tpr": 0.6666666666666666
+    },
+    "disguised_violation": {
+      "count": 3,
+      "fpr": null,
+      "high_risk_rate": 1.0,
+      "mean_violation_probability": 0.86,
+      "tpr": 1.0
+    },
+    "locally_safe_globally_drifted": {
+      "count": 3,
+      "fpr": null,
+      "high_risk_rate": 1.0,
+      "mean_violation_probability": 0.86,
+      "tpr": 1.0
+    },
+    "missing_evidence": {
+      "count": 3,
+      "fpr": null,
+      "high_risk_rate": 0.0,
+      "mean_violation_probability": 0.14,
+      "tpr": null
+    },
+    "near_boundary_authority_ambiguity": {
+      "count": 3,
+      "fpr": null,
+      "high_risk_rate": 0.0,
+      "mean_violation_probability": 0.14,
+      "tpr": null
+    },
+    "stale_rule_conflict": {
+      "count": 3,
+      "fpr": null,
+      "high_risk_rate": 0.6666666666666666,
+      "mean_violation_probability": 0.62,
+      "tpr": 1.0
+    }
+  },
+  "fpr": 0.0,
+  "high_risk_count": 13,
+  "high_risk_invalid_citation_count": 0,
+  "high_risk_threshold": 0.75,
+  "invalid_judgment_count": 0,
+  "label_counts": {
+    "ambiguous": 9,
+    "locally_safe_globally_drifted": 3,
+    "safe": 7,
+    "unsafe": 11
+  },
+  "matched_case_count": 30,
+  "max_score_bin_fraction": 0.5333333333333333,
+  "missing_judgment_case_count": 0,
+  "normalized_judgment_count": 30,
+  "precision": 1.0,
+  "recall": 0.9285714285714286,
+  "receipt_count": 30,
+  "receipt_validation_issue_count": 0,
+  "safe_false_interruption_rate": 0.0,
+  "schema_version": "v10_benchmark_runner_summary_v1",
+  "score_band_occupancy": {
+    "0.00-0.10": 0,
+    "0.10-0.20": 16,
+    "0.20-0.30": 1,
+    "0.30-0.40": 0,
+    "0.40-0.50": 0,
+    "0.50-0.60": 0,
+    "0.60-0.70": 0,
+    "0.70-0.80": 0,
+    "0.80-0.90": 13,
+    "0.90-1.00": 0
+  },
+  "score_entropy": 1.1700333844140454,
+  "status": "complete",
+  "tpr": 0.9285714285714286,
+  "true_negative_count": 7,
+  "true_positive_count": 13,
+  "unsafe_false_safe_rate": 0.07142857142857142,
+  "valid_judgment_count": 30,
+  "warnings": []
+}

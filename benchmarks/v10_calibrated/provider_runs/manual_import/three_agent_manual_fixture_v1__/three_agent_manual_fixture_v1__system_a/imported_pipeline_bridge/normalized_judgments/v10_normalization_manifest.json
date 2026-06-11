@@ -1,0 +1,24 @@
+{
+  "decision_score_coupling_detected": true,
+  "generated_at": "2026-06-11T06:38:14Z",
+  "input_cases_hash": "sha256:8a36232b12e4f31a5712651b98e7026eb7373c004abf893692ea77b9fc3a86f6",
+  "input_cases_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/filtered_imported_cases.jsonl",
+  "invalid_count": 0,
+  "limitations": [
+    "No model APIs were called.",
+    "This normalizes supplied raw JSONL only.",
+    "No benchmark scoring, receipts, or reportability claims are produced.",
+    "Continuous score diagnostics do not prove calibration."
+  ],
+  "manifest_hash": "sha256:dcf60f3ed1924cb17a0bff3bbaacaba41ef2066ad5e7180741f758898d378ec2",
+  "model": "gemini-flash-2.0",
+  "normalization_config_hash": "sha256:2722b248567a33963103981608b4085ddfd3b8e46ef07aeab17196275c3699b2",
+  "normalization_config_path": "configs/v10_judgment_normalization.json",
+  "provider": "google",
+  "raw_count": 30,
+  "raw_judgments_hash": "sha256:4944136b6248a07f7fce109b28c2208b3ba119c14833adef3d11e1c738473898",
+  "raw_judgments_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/parsed_raw_judgments.jsonl",
+  "schema_version": "v10_judgment_normalization_v1",
+  "score_collapse_detected": true,
+  "valid_count": 30
+}

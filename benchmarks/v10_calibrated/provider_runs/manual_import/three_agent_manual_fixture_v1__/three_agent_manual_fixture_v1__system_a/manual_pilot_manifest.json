@@ -1,0 +1,180 @@
+{
+  "bridge_paths": {
+    "benchmark_output_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/benchmark_run",
+    "bridge_config": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/bridge_config.json",
+    "bridge_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge",
+    "bridge_manifest": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/bridge_manifest.json",
+    "bridge_report": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/bridge_report.md",
+    "bridge_summary": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/bridge_summary.json",
+    "diagnostics_output_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/diagnostics",
+    "filtered_cases": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/filtered_imported_cases.jsonl",
+    "input_hashes": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/input_hashes.json",
+    "normalized_output_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/normalized_judgments",
+    "parsed_raw_judgments": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/parsed_raw_judgments.jsonl",
+    "reportability_output_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/reportability/v10_reportability_report.json"
+  },
+  "evidence_paths": {
+    "assessment": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/pilot_evidence/pilot_evidence_assessment.json",
+    "config": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/pilot_evidence/pilot_evidence_assessment_config.json",
+    "records": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/pilot_evidence/receipt_chain_records.jsonl",
+    "report": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/pilot_evidence/pilot_evidence_report.md",
+    "summary": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/pilot_evidence/receipt_chain_summary.json"
+  },
+  "generated_at": "2026-06-11T06:38:14Z",
+  "import_paths": {
+    "output_provider_run_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a",
+    "parsed_raw_judgments": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/parsed_raw_judgments.jsonl",
+    "prompt_hashes": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/prompt_hashes.json",
+    "provider_run_config": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/provider_run_config.json",
+    "provider_run_manifest": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/provider_run_manifest.json",
+    "raw_file_hashes": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/raw_file_hashes.json",
+    "raw_import_validation_issues": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/raw_import_validation_issues.json",
+    "raw_import_validation_report": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/raw_import_validation_report.md",
+    "raw_import_validation_summary": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/raw_import_validation_summary.json",
+    "sampled_case_ids": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/sampled_case_ids.json"
+  },
+  "input": {
+    "collection_method": "manual_copy_paste",
+    "model": "gemini-flash-2.0",
+    "notes": "synthetic fixture only; not real provider evidence",
+    "output_root": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__",
+    "plan_path": "benchmarks/v10_calibrated/provider_run_plans/pilot_v1/provider_run_plan.json",
+    "provider": "google",
+    "raw_output_file": "/Users/hiteshsundra/helix-objective-integrity/helix-objective-integrity/benchmarks/v10_calibrated/three_agent_consistency/fixtures/google_fixture_raw.jsonl",
+    "run_id": "three_agent_manual_fixture_v1__system_a"
+  },
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "limitations": [
+    "Manual import only.",
+    "No live provider APIs were called.",
+    "No provider SDK clients were used.",
+    "Manual collection is not locked live-runner provenance.",
+    "Evidence level is capped at 3."
+  ],
+  "manifest_hash": "sha256:740736de2176c9a291f4fae3dda22bdfd184133cf210f84c34d716aa16f80af7",
+  "manual_pilot_config": {
+    "allowed_raw_output_formats": [
+      "json_object_with_judgments",
+      "json_array",
+      "jsonl_text"
+    ],
+    "collection_method_allowed_values": [
+      "manual_copy_paste",
+      "manual_export",
+      "external_saved_response"
+    ],
+    "default_plan_path": "benchmarks/v10_calibrated/provider_run_plans/pilot_v1/provider_run_plan.json",
+    "evidence_assessment_config_path": "configs/v10_pilot_evidence_assessment.json",
+    "evidence_level_cap": 3,
+    "execution_mode": "manual_import",
+    "imported_bridge_config_path": "configs/v10_imported_provider_pipeline_bridge.json",
+    "level_4_allowed": false,
+    "level_5_allowed": false,
+    "live_design_config_path": "configs/v10_live_provider_runner_design_gate.json",
+    "manual_pilot_only": true,
+    "notes": "Manual one-provider pilot only. Does not execute live APIs. Manual evidence remains capped at Level 3.",
+    "provider_imports_root": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/_staged_provider_imports",
+    "provider_runs_root": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__",
+    "raw_import_config_path": "configs/v10_provider_raw_import_validator.json",
+    "required_manual_metadata": [
+      "provider",
+      "model",
+      "run_id",
+      "raw_output_file",
+      "collection_method"
+    ],
+    "schema_version": "v10_manual_one_provider_pilot_v1"
+  },
+  "no_api_calls_made": true,
+  "path_hashes": {
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/bridge_config.json": "sha256:1e4dbec8a216eeb173ad2e57987322bb749ef5d207fee40fc355947fabea3bec",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/bridge_manifest.json": "sha256:d0f6380f2f5c94c7332a69491a2acaed730b2fdf3851df6ae705380de277450d",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/bridge_report.md": "sha256:1ad4fca38e06debed5e4d1c1523c5f467170f92d943fa644ec56dd2f66dd5f27",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/bridge_summary.json": "sha256:caa6b0a0ef092941de6356c7afb5cdb3073355edb9f4cf4d5084e4c5890ea0dd",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/filtered_imported_cases.jsonl": "sha256:8a36232b12e4f31a5712651b98e7026eb7373c004abf893692ea77b9fc3a86f6",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/input_hashes.json": "sha256:861be44ee19298bbc51383751caeba662a2f039390ae9a5653c479290e06feaf",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/parsed_raw_judgments.jsonl": "sha256:4944136b6248a07f7fce109b28c2208b3ba119c14833adef3d11e1c738473898",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/imported_pipeline_bridge/reportability/v10_reportability_report.json": "sha256:d984f1d3e5ef25bb9f05dc4853155620d4357022ea120731fd53a66571eb1c18",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/parsed_raw_judgments.jsonl": "sha256:4944136b6248a07f7fce109b28c2208b3ba119c14833adef3d11e1c738473898",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/pilot_evidence/pilot_evidence_assessment.json": "sha256:b091cd5c018922ea3a7a5b1b15abe91ffb4ec2eda82dfdfc1867560faff46235",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/pilot_evidence/pilot_evidence_assessment_config.json": "sha256:9d3ebcddcc7d5fbc7603c783412a52e8d672f4005ee82739088d7df5896689e5",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/pilot_evidence/pilot_evidence_report.md": "sha256:93fe8dd6ee131e4cdbd9f3fb7f6d41aa07133235c04f1c29ba7190c14142d5a0",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/pilot_evidence/receipt_chain_records.jsonl": "sha256:40a8960b3fc8485ba9874b7b809cf4fb8a3664989a552181b5a5e8e1e5e8c90c",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/pilot_evidence/receipt_chain_summary.json": "sha256:e89cd0dfdb5054d2d382db47a09dcfba4ecb3a7c65e8a94e625c0ec3eddfcced",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/prompt_hashes.json": "sha256:b5067efd352c2d43f41bc8f495774886caf0f724c63af92a9e7b91f00ce3b8d5",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/provider_run_config.json": "sha256:c1bc995a6a00b71b577db9a3c924df8cd4bc90f5a9fcfbddedc5ccd489a13077",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/provider_run_manifest.json": "sha256:46ecbebf3da465d61d35f2000b2d70d0bdd7bdb73f3eb62f8ef8c712b3e7da11",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/raw_file_hashes.json": "sha256:6f15830b5291e580ffc31f8df4100faa9f9f33e0fd459630f3a937ceef0f780e",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/raw_import_validation_issues.json": "sha256:26eb9ea1f29688497e93bd27874e9a76ee48bd38fe1425552c92eb45380ee236",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/raw_import_validation_report.md": "sha256:0a6c8e46209e62ab0d3676fc111b6658993a600aa1058769690992eb163f1f5e",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/raw_import_validation_summary.json": "sha256:1c05839d29c252668fa6f81623d6dbeccc7e21b3fd0cfbdca4429eaebdb390e6",
+    "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/sampled_case_ids.json": "sha256:0420dda96933d419586973c7d40c0b98edc32434d51d7b78c988b03a94b8700e"
+  },
+  "provider_sdk_imported": false,
+  "schema_version": "v10_manual_one_provider_pilot_manifest_v1",
+  "staging": {
+    "case_count": 30,
+    "external_raw_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/_staged_provider_imports/three_agent_manual_fixture_v1__system_a/external_raw",
+    "import_dir": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/_staged_provider_imports/three_agent_manual_fixture_v1__system_a",
+    "prompt_hash": "sha256:78d8bf217a933c1b261f7ddda1197c8dd21c435a1204a38d5e7a96da98c847e4",
+    "raw_response_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/_staged_provider_imports/three_agent_manual_fixture_v1__system_a/external_raw/raw_response_batch_001.json",
+    "raw_text_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/_staged_provider_imports/three_agent_manual_fixture_v1__system_a/external_raw/raw_text_batch_001.txt",
+    "request_manifest_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/_staged_provider_imports/three_agent_manual_fixture_v1__system_a/external_raw/request_manifest_batch_001.json",
+    "source_raw_output_file": "/Users/hiteshsundra/helix-objective-integrity/helix-objective-integrity/benchmarks/v10_calibrated/three_agent_consistency/fixtures/google_fixture_raw.jsonl",
+    "source_raw_output_hash": "sha256:4944136b6248a07f7fce109b28c2208b3ba119c14833adef3d11e1c738473898",
+    "staged_raw_response_hash": "sha256:4944136b6248a07f7fce109b28c2208b3ba119c14833adef3d11e1c738473898"
+  },
+  "summary_without_manifest_hash": {
+    "benchmark_status": "complete",
+    "blocking_issues": [
+      "diagnostics_status_blocks_level_4",
+      "execution_mode_not_live_blocks_level_4",
+      "integrity_failure_blocks_level_4",
+      "normalization_status_blocks_level_4",
+      "score_collapse_blocks_level_4"
+    ],
+    "bridge_status": "needs_work",
+    "collection_method": "manual_copy_paste",
+    "diagnostics_status": "needs_work",
+    "evidence_assessment_status": "complete",
+    "execution_mode": "manual_import",
+    "final_evidence_level": 3,
+    "import_validation_status": "complete",
+    "integrity_passed": false,
+    "invalid_receipt_count": 0,
+    "level_4_allowed": false,
+    "level_5_allowed": false,
+    "limitations": [
+      "Manual one-provider pilot only.",
+      "No live provider APIs are called.",
+      "No provider SDK clients are imported or executed.",
+      "Manual evidence remains capped at Level 3.",
+      "Level 4 and Level 5 are false.",
+      "One provider does not prove cross-provider consistency."
+    ],
+    "manifest_hash": "",
+    "mechanical_reportability_passed": false,
+    "model": "gemini-flash-2.0",
+    "non_blocking_warnings": [
+      "manual_import_lacks_locked_live_runner_provenance"
+    ],
+    "normalization_status": "needs_work",
+    "pilot_manifest_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/manual_pilot_manifest.json",
+    "pilot_report_path": "benchmarks/v10_calibrated/provider_runs/manual_import/three_agent_manual_fixture_v1__/three_agent_manual_fixture_v1__system_a/manual_pilot_report.md",
+    "provider": "google",
+    "raw_output_file": "/Users/hiteshsundra/helix-objective-integrity/helix-objective-integrity/benchmarks/v10_calibrated/three_agent_consistency/fixtures/google_fixture_raw.jsonl",
+    "raw_output_hash": "sha256:4944136b6248a07f7fce109b28c2208b3ba119c14833adef3d11e1c738473898",
+    "receipt_chain_complete": true,
+    "receipt_count": 30,
+    "run_id": "three_agent_manual_fixture_v1__system_a",
+    "schema_version": "v10_manual_one_provider_pilot_summary_v1",
+    "score_collapse_detected": true,
+    "status": "needs_work",
+    "warnings": [
+      "diagnostics_status:needs_work",
+      "manual_import_lacks_locked_live_runner_provenance",
+      "normalization_status:needs_work"
+    ]
+  }
+}

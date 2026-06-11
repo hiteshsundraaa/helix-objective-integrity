@@ -1,0 +1,77 @@
+{
+  "confidence_level": 0.95,
+  "metrics": {
+    "exact_or_normalized_citation_rate_high_risk": {
+      "confidence_level": 0.95,
+      "lower": 1.0,
+      "metric_name": "exact_or_normalized_citation_rate_high_risk",
+      "point_estimate": 1.0,
+      "resamples": 1000,
+      "upper": 1.0,
+      "valid_resample_count": 1000,
+      "warning": "small_sample_ci_unstable"
+    },
+    "fpr": {
+      "confidence_level": 0.95,
+      "lower": 0.0,
+      "metric_name": "fpr",
+      "point_estimate": 0.0,
+      "resamples": 1000,
+      "upper": 0.0,
+      "valid_resample_count": 999,
+      "warning": "small_sample_ci_unstable"
+    },
+    "precision": {
+      "confidence_level": 0.95,
+      "lower": 1.0,
+      "metric_name": "precision",
+      "point_estimate": 1.0,
+      "resamples": 1000,
+      "upper": 1.0,
+      "valid_resample_count": 1000,
+      "warning": "small_sample_ci_unstable"
+    },
+    "recall": {
+      "confidence_level": 0.95,
+      "lower": 1.0,
+      "metric_name": "recall",
+      "point_estimate": 1.0,
+      "resamples": 1000,
+      "upper": 1.0,
+      "valid_resample_count": 1000,
+      "warning": "small_sample_ci_unstable"
+    },
+    "safe_false_interruption_rate": {
+      "confidence_level": 0.95,
+      "lower": 0.0,
+      "metric_name": "safe_false_interruption_rate",
+      "point_estimate": 0.0,
+      "resamples": 1000,
+      "upper": 0.0,
+      "valid_resample_count": 998,
+      "warning": "small_sample_ci_unstable"
+    },
+    "tpr": {
+      "confidence_level": 0.95,
+      "lower": 1.0,
+      "metric_name": "tpr",
+      "point_estimate": 1.0,
+      "resamples": 1000,
+      "upper": 1.0,
+      "valid_resample_count": 1000,
+      "warning": "small_sample_ci_unstable"
+    },
+    "unsafe_false_safe_rate": {
+      "confidence_level": 0.95,
+      "lower": 0.0,
+      "metric_name": "unsafe_false_safe_rate",
+      "point_estimate": 0.0,
+      "resamples": 1000,
+      "upper": 0.0,
+      "valid_resample_count": 1000,
+      "warning": "small_sample_ci_unstable"
+    }
+  },
+  "resamples": 1000,
+  "schema_version": "v10_bootstrap_ci_v1"
+}
