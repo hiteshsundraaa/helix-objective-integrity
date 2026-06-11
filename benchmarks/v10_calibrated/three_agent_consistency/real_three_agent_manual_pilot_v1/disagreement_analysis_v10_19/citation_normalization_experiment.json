@@ -1,0 +1,21 @@
+{
+  "anchor_match_rate": 0.9875,
+  "case_count": 30,
+  "classification_after": {
+    "hallucinated_citation": 1,
+    "missing_citation": 10,
+    "scope_disagreement": 6,
+    "unanimous_citation": 13
+  },
+  "classification_before": {
+    "hallucinated_citation": 1,
+    "missing_citation": 10,
+    "scope_disagreement": 6,
+    "unanimous_citation": 13
+  },
+  "contract_context_available": true,
+  "interpretation": "Citation instability persists after normalization, suggesting different grounding anchors or insufficient citation standardization.",
+  "normalization_reduced_disagreement_by": -0.43333333333333335,
+  "post_normalization_anchor_disagreement_rate": 1.0,
+  "pre_normalization_string_disagreement_rate": 0.5666666666666667
+}

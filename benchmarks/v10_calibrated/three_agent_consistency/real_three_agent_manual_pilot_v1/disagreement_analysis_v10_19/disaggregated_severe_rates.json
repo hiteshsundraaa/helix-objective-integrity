@@ -1,0 +1,20 @@
+{
+  "case_count": 30,
+  "citation_string_disagreement_rate": 0.5666666666666667,
+  "citation_validity_disagreement_rate": 0.3333333333333333,
+  "composite_severe_rate": 0.6666666666666666,
+  "contract_phrase_selection_disagreement_rate": 0.5666666666666667,
+  "decision_disagreement_rate": 0.26666666666666666,
+  "decision_severe_rate": 0.0,
+  "dominant_disagreement_dimensions": [
+    "citation_string_disagreement",
+    "contract_phrase_selection_disagreement"
+  ],
+  "grounding_severe_rate": 0.36666666666666664,
+  "interpretation": "Composite severe disagreement is more strongly associated with citation/grounding instability than decision instability.",
+  "risk_band_disagreement_rate": 0.16666666666666666,
+  "risk_band_severe_rate": 0.16666666666666666,
+  "schema_or_parse_failure_rate": 0.0,
+  "score_disagreement_rate": 0.16666666666666666,
+  "score_severe_rate": 0.16666666666666666
+}

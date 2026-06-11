@@ -1,0 +1,17 @@
+{
+  "provider_pair_case_counts": {
+    "system_a|system_b": 30,
+    "system_a|system_c": 30,
+    "system_b|system_c": 30
+  },
+  "provider_pair_mean_distances": {
+    "system_a|system_b": 0.09933333333333336,
+    "system_a|system_c": 0.06833333333333334,
+    "system_b|system_c": 0.055000000000000014
+  },
+  "provider_pair_p95_distances": {
+    "system_a|system_b": 0.30000000000000004,
+    "system_a|system_c": 0.35,
+    "system_b|system_c": 0.09999999999999998
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "analysis_manifest_hash": "sha256:34cc5ad4405cb280e8e8fc0dda48f8b7ebc8bba32b073636404a1a5cc72c228c",
+  "analysis_summary": {
+    "analysis_version": "v10.19",
+    "case_count": 30,
+    "citation_string_disagreement_rate": 0.5666666666666667,
+    "composite_severe_rate": 0.6666666666666666,
+    "decision_severe_rate": 0.0,
+    "dominant_disagreement_dimensions": [
+      "citation_string_disagreement",
+      "contract_phrase_selection_disagreement"
+    ],
+    "grounding_severe_rate": 0.36666666666666664,
+    "key_finding": "The real pilot shows behavioral agreement with substantially weaker citation/grounding agreement.",
+    "post_normalization_disagreement_rate": 1.0,
+    "pre_normalization_disagreement_rate": 0.5666666666666667,
+    "schema_version": "v10_real_pilot_disagreement_analysis_summary_v1",
+    "score_severe_rate": 0.16666666666666666,
+    "source_consistency_hash": "sha256:ac1b12539f0c2b76ae2fca6a21aff6fecd6379de1f54809b92a2e5f7fa518eb9",
+    "source_consistency_run_id": "real_three_agent_manual_pilot_v1"
+  },
+  "analysis_version": "v10.19",
+  "generated_files": {
+    "citation_classification_distribution": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19/citation_classification_distribution.json",
+    "citation_normalization_experiment": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19/citation_normalization_experiment.json",
+    "disaggregated_severe_rates": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19/disaggregated_severe_rates.json",
+    "disagreement_analysis_report": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19/disagreement_analysis_report.md",
+    "disagreement_dimension_by_case": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19/disagreement_dimension_by_case.jsonl",
+    "family_level_disagreement_table": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19/family_level_disagreement_table.json",
+    "integrity_notes": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19/real_pilot_integrity_notes.md",
+    "label_level_disagreement_table": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19/label_level_disagreement_table.json",
+    "per_provider_score_distribution": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19/per_provider_score_distribution.json",
+    "provider_pair_score_distances": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19/provider_pair_score_distances.json",
+    "top_disagreement_cases": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19/top_disagreement_cases.jsonl"
+  },
+  "level_4_claimed": false,
+  "level_5_claimed": false,
+  "majority_vote_truth_claimed": false,
+  "no_provider_calls": true,
+  "no_result_artifacts_modified": true,
+  "output_dir": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19",
+  "schema_version": "v10_real_pilot_disagreement_analysis_manifest_v1",
+  "source_artifacts_unchanged": true,
+  "source_consistency_hash": "sha256:ac1b12539f0c2b76ae2fca6a21aff6fecd6379de1f54809b92a2e5f7fa518eb9",
+  "source_consistency_run_id": "real_three_agent_manual_pilot_v1",
+  "source_root": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1"
+}
