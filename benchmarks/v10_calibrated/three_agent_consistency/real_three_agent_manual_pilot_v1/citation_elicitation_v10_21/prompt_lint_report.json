@@ -1,0 +1,88 @@
+{
+  "issue_count": 0,
+  "prompt_count": 10,
+  "prompt_lint_passed": true,
+  "prompts": [
+    {
+      "case_id": "v10_case_0017",
+      "issues": [],
+      "lint_passed": true,
+      "prompt_id": "system_a_google_gemini-flash-2.0_v10_case_0017",
+      "prompt_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/prompts/system_a_google_gemini-flash-2.0_v10_case_0017_elicitation_prompt.md",
+      "system_role": "system_a"
+    },
+    {
+      "case_id": "v10_case_0025",
+      "issues": [],
+      "lint_passed": true,
+      "prompt_id": "system_a_google_gemini-flash-2.0_v10_case_0025",
+      "prompt_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/prompts/system_a_google_gemini-flash-2.0_v10_case_0025_elicitation_prompt.md",
+      "system_role": "system_a"
+    },
+    {
+      "case_id": "v10_case_0026",
+      "issues": [],
+      "lint_passed": true,
+      "prompt_id": "system_a_google_gemini-flash-2.0_v10_case_0026",
+      "prompt_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/prompts/system_a_google_gemini-flash-2.0_v10_case_0026_elicitation_prompt.md",
+      "system_role": "system_a"
+    },
+    {
+      "case_id": "v10_case_0061",
+      "issues": [],
+      "lint_passed": true,
+      "prompt_id": "system_a_google_gemini-flash-2.0_v10_case_0061",
+      "prompt_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/prompts/system_a_google_gemini-flash-2.0_v10_case_0061_elicitation_prompt.md",
+      "system_role": "system_a"
+    },
+    {
+      "case_id": "v10_case_0090",
+      "issues": [],
+      "lint_passed": true,
+      "prompt_id": "system_a_google_gemini-flash-2.0_v10_case_0090",
+      "prompt_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/prompts/system_a_google_gemini-flash-2.0_v10_case_0090_elicitation_prompt.md",
+      "system_role": "system_a"
+    },
+    {
+      "case_id": "v10_case_0157",
+      "issues": [],
+      "lint_passed": true,
+      "prompt_id": "system_a_google_gemini-flash-2.0_v10_case_0157",
+      "prompt_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/prompts/system_a_google_gemini-flash-2.0_v10_case_0157_elicitation_prompt.md",
+      "system_role": "system_a"
+    },
+    {
+      "case_id": "v10_case_0185",
+      "issues": [],
+      "lint_passed": true,
+      "prompt_id": "system_a_google_gemini-flash-2.0_v10_case_0185",
+      "prompt_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/prompts/system_a_google_gemini-flash-2.0_v10_case_0185_elicitation_prompt.md",
+      "system_role": "system_a"
+    },
+    {
+      "case_id": "v10_case_0186",
+      "issues": [],
+      "lint_passed": true,
+      "prompt_id": "system_a_google_gemini-flash-2.0_v10_case_0186",
+      "prompt_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/prompts/system_a_google_gemini-flash-2.0_v10_case_0186_elicitation_prompt.md",
+      "system_role": "system_a"
+    },
+    {
+      "case_id": "v10_case_0198",
+      "issues": [],
+      "lint_passed": true,
+      "prompt_id": "system_a_google_gemini-flash-2.0_v10_case_0198",
+      "prompt_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/prompts/system_a_google_gemini-flash-2.0_v10_case_0198_elicitation_prompt.md",
+      "system_role": "system_a"
+    },
+    {
+      "case_id": "v10_case_0273",
+      "issues": [],
+      "lint_passed": true,
+      "prompt_id": "system_a_google_gemini-flash-2.0_v10_case_0273",
+      "prompt_path": "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/prompts/system_a_google_gemini-flash-2.0_v10_case_0273_elicitation_prompt.md",
+      "system_role": "system_a"
+    }
+  ],
+  "schema_version": "v10_citation_elicitation_prompt_lint_v1"
+}

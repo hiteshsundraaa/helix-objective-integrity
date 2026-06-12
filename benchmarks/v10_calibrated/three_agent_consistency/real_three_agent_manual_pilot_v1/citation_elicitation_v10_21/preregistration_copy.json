@@ -1,0 +1,32 @@
+{
+  "contract_support_precheck_required": true,
+  "copied_for_output": true,
+  "elicitation_is_repair": false,
+  "experiment": "v10.21_citation_elicitation_compliance_gate",
+  "first_pass_missing_citation_rate": 0.333333,
+  "hallucination_case_study_only": true,
+  "include_first_pass_decision_in_prompt": false,
+  "include_first_pass_score_in_prompt": false,
+  "irreducible_floor_threshold": 0.1,
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "missing_citation_case_count": 10,
+  "notes": "Second-pass elicitation is a separate artifact and cannot repair original first-pass receipts.",
+  "outcome_buckets": {
+    "contract_phrasing_inadequate": "contract_authoring_gap",
+    "different_decision": "missing_citation_correlated_with_decision_instability",
+    "malformed_second_pass": "elicitation_schema_failure",
+    "same_decision_missing_citation": "persistent_grounding_failure_or_contract_gap",
+    "same_decision_valid_citation": "recoverable_prompt_omission"
+  },
+  "pre_registered_before_elicitation_outputs": true,
+  "schema_version": "v10_citation_elicitation_preregistration_v1",
+  "second_pass_overwrites_first_pass": false,
+  "source_analysis_versions": [
+    "v10.19",
+    "v10.20"
+  ],
+  "source_run_id": "real_three_agent_manual_pilot_v1",
+  "systematic_problem_threshold": 0.2,
+  "target_post_elicitation_missing_rate": 0.1
+}

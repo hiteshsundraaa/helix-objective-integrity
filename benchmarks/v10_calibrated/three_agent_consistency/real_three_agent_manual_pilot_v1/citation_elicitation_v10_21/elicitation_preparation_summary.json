@@ -1,0 +1,19 @@
+{
+  "contract_authoring_gap_count": 0,
+  "contract_supports_citation_count": 8,
+  "contract_unavailable_count": 0,
+  "elicitation_is_repair": false,
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "missing_citation_case_count": 10,
+  "pre_elicitation_missing_rate": 0.333333,
+  "prompt_count": 10,
+  "prompt_lint_issue_count": 0,
+  "prompt_lint_passed": true,
+  "schema_version": "v10_citation_elicitation_preparation_summary_v1",
+  "second_pass_overwrites_first_pass": false,
+  "source_run_id": "real_three_agent_manual_pilot_v1",
+  "status": "awaiting_second_pass_outputs",
+  "summary_hash": "sha256:7a42d823bf239321cd9ea3f566f4b145131c0475ec35ce4afd56f013ba764a5e",
+  "weak_support_count": 2
+}

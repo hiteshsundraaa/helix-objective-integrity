@@ -1,0 +1,12 @@
+{
+  "case_count": 10,
+  "contract_authoring_gap_count": 0,
+  "contract_supports_citation_count": 8,
+  "contract_unavailable_count": 0,
+  "heuristic_not_proof": true,
+  "support_counts": {
+    "supports_citation": 8,
+    "weak_support": 2
+  },
+  "weak_support_count": 2
+}
