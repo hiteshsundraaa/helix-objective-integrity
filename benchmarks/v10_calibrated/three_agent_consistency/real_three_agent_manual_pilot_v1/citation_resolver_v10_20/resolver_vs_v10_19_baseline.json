@@ -1,0 +1,11 @@
+{
+  "failure_criterion_triggered": false,
+  "improvement_over_v10_19_heuristic_normalization": 0.6,
+  "success_criterion_passed": true,
+  "v10_19_citation_string_disagreement_rate": 0.5666666666666667,
+  "v10_19_grounding_severe_rate": 0.36666666666666664,
+  "v10_19_post_normalization_anchor_disagreement_rate": 1.0,
+  "v10_19_pre_normalization_string_disagreement_rate": 0.5666666666666667,
+  "v10_20_confidence_weighted_post_resolution_disagreement_rate": 0.37777777777777777,
+  "v10_20_post_resolution_disagreement_rate": 0.4
+}

@@ -1,0 +1,10 @@
+{
+  "case_count": 30,
+  "confidence_weighted_post_resolution_disagreement_rate": 0.37777777777777777,
+  "mean_weighted_citation_agreement": 0.6222222222222222,
+  "weighted_agreement_histogram": {
+    "0": 10,
+    "0_to_0.6": 2,
+    "1.0": 18
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "case_count": 30,
+  "case_failure_mode_counts": {
+    "citation_not_in_contract": 1,
+    "input_citation_empty": 10
+  },
+  "hallucinated_citations_are_flagged_not_resolved": true,
+  "missing_citations_are_not_resolver_successes": true,
+  "resolver_category_counts": {
+    "already_unanimous": 13,
+    "hallucinated_citation_flagged": 1,
+    "missing_citation_not_resolvable": 10,
+    "scope_disagreement_resolved": 5,
+    "scope_disagreement_unresolved": 1
+  },
+  "system_failure_mode_counts": {
+    "citation_not_in_contract": 1,
+    "input_citation_empty": 10,
+    "not_applicable": 79
+  }
+}

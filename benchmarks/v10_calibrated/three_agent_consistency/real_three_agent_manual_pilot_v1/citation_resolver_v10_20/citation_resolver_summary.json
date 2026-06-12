@@ -1,0 +1,23 @@
+{
+  "ambiguous_match_rate": 0.0,
+  "case_count": 30,
+  "confidence_weighted_post_resolution_disagreement_rate": 0.37777777777777777,
+  "failure_criterion_triggered": false,
+  "hallucinated_citation_rate": 0.03333333333333333,
+  "improvement_over_v10_19_normalization": 0.6,
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "missing_citation_rate": 0.3333333333333333,
+  "post_resolution_disagreement_rate": 0.4,
+  "pre_resolution_string_disagreement_rate": 0.5666666666666667,
+  "resolver_hash": "sha256:c6e85b2ea7c0d1eac628f8be769b53c3919b410a686b6e10c5e49af862309c6d",
+  "schema_version": "v10_canonical_citation_resolver_summary_v1",
+  "scope_disagreement_resolved_rate": 0.8333333333333334,
+  "source_run_id": "real_three_agent_manual_pilot_v1",
+  "status": "success_criterion_passed",
+  "success_criterion_passed": true,
+  "system_count": 3,
+  "unanimous_pass_through_count": 13,
+  "unresolved_citation_rate": 0.36666666666666664,
+  "v10_19_post_normalization_disagreement_rate": 1.0
+}
