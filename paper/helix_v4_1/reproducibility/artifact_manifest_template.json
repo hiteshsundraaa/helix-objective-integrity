@@ -1,0 +1,21 @@
+{
+  "repo_commit_hash": null,
+  "python_version": null,
+  "platform": null,
+  "run_timestamp_utc": null,
+  "case_manifest_hash": null,
+  "prompt_manifest_hash": null,
+  "raw_output_hashes": {},
+  "normalized_judgment_hashes": {},
+  "receipt_chain_hashes": {},
+  "consistency_hash": null,
+  "disagreement_analysis_manifest_hash": null,
+  "citation_resolver_manifest_hash": null,
+  "elicitation_manifest_hash": null,
+  "evidence_level": 3,
+  "limitations": [
+    "Manual evidence is capped at Level 3.",
+    "No Level 4 or Level 5 claim is allowed without locked live-runner provenance.",
+    "Second-pass elicitation results may be pending."
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "schema_version": "helix_v4_1_claim_ledger_v1",
+  "claims": [
+    {
+      "claim_id": "C1_receipt_reproducibility",
+      "claim_text": "Objective Authorization Receipts can deterministically bind contract, case, raw output, normalized judgment, protocol manifest, and evidence level.",
+      "claim_type": "methodological",
+      "status": "supported",
+      "evidence_level_allowed": 3,
+      "required_artifacts": ["raw_outputs", "normalized_judgments", "receipt_chains", "protocol_manifest"],
+      "current_artifacts": [
+        "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/consistency_receipt.json",
+        "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/per_system_receipt_chain_hashes.json",
+        "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/system_registry.json"
+      ],
+      "falsification_condition": "A receipt hash or manifest hash cannot be recomputed from the stated preimage, or required artifacts cannot be linked.",
+      "paper_section": "4 Objective Authorization Receipts",
+      "limitations": "Supported only for current manual-import evidence; no locked live-runner provenance."
+    },
+    {
+      "claim_id": "C2_behavioral_grounding_separability",
+      "claim_text": "Decision agreement and grounding agreement are separable; high behavioral agreement does not imply citation or grounding consistency.",
+      "claim_type": "empirical",
+      "status": "supported",
+      "evidence_level_allowed": 3,
+      "required_artifacts": ["consistency_summary", "disagreement_analysis"],
+      "current_artifacts": [
+        "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/consistency_summary.json",
+        "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/disagreement_analysis_v10_19/disaggregated_severe_rates.json"
+      ],
+      "falsification_condition": "Larger preregistered studies show grounding agreement tracks decision agreement with no measurable separability.",
+      "paper_section": "5 Behavioral-Grounding Gap",
+      "limitations": "Current support is OAR-30 only and manual evidence capped at Level 3."
+    },
+    {
+      "claim_id": "C3_evidence_validity_axis",
+      "claim_text": "An action can be behaviorally low-risk while authorization-invalid due to missing or invalid evidence.",
+      "claim_type": "methodological",
+      "status": "partially_supported",
+      "evidence_level_allowed": 3,
+      "required_artifacts": ["missing_citation_cases", "citation_elicitation_preparation"],
+      "current_artifacts": [
+        "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/missing_citation_cases.jsonl",
+        "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/elicitation_preparation_summary.json"
+      ],
+      "falsification_condition": "Missing or invalid evidence has no independent effect on receipt validity under the formal receipt schema.",
+      "paper_section": "4 Objective Authorization Receipts",
+      "limitations": "Second-pass elicitation outcomes are pending."
+    },
+    {
+      "claim_id": "C4_canonical_resolution_bounded_utility",
+      "claim_text": "Canonical citation resolution can reduce scope disagreement but cannot resolve missing or hallucinated citations without risking false agreement.",
+      "claim_type": "empirical",
+      "status": "partially_supported",
+      "evidence_level_allowed": 3,
+      "required_artifacts": ["citation_resolver_summary", "resolver_failure_modes"],
+      "current_artifacts": [
+        "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_resolver_v10_20/citation_resolver_summary.json",
+        "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_resolver_v10_20/resolver_failure_modes.json"
+      ],
+      "falsification_condition": "A preregistered resolver validly resolves missing or hallucinated citations without increasing false agreement.",
+      "paper_section": "11 Canonical Citation Resolution",
+      "limitations": "Resolver did not meet the strict post-resolution target below 0.300."
+    },
+    {
+      "claim_id": "C5_missing_citation_compliance_gap",
+      "claim_text": "Missing citations are first-pass compliance failures and must be elicited or blocked rather than retroactively repaired.",
+      "claim_type": "methodological",
+      "status": "partially_supported",
+      "evidence_level_allowed": 3,
+      "required_artifacts": ["citation_elicitation_manifest", "prompt_lint_report"],
+      "current_artifacts": [
+        "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/elicitation_manifest.json",
+        "benchmarks/v10_calibrated/three_agent_consistency/real_three_agent_manual_pilot_v1/citation_elicitation_v10_21/prompt_lint_report.json"
+      ],
+      "falsification_condition": "A valid protocol shows retroactive citation repair preserves original receipt meaning without separate evidence labels.",
+      "paper_section": "12 Citation Elicitation Compliance Test",
+      "limitations": "Elicitation outputs are not yet complete."
+    },
+    {
+      "claim_id": "C6_temporal_objective_integrity",
+      "claim_text": "Long-horizon objective integrity is a trajectory property, not reducible to local action classification.",
+      "claim_type": "formal",
+      "status": "proposed",
+      "evidence_level_allowed": 3,
+      "required_artifacts": ["formal_definitions", "trajectory_protocol", "future_long_horizon_benchmark"],
+      "current_artifacts": [
+        "paper/helix_v4_1/appendices/formal_definitions.md",
+        "paper/helix_v4_1/appendices/proof_sketches.md"
+      ],
+      "falsification_condition": "A formal reduction proves all trajectory-level objective integrity violations are captured by independent local action labels.",
+      "paper_section": "3 Formal Problem Setting",
+      "limitations": "Formalized here; large long-horizon empirical evidence remains future work."
+    },
+    {
+      "claim_id": "C7_gate_value_requires_matched_friction",
+      "claim_text": "Any runtime gate value claim requires improvement over matched-friction random blocking and allowlist-only baselines.",
+      "claim_type": "methodological",
+      "status": "partially_supported",
+      "evidence_level_allowed": 3,
+      "required_artifacts": ["hostile_baselines", "matched_friction_random_baseline", "allowlist_only_baseline"],
+      "current_artifacts": [
+        "outputs/hostile_baselines/v5/hostile_baseline_summary.json",
+        "paper/helix_v4_1/experiments/benchmark_hypotheses.md"
+      ],
+      "falsification_condition": "A gate-value claim is accepted without outperforming matched-friction random and allowlist-only baselines.",
+      "paper_section": "6 OAR-Bench Protocol",
+      "limitations": "Applies as a reporting rule; OAR-360 gate-value evidence is pending."
+    }
+  ]
+}

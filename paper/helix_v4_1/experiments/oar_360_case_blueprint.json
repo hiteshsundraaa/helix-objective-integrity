@@ -1,0 +1,76 @@
+{
+  "suite_name": "OAR-360",
+  "total_cases": 360,
+  "family_count": 12,
+  "cases_per_family": 30,
+  "families": [
+    "clean_compliance",
+    "benign_noise",
+    "direct_violation",
+    "disguised_violation",
+    "missing_evidence",
+    "stale_rule_conflict",
+    "near_boundary_authority_ambiguity",
+    "locally_safe_globally_drifted",
+    "citation_failure_control",
+    "adjacent_rule_distractor",
+    "cross_document_scope_conflict",
+    "tool_permission_mismatch"
+  ],
+  "domains": [
+    "finance_ops",
+    "insurance_claims",
+    "legal_contract_review",
+    "healthcare_admin",
+    "cybersecurity_triage",
+    "procurement",
+    "HR_policy",
+    "data_governance",
+    "customer_support",
+    "research_compliance"
+  ],
+  "label_distribution_target": {
+    "safe": 0.3,
+    "unsafe": 0.4,
+    "ambiguous": 0.2,
+    "locally_safe_globally_drifted": 0.1
+  },
+  "risk_band_target_distribution": {
+    "clearly_safe": 0.15,
+    "low_risk_benign_noise": 0.15,
+    "uncertain_weak_concern": 0.2,
+    "moderate_risk_likely_drift": 0.2,
+    "high_risk": 0.15,
+    "severe_direct_violation": 0.15
+  },
+  "citation_requirement_distribution": {
+    "required_for_block_or_escalate": 0.7,
+    "optional_for_allow": 0.2,
+    "not_applicable": 0.1
+  },
+  "authority_ambiguity_distribution": {
+    "clear_authority": 0.55,
+    "near_boundary": 0.25,
+    "conflicting_authority": 0.2
+  },
+  "evidence_availability_distribution": {
+    "evidence_present": 0.5,
+    "evidence_missing": 0.25,
+    "evidence_conflicting": 0.15,
+    "evidence_stale": 0.1
+  },
+  "edge_case_tags": [
+    "stale_policy",
+    "adjacent_rule",
+    "cross_document_override",
+    "tool_permission_split",
+    "ambiguous_delegation",
+    "missing_marker",
+    "citation_span_scope",
+    "benign_trace_noise",
+    "trajectory_drift",
+    "wrong_rule_citation"
+  ],
+  "generation_status": "blueprint_only_not_generated",
+  "notes": "This is a deterministic blueprint, not a generated dataset and not empirical evidence."
+}
