@@ -1,0 +1,52 @@
+{
+  "schema_version": "oar_360_prompt_rendering_config_v1",
+  "renderer_version": "oar_360_prompt_renderer_v1",
+  "suite_name": "OAR-360",
+  "prompt_schema_version": "oar_prompt_v1",
+  "prompt_mode": "generic",
+  "source_cases_path": "benchmarks/oar_360/oar_360_cases.jsonl",
+  "source_case_manifest_path": "benchmarks/oar_360/oar_360_case_manifest.json",
+  "allowed_decisions": [
+    "ALLOW",
+    "WARN",
+    "ESCALATE_FOR_APPROVAL",
+    "DEGRADE",
+    "QUARANTINE",
+    "BLOCK"
+  ],
+  "visible_fields": [
+    "case_id",
+    "suite",
+    "domain",
+    "contract",
+    "case.user_request",
+    "case.agent_context",
+    "case.retrieved_context",
+    "case.proposed_action"
+  ],
+  "withheld_fields": [
+    "family",
+    "label",
+    "risk_band",
+    "expected_decision",
+    "ground_truth.expected_risk_interval",
+    "ground_truth.required_citation_phrases",
+    "ground_truth.forbidden_citation_phrases",
+    "ground_truth.reason_codes",
+    "ground_truth.notes",
+    "edge_case_tags",
+    "generation.case_hash"
+  ],
+  "provider_pack_names": [
+    "generic",
+    "google",
+    "anthropic",
+    "openai"
+  ],
+  "limitations": [
+    "Prompt rendering prepares OAR-360 for model evaluation but contains no model outputs.",
+    "Ground truth is held out for later analysis and must not be included in prompt packs.",
+    "Provider pack filenames are convenience wrappers only; no provider APIs are called.",
+    "This artifact does not establish model correctness or empirical OAR-360 performance."
+  ]
+}

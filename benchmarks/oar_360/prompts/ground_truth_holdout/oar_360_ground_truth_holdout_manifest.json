@@ -1,0 +1,10 @@
+{
+  "ground_truth_excluded_from_prompts": true,
+  "holdout_count": 360,
+  "holdout_file_hash": "sha256:5db795e093834564e3aaabb8ff0f0f187f0155e06313b22774a813bfaf1e87a3",
+  "holdout_manifest_hash": "sha256:7347b993fb6e2fde310804347aff1c81ddb9cc1fd19ffa40886357217b8c76aa",
+  "no_model_outputs": true,
+  "no_provider_calls": true,
+  "schema_version": "oar_360_ground_truth_holdout_manifest_v1",
+  "suite_name": "OAR-360"
+}

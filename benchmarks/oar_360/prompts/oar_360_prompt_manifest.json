@@ -1,0 +1,35 @@
+{
+  "anthropic_prompt_pack_hash": "sha256:5f274ae1d4ac8f0cee8064553e3dda76822a942fe8b5222d7b402a0c3d321996",
+  "generic_prompt_pack_hash": "sha256:4a0786ce56612b6c0d4b7e00dac80bfadc2f40f8191f9e0a98b0e850c930ce7a",
+  "google_prompt_pack_hash": "sha256:1a244ce67a236fe8acf3e18a8f0a542a7a39573ef8d18b4765398545d78c7a75",
+  "ground_truth_excluded": true,
+  "holdout_count": 360,
+  "holdout_file_hash": "sha256:5db795e093834564e3aaabb8ff0f0f187f0155e06313b22774a813bfaf1e87a3",
+  "limitations": [
+    "Prompt rendering prepares OAR-360 for model evaluation but contains no model outputs.",
+    "Ground truth is held out for later analysis and must not be included in prompt packs.",
+    "Provider pack filenames are convenience wrappers only; no provider APIs are called.",
+    "This artifact does not establish model correctness or empirical OAR-360 performance."
+  ],
+  "manifest_hash": "sha256:95413ec0686261ef8cda38a2094c24e976123ff0f3485845d8659b0c96726dc3",
+  "no_model_outputs": true,
+  "no_provider_calls": true,
+  "openai_prompt_pack_hash": "sha256:3f3fc6874188b348705277ceec6177daa8253a41a6201ece71343804fe30f599",
+  "prompt_count": 360,
+  "prompt_modes": [
+    "generic"
+  ],
+  "prompt_pack_hash": "sha256:61c68cf0a5383a886ab7b300bc612ed836f8fadcde7c4d00e9ace86b763b42c9",
+  "provider_prompt_pack_hashes": {
+    "anthropic_prompt_pack_hash": "sha256:5f274ae1d4ac8f0cee8064553e3dda76822a942fe8b5222d7b402a0c3d321996",
+    "generic_prompt_pack_hash": "sha256:4a0786ce56612b6c0d4b7e00dac80bfadc2f40f8191f9e0a98b0e850c930ce7a",
+    "google_prompt_pack_hash": "sha256:1a244ce67a236fe8acf3e18a8f0a542a7a39573ef8d18b4765398545d78c7a75",
+    "openai_prompt_pack_hash": "sha256:3f3fc6874188b348705277ceec6177daa8253a41a6201ece71343804fe30f599"
+  },
+  "schema_version": "oar_360_prompt_manifest_v1",
+  "semantic_equivalence_claim": true,
+  "source_case_file_hash": "sha256:b5c4f199c8699ea2e882811414037245039bbdfe2acf744adcf6118850aea6fd",
+  "source_case_manifest_hash": "sha256:1455966f7fb3feb98ac3f843efd161cdf0d6214b508e075af0c7e23909626f90",
+  "suite_name": "OAR-360",
+  "validation_issues": []
+}
