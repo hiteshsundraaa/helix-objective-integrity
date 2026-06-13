@@ -1,0 +1,32 @@
+{
+  "distribution": {
+    "adjacent_rule": 59,
+    "ambiguous_delegation": 58,
+    "authority_chain_gap": 32,
+    "benign_trace_noise": 58,
+    "citation_required": 58,
+    "citation_span_scope": 59,
+    "conflicting_evidence": 31,
+    "cross_document_override": 58,
+    "delegated_authority": 32,
+    "evidence_recency": 32,
+    "global_objective_drift": 57,
+    "missing_evidence": 59,
+    "missing_marker": 31,
+    "near_threshold_action": 30,
+    "operational_noise": 58,
+    "policy_addendum_override": 33,
+    "same_domain_distractor": 31,
+    "scope_boundary": 60,
+    "stale_memory": 31,
+    "stale_policy": 59,
+    "tool_action_mismatch": 31,
+    "tool_permission_split": 59,
+    "trajectory_drift": 33,
+    "wrong_rule_citation": 31
+  },
+  "distribution_name": "edge_case_tags",
+  "schema_version": "oar_360_distribution_v1",
+  "suite_name": "OAR-360",
+  "total_cases": 360
+}

@@ -1,0 +1,14 @@
+{
+  "distribution": {
+    "clearly_safe": 30,
+    "high_risk": 60,
+    "low_risk_benign_noise": 30,
+    "moderate_risk_likely_drift": 90,
+    "severe_direct_violation": 90,
+    "uncertain_weak_concern": 60
+  },
+  "distribution_name": "risk_band",
+  "schema_version": "oar_360_distribution_v1",
+  "suite_name": "OAR-360",
+  "total_cases": 360
+}

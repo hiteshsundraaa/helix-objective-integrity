@@ -1,0 +1,96 @@
+{
+  "blueprint_hash": "sha256:d3970972ffe87a75e0981567dbc08a48fc0c0b73c463b4833e33b7e5261d179c",
+  "case_file_hash": "sha256:b5c4f199c8699ea2e882811414037245039bbdfe2acf744adcf6118850aea6fd",
+  "config_hash": "sha256:d45f5a0ea6a7054890ba9890dca87e7ec0f5321b30f85265fca661ec2f8da153",
+  "distributions": {
+    "domain": {
+      "HR_policy": 36,
+      "customer_support": 36,
+      "cybersecurity_triage": 36,
+      "data_governance": 36,
+      "finance_ops": 36,
+      "healthcare_admin": 36,
+      "insurance_claims": 36,
+      "legal_contract_review": 36,
+      "procurement": 36,
+      "research_compliance": 36
+    },
+    "edge_case_tags": {
+      "adjacent_rule": 59,
+      "ambiguous_delegation": 58,
+      "authority_chain_gap": 32,
+      "benign_trace_noise": 58,
+      "citation_required": 58,
+      "citation_span_scope": 59,
+      "conflicting_evidence": 31,
+      "cross_document_override": 58,
+      "delegated_authority": 32,
+      "evidence_recency": 32,
+      "global_objective_drift": 57,
+      "missing_evidence": 59,
+      "missing_marker": 31,
+      "near_threshold_action": 30,
+      "operational_noise": 58,
+      "policy_addendum_override": 33,
+      "same_domain_distractor": 31,
+      "scope_boundary": 60,
+      "stale_memory": 31,
+      "stale_policy": 59,
+      "tool_action_mismatch": 31,
+      "tool_permission_split": 59,
+      "trajectory_drift": 33,
+      "wrong_rule_citation": 31
+    },
+    "expected_decision": {
+      "ALLOW": 60,
+      "BLOCK": 90,
+      "DEGRADE": 60,
+      "ESCALATE_FOR_APPROVAL": 60,
+      "QUARANTINE": 30,
+      "WARN": 60
+    },
+    "family": {
+      "adjacent_rule_distractor": 30,
+      "benign_noise": 30,
+      "citation_failure_control": 30,
+      "clean_compliance": 30,
+      "cross_document_scope_conflict": 30,
+      "direct_violation": 30,
+      "disguised_violation": 30,
+      "locally_safe_globally_drifted": 30,
+      "missing_evidence": 30,
+      "near_boundary_authority_ambiguity": 30,
+      "stale_rule_conflict": 30,
+      "tool_permission_mismatch": 30
+    },
+    "label": {
+      "ambiguous": 90,
+      "locally_safe_globally_drifted": 60,
+      "safe": 90,
+      "unsafe": 120
+    },
+    "risk_band": {
+      "clearly_safe": 30,
+      "high_risk": 60,
+      "low_risk_benign_noise": 30,
+      "moderate_risk_likely_drift": 90,
+      "severe_direct_violation": 90,
+      "uncertain_weak_concern": 60
+    }
+  },
+  "evidence_level": 0,
+  "generator_version": "oar_360_generator_v1",
+  "limitations": [
+    "Generated cases are deterministic benchmark design artifacts, not model outputs.",
+    "Evidence level is 0 until independent provider judgments are collected and analyzed.",
+    "Ground-truth fields are for analysis only and must not be rendered into model prompts.",
+    "The suite does not modify or replace OAR-30 pilot evidence."
+  ],
+  "manifest_hash": "sha256:1455966f7fb3feb98ac3f843efd161cdf0d6214b508e075af0c7e23909626f90",
+  "no_model_outputs": true,
+  "no_provider_calls": true,
+  "schema_version": "oar_360_case_manifest_v1",
+  "suite_name": "OAR-360",
+  "total_cases": 360,
+  "validation_issues": []
+}

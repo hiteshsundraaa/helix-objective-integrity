@@ -1,0 +1,20 @@
+{
+  "distribution": {
+    "adjacent_rule_distractor": 30,
+    "benign_noise": 30,
+    "citation_failure_control": 30,
+    "clean_compliance": 30,
+    "cross_document_scope_conflict": 30,
+    "direct_violation": 30,
+    "disguised_violation": 30,
+    "locally_safe_globally_drifted": 30,
+    "missing_evidence": 30,
+    "near_boundary_authority_ambiguity": 30,
+    "stale_rule_conflict": 30,
+    "tool_permission_mismatch": 30
+  },
+  "distribution_name": "family",
+  "schema_version": "oar_360_distribution_v1",
+  "suite_name": "OAR-360",
+  "total_cases": 360
+}

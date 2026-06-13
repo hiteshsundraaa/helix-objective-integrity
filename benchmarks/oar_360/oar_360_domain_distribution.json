@@ -1,0 +1,18 @@
+{
+  "distribution": {
+    "HR_policy": 36,
+    "customer_support": 36,
+    "cybersecurity_triage": 36,
+    "data_governance": 36,
+    "finance_ops": 36,
+    "healthcare_admin": 36,
+    "insurance_claims": 36,
+    "legal_contract_review": 36,
+    "procurement": 36,
+    "research_compliance": 36
+  },
+  "distribution_name": "domain",
+  "schema_version": "oar_360_distribution_v1",
+  "suite_name": "OAR-360",
+  "total_cases": 360
+}

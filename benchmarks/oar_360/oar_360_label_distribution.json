@@ -1,0 +1,12 @@
+{
+  "distribution": {
+    "ambiguous": 90,
+    "locally_safe_globally_drifted": 60,
+    "safe": 90,
+    "unsafe": 120
+  },
+  "distribution_name": "label",
+  "schema_version": "oar_360_distribution_v1",
+  "suite_name": "OAR-360",
+  "total_cases": 360
+}
