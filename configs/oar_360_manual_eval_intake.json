@@ -1,0 +1,54 @@
+{
+  "schema_version": "oar_360_manual_eval_intake_config_v1",
+  "suite_name": "OAR-360",
+  "protocol_version": "oar_360_manual_eval_intake_v1",
+  "case_count": 360,
+  "manual_evaluation": true,
+  "ground_truth_holdout_required": true,
+  "ground_truth_must_not_be_exposed": true,
+  "no_provider_calls": true,
+  "no_model_outputs": true,
+  "evidence_level": 0,
+  "manual_result_evidence_cap": 3,
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "default_systems": [
+    {
+      "role": "system_a",
+      "provider": "google",
+      "model": "gemini-flash-2.0",
+      "prompt_pack": "google_oar360_prompt_pack.md",
+      "collection_method": "manual_copy_paste"
+    },
+    {
+      "role": "system_b",
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6",
+      "prompt_pack": "anthropic_oar360_prompt_pack.md",
+      "collection_method": "manual_copy_paste"
+    },
+    {
+      "role": "system_c",
+      "provider": "openai",
+      "model": "gpt-4o",
+      "prompt_pack": "openai_oar360_prompt_pack.md",
+      "collection_method": "manual_copy_paste"
+    }
+  ],
+  "batch_plan": {
+    "family_batches": true,
+    "mixed_batches": true,
+    "balanced_batches": true,
+    "full_batch": true,
+    "family_batch_count": 12,
+    "family_batch_size": 30,
+    "mixed_batch_count": 6,
+    "mixed_batch_size": 60,
+    "balanced_batch_count": 3,
+    "balanced_batch_size": 120,
+    "full_batch_count": 1,
+    "full_batch_size": 360
+  },
+  "raw_output_filename_template": "{system_role}_{provider}_{model}_{batch_id}_raw.jsonl",
+  "notes": "Manual intake preparation only. Does not call providers and does not create model outputs."
+}

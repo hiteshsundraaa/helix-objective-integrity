@@ -1,0 +1,38 @@
+{
+  "evidence_level_cap_for_manual_results": 3,
+  "independence_requirements": [
+    "separate provider/model or deployment stack",
+    "separate raw outputs",
+    "separate request manifests",
+    "no shared cached outputs",
+    "no output from one system used as input to another"
+  ],
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "minimum_independent_systems": 3,
+  "schema_version": "oar_360_system_registry_template_v1",
+  "suite_name": "OAR-360",
+  "systems": [
+    {
+      "collection_method": "manual_copy_paste",
+      "model": "gemini-flash-2.0",
+      "prompt_pack": "google_oar360_prompt_pack.md",
+      "provider": "google",
+      "role": "system_a"
+    },
+    {
+      "collection_method": "manual_copy_paste",
+      "model": "claude-sonnet-4-6",
+      "prompt_pack": "anthropic_oar360_prompt_pack.md",
+      "provider": "anthropic",
+      "role": "system_b"
+    },
+    {
+      "collection_method": "manual_copy_paste",
+      "model": "gpt-4o",
+      "prompt_pack": "openai_oar360_prompt_pack.md",
+      "provider": "openai",
+      "role": "system_c"
+    }
+  ]
+}

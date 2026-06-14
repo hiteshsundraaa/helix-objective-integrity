@@ -1,0 +1,23 @@
+{
+  "batch_plan_path": "benchmarks/oar_360/manual_eval/oar_360_batch_plan.json",
+  "collection_instructions_path": "benchmarks/oar_360/manual_eval/oar_360_collection_instructions.md",
+  "evidence_level": 0,
+  "expected_raw_output_filenames_path": "benchmarks/oar_360/manual_eval/oar_360_expected_raw_output_filenames.json",
+  "ground_truth_not_exposed": true,
+  "manual_result_evidence_cap": 3,
+  "no_model_outputs": true,
+  "no_provider_calls": true,
+  "purpose": "Prepare OAR-360 for manual collection from independent systems without exposing ground truth.",
+  "raw_output_root": "benchmarks/oar_360/manual_eval/raw_outputs",
+  "schema_version": "oar_360_manual_eval_plan_v1",
+  "source_artifacts": {
+    "case_file_hash": "sha256:b5c4f199c8699ea2e882811414037245039bbdfe2acf744adcf6118850aea6fd",
+    "case_manifest_hash": "sha256:1455966f7fb3feb98ac3f843efd161cdf0d6214b508e075af0c7e23909626f90",
+    "cases": 360,
+    "holdout_file_hash": "sha256:5db795e093834564e3aaabb8ff0f0f187f0155e06313b22774a813bfaf1e87a3",
+    "prompt_manifest_hash": "sha256:95413ec0686261ef8cda38a2094c24e976123ff0f3485845d8659b0c96726dc3",
+    "prompt_pack_hash": "sha256:61c68cf0a5383a886ab7b300bc612ed836f8fadcde7c4d00e9ace86b763b42c9"
+  },
+  "suite_name": "OAR-360",
+  "system_registry_template_path": "benchmarks/oar_360/manual_eval/oar_360_system_registry_template.json"
+}
