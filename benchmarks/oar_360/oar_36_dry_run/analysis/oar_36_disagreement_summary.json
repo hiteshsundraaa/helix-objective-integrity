@@ -1,0 +1,17 @@
+{
+  "case_count_with_any_score": 0,
+  "complete_case_count_all_systems": 0,
+  "grounding_disagreement_rate": null,
+  "majority_decision_agreement_rate": null,
+  "mean_pairwise_score_distance": null,
+  "missing_citation_rate": null,
+  "p95_pairwise_score_distance": null,
+  "parse_issue_rate": null,
+  "raw_citation_disagreement_rate": null,
+  "receipt_ready_rate": null,
+  "risk_band_majority_agreement_rate": null,
+  "risk_band_unanimous_agreement_rate": null,
+  "schema_version": "oar_36_disagreement_summary_v1",
+  "strict_grounding_valid_rate": null,
+  "unanimous_decision_agreement_rate": null
+}

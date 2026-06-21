@@ -1,0 +1,8 @@
+{
+  "case_count_with_at_least_two_systems": 0,
+  "cases_with_decision_agreement_but_grounding_failure": 0,
+  "cases_with_positive_gap": 0,
+  "family_level_delta_bg": {},
+  "mean_delta_bg": null,
+  "schema_version": "oar_36_behavioral_grounding_gap_v1"
+}

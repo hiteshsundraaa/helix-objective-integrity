@@ -1,0 +1,11 @@
+{
+  "analysis_state": "awaiting_receipt_preparation",
+  "empirical_results_created": false,
+  "ground_truth_used_for_scoring": false,
+  "receipt_preparation_count": 0,
+  "receipt_ready_count": 0,
+  "schema_version": "oar_36_analysis_status_v1",
+  "scored_case_count": 0,
+  "scored_row_count": 0,
+  "suite_name": "OAR-36"
+}
