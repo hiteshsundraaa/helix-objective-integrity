@@ -1,0 +1,13 @@
+{
+  "expected_file_count": 66,
+  "ground_truth_used": false,
+  "import_state": "awaiting_raw_outputs",
+  "missing_file_count": 66,
+  "no_empirical_results": true,
+  "no_fake_outputs": true,
+  "no_provider_calls": true,
+  "present_file_count": 0,
+  "schema_version": "oar_360_raw_import_status_v1",
+  "score_against_holdout": false,
+  "suite_name": "OAR-360"
+}

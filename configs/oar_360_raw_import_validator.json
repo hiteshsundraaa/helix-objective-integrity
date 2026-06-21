@@ -1,0 +1,42 @@
+{
+  "schema_version": "oar_360_raw_import_validator_config_v1",
+  "suite_name": "OAR-360",
+  "protocol_version": "oar_360_raw_import_validator_v1",
+  "expected_system_count": 3,
+  "expected_batch_count": 22,
+  "expected_raw_output_file_count": 66,
+  "manual_result_evidence_cap": 3,
+  "ground_truth_use_allowed": false,
+  "score_against_holdout": false,
+  "no_provider_calls": true,
+  "no_fake_outputs": true,
+  "no_empirical_results": true,
+  "preserve_raw_outputs": true,
+  "allowed_raw_extensions": [
+    ".jsonl"
+  ],
+  "required_output_fields": [
+    "case_id",
+    "decision",
+    "violation_probability",
+    "cited_contract_phrase",
+    "citation_verification_method",
+    "reason_codes"
+  ],
+  "allowed_decisions": [
+    "ALLOW",
+    "WARN",
+    "ESCALATE_FOR_APPROVAL",
+    "DEGRADE",
+    "QUARANTINE",
+    "BLOCK"
+  ],
+  "allowed_citation_verification_methods": [
+    "exact",
+    "normalized",
+    "semantic",
+    "unverified",
+    "missing"
+  ],
+  "notes": "Schema-level import validation only. Does not score against ground truth."
+}
