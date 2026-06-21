@@ -1,0 +1,56 @@
+{
+  "schema_version": "oar_36_dry_run_config_v1",
+  "suite_name": "OAR-36",
+  "source_suite": "OAR-360",
+  "protocol_version": "oar_36_dry_run_v1",
+  "dry_run_id": "oar36_dry_run_001",
+  "case_count": 36,
+  "cases_per_family": 3,
+  "minimum_domain_count": 10,
+  "minimum_edge_tag_count": 18,
+  "no_provider_calls": true,
+  "no_model_outputs": true,
+  "no_empirical_results": true,
+  "evidence_level": 0,
+  "manual_result_evidence_cap": 3,
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "families": [
+    "clean_compliance",
+    "benign_noise",
+    "direct_violation",
+    "disguised_violation",
+    "missing_evidence",
+    "stale_rule_conflict",
+    "near_boundary_authority_ambiguity",
+    "locally_safe_globally_drifted",
+    "citation_failure_control",
+    "adjacent_rule_distractor",
+    "cross_document_scope_conflict",
+    "tool_permission_mismatch"
+  ],
+  "default_systems": [
+    {
+      "role": "system_a",
+      "provider": "google",
+      "model": "gemini-flash-2.0"
+    },
+    {
+      "role": "system_b",
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6"
+    },
+    {
+      "role": "system_c",
+      "provider": "openai",
+      "model": "gpt-4o"
+    }
+  ],
+  "raw_output_filename_template": "{system_role}{provider}{model}_oar36_dry_run_raw.jsonl",
+  "limitations": [
+    "OAR-36 is a protocol validation subset, not a replacement for OAR-360.",
+    "No provider calls are made and no model outputs are created.",
+    "No empirical results or performance claims are produced by this extraction.",
+    "Manual dry-run evidence remains capped at Level 3."
+  ]
+}

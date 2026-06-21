@@ -1,0 +1,15 @@
+{
+  "collection_instructions_path": "benchmarks/oar_360/oar_36_dry_run/oar_36_collection_instructions.md",
+  "evidence_level": 0,
+  "expected_raw_output_file_count": 3,
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "manual_result_evidence_cap": 3,
+  "no_model_outputs": true,
+  "no_provider_calls": true,
+  "purpose": "Validate OAR-360 provider prompt usability and manual collection workflow on a locked 36-case subset.",
+  "raw_output_root": "benchmarks/oar_360/oar_36_dry_run/raw_outputs",
+  "schema_version": "oar_36_manual_eval_plan_v1",
+  "suite_name": "OAR-36",
+  "system_count": 3
+}

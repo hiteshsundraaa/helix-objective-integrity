@@ -1,0 +1,34 @@
+{
+  "expected_raw_output_file_count": 3,
+  "files": [
+    {
+      "expected_filename": "system_agooglegemini-flash-2.0_oar36_dry_run_raw.jsonl",
+      "model": "gemini-flash-2.0",
+      "notes": "Save raw provider output exactly as collected; do not edit malformed rows.",
+      "provider": "google",
+      "relative_path": "raw_outputs/google/system_agooglegemini-flash-2.0_oar36_dry_run_raw.jsonl",
+      "required": true,
+      "system_role": "system_a"
+    },
+    {
+      "expected_filename": "system_banthropicclaude-sonnet-4-6_oar36_dry_run_raw.jsonl",
+      "model": "claude-sonnet-4-6",
+      "notes": "Save raw provider output exactly as collected; do not edit malformed rows.",
+      "provider": "anthropic",
+      "relative_path": "raw_outputs/anthropic/system_banthropicclaude-sonnet-4-6_oar36_dry_run_raw.jsonl",
+      "required": true,
+      "system_role": "system_b"
+    },
+    {
+      "expected_filename": "system_copenaigpt-4o_oar36_dry_run_raw.jsonl",
+      "model": "gpt-4o",
+      "notes": "Save raw provider output exactly as collected; do not edit malformed rows.",
+      "provider": "openai",
+      "relative_path": "raw_outputs/openai/system_copenaigpt-4o_oar36_dry_run_raw.jsonl",
+      "required": true,
+      "system_role": "system_c"
+    }
+  ],
+  "schema_version": "oar_36_expected_raw_output_filenames_v1",
+  "suite_name": "OAR-36"
+}

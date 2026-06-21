@@ -1,0 +1,11 @@
+{
+  "holdout_count": 36,
+  "holdout_file_hash": "sha256:a0143660642a5791490bc9ab4ceab2d22123bcbcb9003337b152407c85b8bba6",
+  "manifest_hash": "sha256:cd1939d5e69930d64b6079c9d0ee101fd9e34094d183d124ae80337686f6424c",
+  "not_for_model_prompting": true,
+  "schema_version": "oar_36_ground_truth_holdout_manifest_v1",
+  "separated_from_prompts": true,
+  "source_holdout_file_hash": "sha256:5db795e093834564e3aaabb8ff0f0f187f0155e06313b22774a813bfaf1e87a3",
+  "source_suite": "OAR-360",
+  "suite_name": "OAR-36"
+}
