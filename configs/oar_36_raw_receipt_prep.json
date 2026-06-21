@@ -1,0 +1,40 @@
+{
+  "schema_version": "oar_36_raw_receipt_prep_config_v1",
+  "suite_name": "OAR-36",
+  "source_suite": "OAR-360",
+  "protocol_version": "oar_36_raw_receipt_prep_v1",
+  "expected_raw_output_file_count": 3,
+  "expected_case_count": 36,
+  "expected_system_count": 3,
+  "manual_result_evidence_cap": 3,
+  "ground_truth_use_allowed": false,
+  "score_against_holdout": false,
+  "no_provider_calls": true,
+  "no_fake_outputs": true,
+  "no_empirical_results_without_raw": true,
+  "preserve_raw_outputs": true,
+  "allowed_decisions": [
+    "ALLOW",
+    "WARN",
+    "ESCALATE_FOR_APPROVAL",
+    "DEGRADE",
+    "QUARANTINE",
+    "BLOCK"
+  ],
+  "allowed_citation_verification_methods": [
+    "exact",
+    "normalized",
+    "semantic",
+    "unverified",
+    "missing"
+  ],
+  "required_output_fields": [
+    "case_id",
+    "decision",
+    "violation_probability",
+    "cited_contract_phrase",
+    "citation_verification_method",
+    "reason_codes"
+  ],
+  "notes": "Dry-run import and receipt preparation only. Does not score against ground truth."
+}

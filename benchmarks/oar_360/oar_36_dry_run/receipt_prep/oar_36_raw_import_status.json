@@ -1,0 +1,11 @@
+{
+  "empirical_results_created": false,
+  "expected_file_count": 3,
+  "import_state": "awaiting_raw_outputs",
+  "missing_file_count": 3,
+  "normalized_judgment_count": 0,
+  "present_file_count": 0,
+  "receipt_preparation_count": 0,
+  "schema_version": "oar_36_raw_import_status_v1",
+  "suite_name": "OAR-36"
+}

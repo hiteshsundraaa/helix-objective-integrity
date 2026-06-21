@@ -1,0 +1,54 @@
+{
+  "files": [
+    {
+      "expected_filename": "system_agooglegemini-flash-2.0_oar36_dry_run_raw.jsonl",
+      "expected_relative_path": "raw_outputs/google/system_agooglegemini-flash-2.0_oar36_dry_run_raw.jsonl",
+      "file_hash": null,
+      "file_size_bytes": 0,
+      "issues": [
+        "file_missing"
+      ],
+      "line_count": 0,
+      "model": "gemini-flash-2.0",
+      "present": false,
+      "provider": "google",
+      "readable": false,
+      "resolved_path": "benchmarks/oar_360/oar_36_dry_run/raw_outputs/google/system_agooglegemini-flash-2.0_oar36_dry_run_raw.jsonl",
+      "system_role": "system_a"
+    },
+    {
+      "expected_filename": "system_banthropicclaude-sonnet-4-6_oar36_dry_run_raw.jsonl",
+      "expected_relative_path": "raw_outputs/anthropic/system_banthropicclaude-sonnet-4-6_oar36_dry_run_raw.jsonl",
+      "file_hash": null,
+      "file_size_bytes": 0,
+      "issues": [
+        "file_missing"
+      ],
+      "line_count": 0,
+      "model": "claude-sonnet-4-6",
+      "present": false,
+      "provider": "anthropic",
+      "readable": false,
+      "resolved_path": "benchmarks/oar_360/oar_36_dry_run/raw_outputs/anthropic/system_banthropicclaude-sonnet-4-6_oar36_dry_run_raw.jsonl",
+      "system_role": "system_b"
+    },
+    {
+      "expected_filename": "system_copenaigpt-4o_oar36_dry_run_raw.jsonl",
+      "expected_relative_path": "raw_outputs/openai/system_copenaigpt-4o_oar36_dry_run_raw.jsonl",
+      "file_hash": null,
+      "file_size_bytes": 0,
+      "issues": [
+        "file_missing"
+      ],
+      "line_count": 0,
+      "model": "gpt-4o",
+      "present": false,
+      "provider": "openai",
+      "readable": false,
+      "resolved_path": "benchmarks/oar_360/oar_36_dry_run/raw_outputs/openai/system_copenaigpt-4o_oar36_dry_run_raw.jsonl",
+      "system_role": "system_c"
+    }
+  ],
+  "schema_version": "oar_36_raw_file_inventory_v1",
+  "suite_name": "OAR-36"
+}

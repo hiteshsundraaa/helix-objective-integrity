@@ -1,0 +1,60 @@
+{
+  "records": [
+    {
+      "duplicate_case_id_count": 0,
+      "expected_filename": "system_agooglegemini-flash-2.0_oar36_dry_run_raw.jsonl",
+      "invalid_citation_method_count": 0,
+      "invalid_decision_count": 0,
+      "invalid_score_count": 0,
+      "issues": [
+        "file_missing"
+      ],
+      "judgment_like_records_count": 0,
+      "line_count": 0,
+      "malformed_json_line_count": 0,
+      "parseable_json_line_count": 0,
+      "present": false,
+      "records_missing_required_fields": 0,
+      "records_with_required_fields": 0,
+      "unknown_case_id_count": 0
+    },
+    {
+      "duplicate_case_id_count": 0,
+      "expected_filename": "system_banthropicclaude-sonnet-4-6_oar36_dry_run_raw.jsonl",
+      "invalid_citation_method_count": 0,
+      "invalid_decision_count": 0,
+      "invalid_score_count": 0,
+      "issues": [
+        "file_missing"
+      ],
+      "judgment_like_records_count": 0,
+      "line_count": 0,
+      "malformed_json_line_count": 0,
+      "parseable_json_line_count": 0,
+      "present": false,
+      "records_missing_required_fields": 0,
+      "records_with_required_fields": 0,
+      "unknown_case_id_count": 0
+    },
+    {
+      "duplicate_case_id_count": 0,
+      "expected_filename": "system_copenaigpt-4o_oar36_dry_run_raw.jsonl",
+      "invalid_citation_method_count": 0,
+      "invalid_decision_count": 0,
+      "invalid_score_count": 0,
+      "issues": [
+        "file_missing"
+      ],
+      "judgment_like_records_count": 0,
+      "line_count": 0,
+      "malformed_json_line_count": 0,
+      "parseable_json_line_count": 0,
+      "present": false,
+      "records_missing_required_fields": 0,
+      "records_with_required_fields": 0,
+      "unknown_case_id_count": 0
+    }
+  ],
+  "schema_version": "oar_36_raw_schema_lint_v1",
+  "suite_name": "OAR-36"
+}
