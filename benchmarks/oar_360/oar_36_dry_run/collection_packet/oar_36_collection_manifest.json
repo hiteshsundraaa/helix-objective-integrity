@@ -1,0 +1,34 @@
+{
+  "checklist_hash": "sha256:9251bcd1701ed706a4a5917c803857d68eaa97bbbb0d7eb38d7351da81471549",
+  "collection_readme_hash": "sha256:b4b82e5bc7488bc825de610c5bfd6e874f2e36ee604ebc8665dec20290a909f9",
+  "collector_log_template_hash": "sha256:b0665dbb9fb9c31b83f633e12c60edef35dbe0ead7d4ab8da1af81df37cf2b59",
+  "expected_case_count": 36,
+  "generic_packet_hash": "sha256:4f4a4b222de1aec8ea0027db6657af362523eafbc77539ea18c6a35dc691c539",
+  "ground_truth_exposed": false,
+  "level_4_allowed": false,
+  "level_5_allowed": false,
+  "limitations": [
+    "Collection packet only. Does not call providers or create model outputs.",
+    "This package does not include OAR-36 or OAR-360 holdout records.",
+    "Manual collection evidence remains capped at Level 3.",
+    "Provider output quality is not known until raw outputs are collected and validated.",
+    "Source prompt manifest hash: sha256:385d49bbc5c12cfe8562bb392624c6d51cb4bd3831cdd2d13ba12153e8defcc6"
+  ],
+  "manifest_hash": "sha256:34249164bc88cc3f5bada0bddb452d2941644742c641c8a98e3401378f16d508",
+  "manual_result_evidence_cap": 3,
+  "no_empirical_results": true,
+  "no_model_outputs": true,
+  "no_provider_calls": true,
+  "post_collection_commands_hash": "sha256:baf2755e263292ecd0025da82916de09969e2e81854f0c95a2b001b69d978c2e",
+  "prompt_count": 36,
+  "provider_file_targets_hash": "sha256:957bb4dae49d9f2a86cb451d45eb71cb7594cccf3e96046e6fbb699c20e236a2",
+  "provider_packet_hashes": {
+    "anthropic": "sha256:575cf81eba002c1191fa9f5e9964bab7801adb31688c786cf248f9e90727d6cb",
+    "google": "sha256:078911274f8853fe6d7cc436bde6cb2e4205f8fca26ee003cc6db69c2d8ca0ac",
+    "openai": "sha256:049d85c29d5e6d6bce92899c0aa848d96c91cfdf34c9fa7b204a4c2014f4c874"
+  },
+  "schema_version": "oar_36_collection_manifest_v1",
+  "source_suite": "OAR-360",
+  "suite_name": "OAR-36",
+  "system_count": 3
+}

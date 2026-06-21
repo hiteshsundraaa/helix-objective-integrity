@@ -1,0 +1,37 @@
+{
+  "schema_version": "oar_36_collection_packet_config_v1",
+  "suite_name": "OAR-36",
+  "source_suite": "OAR-360",
+  "protocol_version": "oar_36_collection_packet_v1",
+  "expected_case_count": 36,
+  "expected_system_count": 3,
+  "manual_result_evidence_cap": 3,
+  "ground_truth_exposure_allowed": false,
+  "no_provider_calls": true,
+  "no_model_outputs": true,
+  "no_empirical_results": true,
+  "default_systems": [
+    {
+      "role": "system_a",
+      "provider": "google",
+      "model": "gemini-flash-2.0",
+      "packet_filename": "google_oar36_collection_packet.md",
+      "expected_raw_output_path": "raw_outputs/google/system_a_google_gemini-flash-2.0_oar36_dry_run_raw.jsonl"
+    },
+    {
+      "role": "system_b",
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6",
+      "packet_filename": "anthropic_oar36_collection_packet.md",
+      "expected_raw_output_path": "raw_outputs/anthropic/system_b_anthropic_claude-sonnet-4-6_oar36_dry_run_raw.jsonl"
+    },
+    {
+      "role": "system_c",
+      "provider": "openai",
+      "model": "gpt-4o",
+      "packet_filename": "openai_oar36_collection_packet.md",
+      "expected_raw_output_path": "raw_outputs/openai/system_c_openai_gpt-4o_oar36_dry_run_raw.jsonl"
+    }
+  ],
+  "notes": "Collection packet only. Does not call providers or create model outputs."
+}

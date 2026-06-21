@@ -1,0 +1,76 @@
+{
+  "attestation": {
+    "majority_vote_not_treated_as_truth": false,
+    "malformed_rows_not_repaired": false,
+    "manual_evidence_cap_level_3": true,
+    "missing_citations_not_filled": false,
+    "no_cross_provider_output_sharing": false,
+    "no_ground_truth_exposed": false,
+    "raw_outputs_not_edited": false
+  },
+  "collection_completed_utc": "",
+  "collection_started_utc": "",
+  "collector_id_optional": "",
+  "deviations_from_protocol": [],
+  "notes": "",
+  "per_system_collection_log": [
+    {
+      "completed_utc": "",
+      "model": "gemini-flash-2.0",
+      "notes": "",
+      "prompt_packet_used": "google_oar36_collection_packet.md",
+      "provider": "google",
+      "raw_output_file": "raw_outputs/google/system_a_google_gemini-flash-2.0_oar36_dry_run_raw.jsonl",
+      "started_utc": "",
+      "system_role": "system_a"
+    },
+    {
+      "completed_utc": "",
+      "model": "claude-sonnet-4-6",
+      "notes": "",
+      "prompt_packet_used": "anthropic_oar36_collection_packet.md",
+      "provider": "anthropic",
+      "raw_output_file": "raw_outputs/anthropic/system_b_anthropic_claude-sonnet-4-6_oar36_dry_run_raw.jsonl",
+      "started_utc": "",
+      "system_role": "system_b"
+    },
+    {
+      "completed_utc": "",
+      "model": "gpt-4o",
+      "notes": "",
+      "prompt_packet_used": "openai_oar36_collection_packet.md",
+      "provider": "openai",
+      "raw_output_file": "raw_outputs/openai/system_c_openai_gpt-4o_oar36_dry_run_raw.jsonl",
+      "started_utc": "",
+      "system_role": "system_c"
+    }
+  ],
+  "raw_output_files_written": [],
+  "retry_events": [],
+  "schema_version": "oar_36_collector_log_template_v1",
+  "suite_name": "OAR-36",
+  "systems": [
+    {
+      "expected_raw_output_path": "raw_outputs/google/system_a_google_gemini-flash-2.0_oar36_dry_run_raw.jsonl",
+      "model": "gemini-flash-2.0",
+      "packet_filename": "google_oar36_collection_packet.md",
+      "provider": "google",
+      "role": "system_a"
+    },
+    {
+      "expected_raw_output_path": "raw_outputs/anthropic/system_b_anthropic_claude-sonnet-4-6_oar36_dry_run_raw.jsonl",
+      "model": "claude-sonnet-4-6",
+      "packet_filename": "anthropic_oar36_collection_packet.md",
+      "provider": "anthropic",
+      "role": "system_b"
+    },
+    {
+      "expected_raw_output_path": "raw_outputs/openai/system_c_openai_gpt-4o_oar36_dry_run_raw.jsonl",
+      "model": "gpt-4o",
+      "packet_filename": "openai_oar36_collection_packet.md",
+      "provider": "openai",
+      "role": "system_c"
+    }
+  ],
+  "ui_or_network_failures": []
+}
